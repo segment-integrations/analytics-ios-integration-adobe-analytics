@@ -8,6 +8,7 @@
 
 #import "SEGAdobeAppDelegate.h"
 
+
 @implementation SEGAdobeAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions

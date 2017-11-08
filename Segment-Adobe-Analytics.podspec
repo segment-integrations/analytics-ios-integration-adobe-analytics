@@ -1,42 +1,23 @@
-#
-# Be sure to run `pod lib lint Segment-Adobe-Analytics.podspec' to ensure this is a
-# valid spec before submitting.
-#
-# Any lines starting with a # are optional, but their use is encouraged
-# To learn more about a Podspec see http://guides.cocoapods.org/syntax/podspec.html
-#
-
 Pod::Spec.new do |s|
   s.name             = 'Segment-Adobe-Analytics'
   s.version          = '0.1.0'
-  s.summary          = 'A short description of Segment-Adobe-Analytics.'
-
-# This description is used to generate tags and improve search results.
-#   * Think: What does it do? Why did you write it? What is the focus?
-#   * Try to keep it short, snappy and to the point.
-#   * Write the description between the DESC delimiters below.
-#   * Finally, don't worry about the indent, CocoaPods strips it!
-
+  s.summary          = 'Adobe-Analytics Integration for Segment\'s analytics-ios library.'
   s.description      = <<-DESC
-TODO: Add long description of the pod here.
+
+  Analytics for iOS provides a single API that lets you
+    integrate with over 100s of tools.
+    This is the Optimizely X integration for the iOS library.
                        DESC
 
-  s.homepage         = 'https://github.com/ladanazita/Segment-Adobe-Analytics'
-  # s.screenshots     = 'www.example.com/screenshots_1', 'www.example.com/screenshots_2'
+  s.homepage         = 'http://segment.com/'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
-  s.author           = { 'ladanazita' => 'ladan@segment.com' }
-  s.source           = { :git => 'https://github.com/ladanazita/Segment-Adobe-Analytics.git', :tag => s.version.to_s }
-  # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
+  s.author           = { 'Segment' => 'friends@segment.com' }
+  s.source           = { :git => 'https://github.com/segment-integrations/analytics-ios-integration-Adobe-Analytics.git', :tag => s.version.to_s }
+  s.social_media_url = 'https://twitter.com/segment'
 
   s.ios.deployment_target = '8.0'
 
   s.source_files = 'Segment-Adobe-Analytics/Classes/**/*'
-  
-  # s.resource_bundles = {
-  #   'Segment-Adobe-Analytics' => ['Segment-Adobe-Analytics/Assets/*.png']
-  # }
 
-  # s.public_header_files = 'Pod/Classes/**/*.h'
-  # s.frameworks = 'UIKit', 'MapKit'
-  # s.dependency 'AFNetworking', '~> 2.3'
+  s.dependency 'Analytics', '~> 3.5'
 end
