@@ -17,7 +17,6 @@ it, simply add the following line to your Podfile:
 ```ruby
 pod 'Segment-Adobe-Analytics'
 ```
-s
 ## License
 
 Segment-Adobe-Analytics is available under the MIT license. See the LICENSE file for more info.
