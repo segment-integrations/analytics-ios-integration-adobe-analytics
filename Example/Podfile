@@ -1,5 +1,3 @@
-use_frameworks!
-
 target 'Segment-Adobe-Analytics_Example' do
   pod 'Segment-Adobe-Analytics', :path => '../'
 
@@ -7,6 +5,7 @@ target 'Segment-Adobe-Analytics_Example' do
     inherit! :search_paths
 
     pod 'Specta'
-  pod 'Expecta'
+    pod 'Expecta'
+    pod 'OCMockito'
   end
 end

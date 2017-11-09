@@ -17,7 +17,7 @@
                BlueprintIdentifier = "6003F589195388D20070C39A"
                BuildableName = "Segment-Adobe-Analytics_Example.app"
                BlueprintName = "Segment-Adobe-Analytics_Example"
-               ReferencedContainer = "container:../Segment-Adobe-Analytics.xcodeproj">
+               ReferencedContainer = "container:Segment-Adobe-Analytics.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -36,7 +36,7 @@
                BlueprintIdentifier = "6003F5AD195388D20070C39A"
                BuildableName = "Segment-Adobe-Analytics_Tests.xctest"
                BlueprintName = "Segment-Adobe-Analytics_Tests"
-               ReferencedContainer = "container:../Segment-Adobe-Analytics.xcodeproj">
+               ReferencedContainer = "container:Segment-Adobe-Analytics.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -46,7 +46,7 @@
             BlueprintIdentifier = "6003F589195388D20070C39A"
             BuildableName = "Segment-Adobe-Analytics_Example.app"
             BlueprintName = "Segment-Adobe-Analytics_Example"
-            ReferencedContainer = "container:../Segment-Adobe-Analytics.xcodeproj">
+            ReferencedContainer = "container:Segment-Adobe-Analytics.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -70,7 +70,7 @@
             BlueprintIdentifier = "6003F589195388D20070C39A"
             BuildableName = "Segment-Adobe-Analytics_Example.app"
             BlueprintName = "Segment-Adobe-Analytics_Example"
-            ReferencedContainer = "container:../Segment-Adobe-Analytics.xcodeproj">
+            ReferencedContainer = "container:Segment-Adobe-Analytics.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>
@@ -89,7 +89,7 @@
             BlueprintIdentifier = "6003F589195388D20070C39A"
             BuildableName = "Segment-Adobe-Analytics_Example.app"
             BlueprintName = "Segment-Adobe-Analytics_Example"
-            ReferencedContainer = "container:../Segment-Adobe-Analytics.xcodeproj">
+            ReferencedContainer = "container:Segment-Adobe-Analytics.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
