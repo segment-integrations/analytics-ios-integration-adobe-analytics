@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1A558AFA1D02C9374645EF30 /* libPods-Segment-Adobe-Analytics_Example.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 43B578454AE72BAA6CB34FB6 /* libPods-Segment-Adobe-Analytics_Example.a */; };
 		6003F58E195388D20070C39A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58D195388D20070C39A /* Foundation.framework */; };
 		6003F590195388D20070C39A /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58F195388D20070C39A /* CoreGraphics.framework */; };
 		6003F592195388D20070C39A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F591195388D20070C39A /* UIKit.framework */; };
@@ -20,10 +21,11 @@
 		6003F5B2195388D20070C39A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F591195388D20070C39A /* UIKit.framework */; };
 		6003F5BA195388D20070C39A /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6003F5B8195388D20070C39A /* InfoPlist.strings */; };
 		6003F5BC195388D20070C39A /* Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6003F5BB195388D20070C39A /* Tests.m */; };
-		60D6BC0722E42989490F473A /* Pods_Segment_Adobe_Analytics_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8536DD32A147F7F533ACA88A /* Pods_Segment_Adobe_Analytics_Example.framework */; };
+		6B5278193005A8CBCF8B1BDF /* libPods-Segment-Adobe-Analytics_Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 03108D42F9B3F734F0E744D9 /* libPods-Segment-Adobe-Analytics_Tests.a */; };
 		71719F9F1E33DC2100824A3D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 71719F9D1E33DC2100824A3D /* LaunchScreen.storyboard */; };
 		873B8AEB1B1F5CCA007FD442 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 873B8AEA1B1F5CCA007FD442 /* Main.storyboard */; };
-		BFF9B6A8CE1B730D8E608395 /* Pods_Segment_Adobe_Analytics_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 42476B4089BE60E5C229516F /* Pods_Segment_Adobe_Analytics_Tests.framework */; };
+		956FC58E1FB4D502003028A2 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 956FC58D1FB4D502003028A2 /* SystemConfiguration.framework */; };
+		956FC5901FB4D50B003028A2 /* libsqlite3.0.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 956FC58F1FB4D50B003028A2 /* libsqlite3.0.tbd */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -37,10 +39,11 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		0DFCA7C25AE551722E1AA9A0 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
-		3339EE10D97DBF9AF8E1109F /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; name = README.md; path = ../README.md; sourceTree = "<group>"; };
-		42476B4089BE60E5C229516F /* Pods_Segment_Adobe_Analytics_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Segment_Adobe_Analytics_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		589428CB55A1F8A3818A9CF5 /* Segment-Adobe-Analytics.podspec */ = {isa = PBXFileReference; includeInIndex = 1; name = "Segment-Adobe-Analytics.podspec"; path = "../Segment-Adobe-Analytics.podspec"; sourceTree = "<group>"; };
+		03108D42F9B3F734F0E744D9 /* libPods-Segment-Adobe-Analytics_Tests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Segment-Adobe-Analytics_Tests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		0DFCA7C25AE551722E1AA9A0 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
+		3339EE10D97DBF9AF8E1109F /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
+		43B578454AE72BAA6CB34FB6 /* libPods-Segment-Adobe-Analytics_Example.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Segment-Adobe-Analytics_Example.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		589428CB55A1F8A3818A9CF5 /* Segment-Adobe-Analytics.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = "Segment-Adobe-Analytics.podspec"; path = "../Segment-Adobe-Analytics.podspec"; sourceTree = "<group>"; };
 		5E5F710DF340B64E7CB3BB5D /* Pods-Segment-Adobe-Analytics_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Segment-Adobe-Analytics_Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Segment-Adobe-Analytics_Tests/Pods-Segment-Adobe-Analytics_Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		6003F58A195388D20070C39A /* Segment-Adobe-Analytics_Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Segment-Adobe-Analytics_Example.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		6003F58D195388D20070C39A /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -62,8 +65,10 @@
 		6003F5BB195388D20070C39A /* Tests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Tests.m; sourceTree = "<group>"; };
 		606FC2411953D9B200FFA9A0 /* Tests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Tests-Prefix.pch"; sourceTree = "<group>"; };
 		71719F9E1E33DC2100824A3D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		8536DD32A147F7F533ACA88A /* Pods_Segment_Adobe_Analytics_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Segment_Adobe_Analytics_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		873B8AEA1B1F5CCA007FD442 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Main.storyboard; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		956FC5871FB4D483003028A2 /* ADBMobileConfig.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = ADBMobileConfig.json; sourceTree = "<group>"; };
+		956FC58D1FB4D502003028A2 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		956FC58F1FB4D50B003028A2 /* libsqlite3.0.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.0.tbd; path = usr/lib/libsqlite3.0.tbd; sourceTree = SDKROOT; };
 		D7A0A51A9D07415B1B95EB09 /* Pods-Segment-Adobe-Analytics_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Segment-Adobe-Analytics_Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-Segment-Adobe-Analytics_Tests/Pods-Segment-Adobe-Analytics_Tests.release.xcconfig"; sourceTree = "<group>"; };
 		EBD044B3E28D5A164459D703 /* Pods-Segment-Adobe-Analytics_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Segment-Adobe-Analytics_Example.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Segment-Adobe-Analytics_Example/Pods-Segment-Adobe-Analytics_Example.debug.xcconfig"; sourceTree = "<group>"; };
 		F5AEDAB8513E5B93AFA4DBBB /* Pods-Segment-Adobe-Analytics_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Segment-Adobe-Analytics_Example.release.xcconfig"; path = "Pods/Target Support Files/Pods-Segment-Adobe-Analytics_Example/Pods-Segment-Adobe-Analytics_Example.release.xcconfig"; sourceTree = "<group>"; };
@@ -74,10 +79,12 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				956FC5901FB4D50B003028A2 /* libsqlite3.0.tbd in Frameworks */,
+				956FC58E1FB4D502003028A2 /* SystemConfiguration.framework in Frameworks */,
 				6003F590195388D20070C39A /* CoreGraphics.framework in Frameworks */,
 				6003F592195388D20070C39A /* UIKit.framework in Frameworks */,
 				6003F58E195388D20070C39A /* Foundation.framework in Frameworks */,
-				60D6BC0722E42989490F473A /* Pods_Segment_Adobe_Analytics_Example.framework in Frameworks */,
+				1A558AFA1D02C9374645EF30 /* libPods-Segment-Adobe-Analytics_Example.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -88,7 +95,7 @@
 				6003F5B0195388D20070C39A /* XCTest.framework in Frameworks */,
 				6003F5B2195388D20070C39A /* UIKit.framework in Frameworks */,
 				6003F5B1195388D20070C39A /* Foundation.framework in Frameworks */,
-				BFF9B6A8CE1B730D8E608395 /* Pods_Segment_Adobe_Analytics_Tests.framework in Frameworks */,
+				6B5278193005A8CBCF8B1BDF /* libPods-Segment-Adobe-Analytics_Tests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -109,6 +116,7 @@
 		6003F581195388D10070C39A = {
 			isa = PBXGroup;
 			children = (
+				956FC5851FB4D483003028A2 /* AdobeMobileLibrary */,
 				60FF7A9C1954A5C5007DD14C /* Podspec Metadata */,
 				6003F593195388D20070C39A /* Example for Segment-Adobe-Analytics */,
 				6003F5B5195388D20070C39A /* Tests */,
@@ -130,12 +138,14 @@
 		6003F58C195388D20070C39A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				956FC58F1FB4D50B003028A2 /* libsqlite3.0.tbd */,
+				956FC58D1FB4D502003028A2 /* SystemConfiguration.framework */,
 				6003F58D195388D20070C39A /* Foundation.framework */,
 				6003F58F195388D20070C39A /* CoreGraphics.framework */,
 				6003F591195388D20070C39A /* UIKit.framework */,
 				6003F5AF195388D20070C39A /* XCTest.framework */,
-				8536DD32A147F7F533ACA88A /* Pods_Segment_Adobe_Analytics_Example.framework */,
-				42476B4089BE60E5C229516F /* Pods_Segment_Adobe_Analytics_Tests.framework */,
+				43B578454AE72BAA6CB34FB6 /* libPods-Segment-Adobe-Analytics_Example.a */,
+				03108D42F9B3F734F0E744D9 /* libPods-Segment-Adobe-Analytics_Tests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -194,6 +204,15 @@
 				0DFCA7C25AE551722E1AA9A0 /* LICENSE */,
 			);
 			name = "Podspec Metadata";
+			sourceTree = "<group>";
+		};
+		956FC5851FB4D483003028A2 /* AdobeMobileLibrary */ = {
+			isa = PBXGroup;
+			children = (
+				956FC5871FB4D483003028A2 /* ADBMobileConfig.json */,
+			);
+			name = AdobeMobileLibrary;
+			path = "../../../../../../Downloads/iOS Test_iOS-4.14.1/AdobeMobileLibrary";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -338,11 +357,15 @@
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-Segment-Adobe-Analytics_Tests/Pods-Segment-Adobe-Analytics_Tests-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Expecta/Expecta.framework",
+				"${BUILT_PRODUCTS_DIR}/OCHamcrest/OCHamcrest.framework",
+				"${BUILT_PRODUCTS_DIR}/OCMockito/OCMockito.framework",
 				"${BUILT_PRODUCTS_DIR}/Specta/Specta.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Expecta.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OCHamcrest.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OCMockito.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Specta.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -357,13 +380,13 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-Segment-Adobe-Analytics_Example/Pods-Segment-Adobe-Analytics_Example-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/AdobeMobileSDK/AdobeMobileSDK.framework",
 				"${BUILT_PRODUCTS_DIR}/Analytics/Analytics.framework",
-				"${BUILT_PRODUCTS_DIR}/Segment-Adobe-Analytics/Segment_Adobe_Analytics.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AdobeMobileSDK.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Analytics.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Segment_Adobe_Analytics.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -496,6 +519,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -529,6 +553,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
@@ -540,9 +565,15 @@
 			baseConfigurationReference = EBD044B3E28D5A164459D703 /* Pods-Segment-Adobe-Analytics_Example.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Segment-Adobe-Analytics/Segment-Adobe-Analytics-Prefix.pch";
 				INFOPLIST_FILE = "Segment-Adobe-Analytics/Segment-Adobe-Analytics-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/AdobeMobileLibrary",
+				);
+				"LIBRARY_SEARCH_PATHS[arch=*]" = "$(inherited)";
 				MODULE_NAME = ExampleApp;
 				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.demo.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -555,9 +586,14 @@
 			baseConfigurationReference = F5AEDAB8513E5B93AFA4DBBB /* Pods-Segment-Adobe-Analytics_Example.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Segment-Adobe-Analytics/Segment-Adobe-Analytics-Prefix.pch";
 				INFOPLIST_FILE = "Segment-Adobe-Analytics/Segment-Adobe-Analytics-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/AdobeMobileLibrary",
+				);
 				MODULE_NAME = ExampleApp;
 				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.demo.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -570,6 +606,7 @@
 			baseConfigurationReference = 5E5F710DF340B64E7CB3BB5D /* Pods-Segment-Adobe-Analytics_Tests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
@@ -594,6 +631,7 @@
 			baseConfigurationReference = D7A0A51A9D07415B1B95EB09 /* Pods-Segment-Adobe-Analytics_Tests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",

@@ -17,7 +17,8 @@ Pod::Spec.new do |s|
 
   s.ios.deployment_target = '8.0'
 
-  s.source_files = 'Segment-Adobe-Analytics/Classes/**/*'
+  s.source_files = 'Pod/Classes/**/*'
 
   s.dependency 'Analytics', '~> 3.5'
+  s.dependency 'AdobeMobileSDK'
 end

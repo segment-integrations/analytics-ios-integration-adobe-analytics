@@ -3,28 +3,21 @@
 //  Segment-Adobe-AnalyticsTests
 //
 //  Created by ladanazita on 11/07/2017.
-//  Copyright (c) 2017 ladanazita. All rights reserved.
+//  Copyright (c) 2017 Segment. All rights reserved.
 //
 
 // https://github.com/Specta/Specta
 
 SpecBegin(InitialSpecs);
 
-describe(@"these will pass", ^{
+describe(@"SEGAdobeIntegration", ^{
+    __block ADBMobile *mockADBMobile;
+    __block SEGAdobeIntegration *integration;
 
-    it(@"can do maths", ^{
-        expect(1).beLessThan(23);
-    });
-
-    it(@"can read", ^{
-        expect(@"team").toNot.contain(@"I");
-    });
-
-    it(@"will wait and succeed", ^{
-        waitUntil(^(DoneCallback done) {
-            done();
+    describe(@"SEGAdobeIntegrationFactory", ^{
+        it(@"factory creates integration with basic settings", ^{
+            SEGAdobeIntegration *integration = [[SEGAdobeIntegrationFactory instance] createWithSettings:@{} forAnalytics:nil];
         });
     });
 });
-
 SpecEnd
