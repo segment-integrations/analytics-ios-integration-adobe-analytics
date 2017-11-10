@@ -40,5 +40,13 @@
     [self.ADBMobile trackingClearCurrentBeacon];
     SEGLog(@"[ADBMobile trackingClearCurrentBeacon];");
 }
+- (void)flush
+{
+    // Choosing to use `trackingSendQueuedHits` in lieu of
+    // `trackingClearQueue` because the latter also
+    // removes the queued events from the database
+    [self.ADBMobile trackingSendQueuedHits];
+    SEGLog(@"ADBMobile trackingSendQueuedHits");
+}
 
 @end

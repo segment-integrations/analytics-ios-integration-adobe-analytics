@@ -31,5 +31,13 @@ describe(@"SEGAdobeIntegration", ^{
             [verify(mockADBMobile) trackingClearCurrentBeacon];
         });
     });
+    
+    describe(@"flush", ^{
+        it(@"flushes queue", ^{
+            [integration flush];
+            [verify(mockADBMobile) trackingSendQueuedHits];
+
+        });
+    });
 });
 SpecEnd
