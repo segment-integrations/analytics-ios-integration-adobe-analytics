@@ -40,6 +40,7 @@
     [self.ADBMobile trackingClearCurrentBeacon];
     SEGLog(@"[ADBMobile trackingClearCurrentBeacon];");
 }
+
 - (void)flush
 {
     // Choosing to use `trackingSendQueuedHits` in lieu of
@@ -47,6 +48,13 @@
     // removes the queued events from the database
     [self.ADBMobile trackingSendQueuedHits];
     SEGLog(@"ADBMobile trackingSendQueuedHits");
+}
+
+- (void)identify:(SEGIdentifyPayload *)payload
+{
+    if (!payload.userId) return;
+    [self.ADBMobile setUserIdentifier:payload.userId];
+    SEGLog(@"[ADBMobile setUserIdentifier:%@]", payload.userId);
 }
 
 @end

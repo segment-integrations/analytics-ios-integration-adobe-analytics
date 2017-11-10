@@ -36,7 +36,28 @@ describe(@"SEGAdobeIntegration", ^{
         it(@"flushes queue", ^{
             [integration flush];
             [verify(mockADBMobile) trackingSendQueuedHits];
+        });
+    });
+    describe(@"identify", ^{
+        it(@"it does not identify an unknown user", ^{
+            SEGIdentifyPayload *identifyPayload = [[SEGIdentifyPayload alloc] initWithUserId:nil anonymousId:@"324908523402" traits:@{
+                @"gender" : @"female",
+                @"name" : @"ladan"
+            } context:@{}
+                integrations:@{}];
 
+            [integration identify:identifyPayload];
+            [verifyCount(mockADBMobile, never()) setUserIdentifier:nil];
+        });
+        it(@"it identifies a known user", ^{
+            SEGIdentifyPayload *identifyPayload = [[SEGIdentifyPayload alloc] initWithUserId:@"2304920517" anonymousId:@"324908523402" traits:@{
+                @"gender" : @"female",
+                @"name" : @"ladan"
+            } context:@{}
+                integrations:@{}];
+
+            [integration identify:identifyPayload];
+            [verify(mockADBMobile) setUserIdentifier:@"2304920517"];
         });
     });
 });
