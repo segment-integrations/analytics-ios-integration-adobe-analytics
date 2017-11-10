@@ -34,4 +34,11 @@
     }
     return self;
 }
+
+- (void)reset
+{
+    [self.ADBMobile trackingClearCurrentBeacon];
+    SEGLog(@"[ADBMobile trackingClearCurrentBeacon];");
+}
+
 @end

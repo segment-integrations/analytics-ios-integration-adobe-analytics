@@ -19,5 +19,17 @@ describe(@"SEGAdobeIntegration", ^{
             SEGAdobeIntegration *integration = [[SEGAdobeIntegrationFactory instance] createWithSettings:@{} forAnalytics:nil];
         });
     });
+
+    beforeEach(^{
+        mockADBMobile = mockClass([ADBMobile class]);
+        integration = [[SEGAdobeIntegration alloc] initWithSettings:@{} andADBMobile:mockADBMobile];
+    });
+
+    describe(@"reset", ^{
+        it(@"resets user", ^{
+            [integration reset];
+            [verify(mockADBMobile) trackingClearCurrentBeacon];
+        });
+    });
 });
 SpecEnd
