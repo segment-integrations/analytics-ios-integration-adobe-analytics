@@ -59,22 +59,23 @@
 
 - (void)track:(SEGTrackPayload *)payload
 {
-    if ([payload.properties count] > 0 && [self.settings[@"contextValues"] count] > 0) {
-        NSMutableDictionary *data = [self mapcontextValues:payload.properties];
-        [self.ADBMobile trackAction:payload.event data:data];
-        return;
-    }
-    [self.ADBMobile trackAction:payload.event data:nil];
+    NSMutableDictionary *data = [self mapContextValues:payload.properties];
+    [self.ADBMobile trackAction:payload.event data:data];
+    SEGLog(@"[ADBMobile trackAction:%@ data:data];", payload.event, data);
 }
 
-- (NSMutableDictionary *)mapcontextValues:(NSDictionary *)properties
+- (NSMutableDictionary *)mapContextValues:(NSDictionary *)properties
 {
-    NSMutableDictionary *data = [[NSMutableDictionary alloc] initWithCapacity:0];
-    NSDictionary *contextValues = self.settings[@"contextValues"];
-    for (NSString *key in contextValues) {
-        [data setObject:properties[key] forKey:contextValues[key]];
+    NSInteger contextValuesSize = [self.settings[@"contextValues"] count];
+    if ([properties count] > 0 && contextValuesSize > 0) {
+        NSMutableDictionary *data = [[NSMutableDictionary alloc] initWithCapacity:contextValuesSize];
+        NSDictionary *contextValues = self.settings[@"contextValues"];
+        for (NSString *key in contextValues) {
+            [data setObject:properties[key] forKey:contextValues[key]];
+        }
+        return data;
     }
-    return data;
+    return nil;
 }
 
 @end
