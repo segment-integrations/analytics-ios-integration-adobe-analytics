@@ -31,7 +31,7 @@ describe(@"SEGAdobeIntegration", ^{
             [verify(mockADBMobile) trackingClearCurrentBeacon];
         });
     });
-    
+
     describe(@"flush", ^{
         it(@"flushes queue", ^{
             [integration flush];
@@ -58,6 +58,33 @@ describe(@"SEGAdobeIntegration", ^{
 
             [integration identify:identifyPayload];
             [verify(mockADBMobile) setUserIdentifier:@"2304920517"];
+        });
+    });
+    describe(@"track", ^{
+        it(@"tracks an action without properties but with settings.contextValues", ^{
+            integration = [[SEGAdobeIntegration alloc] initWithSettings:@{ @"contextValues" : @{
+                @"plan" : @"myapp.plan",
+                @"subscribed" : @"myapp.subscribed"
+            } } andADBMobile:mockADBMobile];
+            SEGTrackPayload *trackPayload = [[SEGTrackPayload alloc] initWithEvent:@"Testing" properties:@{} context:@{} integrations:@{}];
+            [integration track:trackPayload];
+            [verify(mockADBMobile) trackAction:@"Testing" data:nil];
+        });
+        it(@"tracks an action with properties NOT configured in settings.contextValues", ^{
+            SEGTrackPayload *trackPayload = [[SEGTrackPayload alloc] initWithEvent:@"Testing" properties:@{ @"plan" : @"self-service" } context:@{} integrations:@{}];
+            [integration track:trackPayload];
+            [verify(mockADBMobile) trackAction:@"Testing" data:nil];
+        });
+        it(@"tracks an action with some properties configured in settings.contextValues", ^{
+            integration = [[SEGAdobeIntegration alloc] initWithSettings:@{ @"contextValues" : @{
+                @"plan" : @"myapp.plan",
+                @"subscribed" : @"myapp.subscribed"
+            } } andADBMobile:mockADBMobile];
+            SEGTrackPayload *trackPayload = [[SEGTrackPayload alloc] initWithEvent:@"Testing" properties:@{ @"plan" : @"self-service" }
+                context:@{}
+                integrations:@{}];
+            [integration track:trackPayload];
+            [verify(mockADBMobile) trackAction:@"Testing" data:@{ @"myapp.plan" : @"self-service" }];
         });
     });
 });

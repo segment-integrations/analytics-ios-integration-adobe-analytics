@@ -57,4 +57,27 @@
     SEGLog(@"[ADBMobile setUserIdentifier:%@]", payload.userId);
 }
 
+- (void)track:(SEGTrackPayload *)payload
+{
+    NSMutableDictionary *data = [self mapContextValues:payload.properties];
+    [self.ADBMobile trackAction:payload.event data:data];
+    SEGLog(@"[ADBMobile trackAction:%@ data:data];", payload.event, data);
+}
+
+- (NSMutableDictionary *)mapContextValues:(NSDictionary *)properties
+{
+    NSInteger contextValuesSize = [self.settings[@"contextValues"] count];
+    if ([properties count] > 0 && contextValuesSize > 0) {
+        NSMutableDictionary *data = [[NSMutableDictionary alloc] initWithCapacity:contextValuesSize];
+        NSDictionary *contextValues = self.settings[@"contextValues"];
+        for (NSString *key in contextValues) {
+            if (properties[key]) {
+                [data setObject:properties[key] forKey:contextValues[key]];
+            }
+        }
+        return data;
+    }
+    return nil;
+}
+
 @end
