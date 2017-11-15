@@ -64,6 +64,15 @@
     SEGLog(@"[ADBMobile trackAction:%@ data:data];", payload.event, data);
 }
 
+- (void)screen:(SEGScreenPayload *)payload
+{
+    NSMutableDictionary *data = [self mapContextValues:payload.properties];
+    [self.ADBMobile trackState:payload.name data:data];
+    SEGLog(@"[ADBMobile trackState:%@ data:data];", payload.name, data);
+}
+
+#pragma mark - Util Functions
+
 - (NSMutableDictionary *)mapContextValues:(NSDictionary *)properties
 {
     NSInteger contextValuesSize = [self.settings[@"contextValues"] count];
