@@ -71,7 +71,9 @@
         NSMutableDictionary *data = [[NSMutableDictionary alloc] initWithCapacity:contextValuesSize];
         NSDictionary *contextValues = self.settings[@"contextValues"];
         for (NSString *key in contextValues) {
-            [data setObject:properties[key] forKey:contextValues[key]];
+            if (properties[key]) {
+                [data setObject:properties[key] forKey:contextValues[key]];
+            }
         }
         return data;
     }
