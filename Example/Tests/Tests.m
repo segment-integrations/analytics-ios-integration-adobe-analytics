@@ -17,6 +17,7 @@ describe(@"SEGAdobeIntegration", ^{
     describe(@"SEGAdobeIntegrationFactory", ^{
         it(@"factory creates integration with basic settings", ^{
             SEGAdobeIntegration *integration = [[SEGAdobeIntegrationFactory instance] createWithSettings:@{} forAnalytics:nil];
+            [verify(mockADBMobile) collectLifecycleData];
         });
     });
 

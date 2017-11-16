@@ -23,6 +23,8 @@
         self.ADBMobile = [ADBMobile class];
     }
 
+    [self.ADBMobile collectLifecycleData];
+
     return self;
 }
 
@@ -32,6 +34,9 @@
         self.settings = settings;
         self.ADBMobile = ADBMobile;
     }
+
+    [self.ADBMobile collectLifecycleData];
+
     return self;
 }
 
