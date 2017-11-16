@@ -59,26 +59,21 @@
 
 - (void)track:(SEGTrackPayload *)payload
 {
-    NSMutableDictionary *data = [self mapContextValues:payload.properties];
-    NSString *event = [self mapEventsV2:payload.event];
-    if (!event) {
-        SEGLog(@"Event must be configured in Adobe and in the EventsV2 setting in Segment before sending.");
-        return;
-    }
-
-    [self.ADBMobile trackAction:event data:data];
-    SEGLog(@"[ADBMobile trackAction:%@ data:data];", payload.event, data);
+    [self realTrack:payload.event andProperties:payload.properties];
 }
 
 - (void)screen:(SEGScreenPayload *)payload
 {
     NSMutableDictionary *data = [self mapContextValues:payload.properties];
     [self.ADBMobile trackState:payload.name data:data];
-    SEGLog(@"[ADBMobile trackState:%@ data:data];", payload.name, data);
+    SEGLog(@"[ADBMobile trackState:%@ data:%@];", payload.name, data);
 }
 
 #pragma mark - Util Functions
 
+// All context data variables must be mapped by using processing rules,
+// meaning they must be configured as a context variable in Adobe's UI
+// and mapped from a Segment Property to the configured variable in Adobe
 - (NSMutableDictionary *)mapContextValues:(NSDictionary *)properties
 {
     NSInteger contextValuesSize = [self.settings[@"contextValues"] count];
@@ -104,6 +99,124 @@
         }
     }
     return nil;
+}
+
+- (NSMutableDictionary *)mapProducts:(NSString *)event andProperties:(NSDictionary *)properties
+{
+    // While I don't believe this will happen, Adobe still accepts events if
+    // there is no contextData.
+    // TODO: discuss if we should still send reserved
+    // ecommerce events to Adobe without products
+    if ([properties count] == 0) {
+        return nil;
+    }
+
+    NSMutableDictionary *data = [self mapContextValues:properties];
+    NSMutableDictionary *contextData = [[NSMutableDictionary alloc] initWithDictionary:data];
+
+
+    // If you trigger a product-specific event by using the &&products variable,
+    // you must also set that event in the &&events variable.
+    // If you do not set that event, it is filtered out during processing.
+    [contextData setObject:event forKey:@"&&events"];
+
+    NSString *result = @"";
+
+    // If Products is of type NSArray (ex. Order Completed),
+    // we must end each product with a `,` to denote multiple products
+    NSArray *products = properties[@"products"];
+    if ([products isKindOfClass:[NSArray class]]) {
+        int count = 0;
+        for (NSDictionary *obj in products) {
+            NSArray *formattedProducts = [self formatProducts:obj];
+            // Catch the case where productIdentifier is nil
+            if (formattedProducts == nil) {
+                return nil;
+            }
+            result = [result stringByAppendingString:[formattedProducts componentsJoinedByString:@";"]];
+            count++;
+            if (count < [products count]) {
+                result = [result stringByAppendingString:@",;"];
+            }
+        }
+    } else {
+        NSArray *formattedProducts = [self formatProducts:properties];
+        result = [result stringByAppendingString:[formattedProducts componentsJoinedByString:@";"]];
+    }
+
+    [contextData setObject:result forKey:@"&&products"];
+    return contextData;
+}
+
+- (NSArray *)formatProducts:(NSDictionary *)obj
+{
+    NSString *category = obj[@"category"] ?: @"";
+
+    // The product argument is REQUIRED for Adobe ecommerce events.
+    // This value can be 'name', 'sku', or 'id'. Defaults to name
+    NSString *productIdentifier = obj[self.settings[@"productIdentifier"]];
+    if ([productIdentifier length] == 0) {
+        NSLog(@"Product is a required field.");
+        return nil;
+    }
+
+    // Adobe expects Price to refer to the total price (unit price x units).
+    int quantity = [obj[@"quantity"] intValue] ?: 1;
+    double price = [obj[@"price"] doubleValue] ?: 0;
+    double total = price * quantity;
+
+    // The products variable is expected to be formated in the following order:
+    // `"Category;Product;Quantity;Price;eventN=X[|eventN2=X2];eVarN=merch_category[|eVarN2=merch_category2]"`
+    NSArray *output = @[ category, productIdentifier, [NSNumber numberWithInt:quantity], [NSNumber numberWithDouble:total] ];
+    return output;
+}
+
+- (void)realTrack:(NSString *)event andProperties:(NSDictionary *)properties
+{
+    NSDictionary *contextData;
+
+    // You can send ecommerce events via either a trackAction or trackState call.
+    // Since Segment does not spec sending products on `screen`, we
+    // will only support sending this via trackAction
+    if ([event isEqualToString:@"Product Added"]) {
+        contextData = [self mapProducts:event andProperties:properties];
+        [self.ADBMobile trackAction:@"scAdd" data:contextData];
+        return;
+    }
+
+    if ([event isEqualToString:@"Product Removed"]) {
+        contextData = [self mapProducts:event andProperties:properties];
+        [self.ADBMobile trackAction:@"scRemove" data:contextData];
+        return;
+    }
+
+    if ([event isEqualToString:@"Cart Viewed"]) {
+        contextData = [self mapProducts:event andProperties:properties];
+        [self.ADBMobile trackAction:@"scView" data:contextData];
+        return;
+    }
+
+    if ([event isEqualToString:@"Checkout Started"]) {
+        contextData = [self mapProducts:event andProperties:properties];
+        [self.ADBMobile trackAction:@"scCheckout" data:contextData];
+        return;
+    }
+
+    if ([event isEqualToString:@"Order Completed"]) {
+        contextData = [self mapProducts:event andProperties:properties];
+        [self.ADBMobile trackAction:@"purchase" data:contextData];
+        return;
+    }
+
+    NSMutableDictionary *data = [self mapContextValues:properties];
+    event = [self mapEventsV2:event];
+    if (!event) {
+        SEGLog(@"Event must be configured in Adobe and in the EventsV2 setting in Segment before sending.");
+        return;
+    }
+
+    [self.ADBMobile trackAction:event data:data];
+    SEGLog(@"[ADBMobile trackAction:%@ data:%@];", event, data);
 }
 
 @end
