@@ -64,32 +64,52 @@ describe(@"SEGAdobeIntegration", ^{
     });
 
     describe(@"track", ^{
-        it(@"tracks an action without properties but with settings.contextValues", ^{
-            integration = [[SEGAdobeIntegration alloc] initWithSettings:@{ @"contextValues" : @{
-                @"plan" : @"myapp.plan",
-                @"subscribed" : @"myapp.subscribed"
-            } } andADBMobile:mockADBMobile];
+        it(@"does not track an action without eventsV2", ^{
             SEGTrackPayload *trackPayload = [[SEGTrackPayload alloc] initWithEvent:@"Testing" properties:@{} context:@{} integrations:@{}];
             [integration track:trackPayload];
-            [verify(mockADBMobile) trackAction:@"Testing" data:nil];
+            [verifyCount(mockADBMobile, never()) trackAction:@"myapp.testing" data:nil];
+        });
+
+        it(@"tracks an action without properties but with settings.contextValues", ^{
+            integration = [[SEGAdobeIntegration alloc] initWithSettings:@{
+                @"contextValues" : @{
+                    @"plan" : @"myapp.plan",
+                    @"subscribed" : @"myapp.subscribed",
+                },
+                @"eventsV2" : @{
+                    @"Signed Up" : @"myapp.signedup",
+                    @"Testing" : @"myapp.testing"
+                }
+            } andADBMobile:mockADBMobile];
+            SEGTrackPayload *trackPayload = [[SEGTrackPayload alloc] initWithEvent:@"Testing" properties:@{} context:@{} integrations:@{}];
+            [integration track:trackPayload];
+            [verify(mockADBMobile) trackAction:@"myapp.testing" data:nil];
         });
 
         it(@"tracks an action with properties NOT configured in settings.contextValues", ^{
+            integration = [[SEGAdobeIntegration alloc] initWithSettings:@{ @"eventsV2" : @{
+                @"Signed Up" : @"myapp.signedup",
+                @"Testing" : @"myapp.testing"
+            } } andADBMobile:mockADBMobile];
             SEGTrackPayload *trackPayload = [[SEGTrackPayload alloc] initWithEvent:@"Testing" properties:@{ @"plan" : @"self-service" } context:@{} integrations:@{}];
             [integration track:trackPayload];
-            [verify(mockADBMobile) trackAction:@"Testing" data:nil];
+            [verify(mockADBMobile) trackAction:@"myapp.testing" data:nil];
         });
 
         it(@"tracks an action with some properties configured in settings.contextValues", ^{
             integration = [[SEGAdobeIntegration alloc] initWithSettings:@{ @"contextValues" : @{
                 @"plan" : @"myapp.plan",
                 @"subscribed" : @"myapp.subscribed"
-            } } andADBMobile:mockADBMobile];
+            },
+                                                                           @"eventsV2" : @{
+                                                                               @"Testing" : @"myapp.testing"
+                                                                           }
+            } andADBMobile:mockADBMobile];
             SEGTrackPayload *trackPayload = [[SEGTrackPayload alloc] initWithEvent:@"Testing" properties:@{ @"plan" : @"self-service" }
                 context:@{}
                 integrations:@{}];
             [integration track:trackPayload];
-            [verify(mockADBMobile) trackAction:@"Testing" data:@{ @"myapp.plan" : @"self-service" }];
+            [verify(mockADBMobile) trackAction:@"myapp.testing" data:@{ @"myapp.plan" : @"self-service" }];
         });
     });
 

@@ -60,7 +60,13 @@
 - (void)track:(SEGTrackPayload *)payload
 {
     NSMutableDictionary *data = [self mapContextValues:payload.properties];
-    [self.ADBMobile trackAction:payload.event data:data];
+    NSString *event = [self mapEventsV2:payload.event];
+    if (!event) {
+        SEGLog(@"Event must be configured in Adobe and in the EventsV2 setting in Segment before sending.");
+        return;
+    }
+
+    [self.ADBMobile trackAction:event data:data];
     SEGLog(@"[ADBMobile trackAction:%@ data:data];", payload.event, data);
 }
 
@@ -85,6 +91,17 @@
             }
         }
         return data;
+    }
+    return nil;
+}
+
+- (NSString *)mapEventsV2:(NSString *)event
+{
+    NSDictionary *eventsV2 = self.settings[@"eventsV2"];
+    for (NSString *key in eventsV2) {
+        if ([key isEqualToString:event]) {
+            return [eventsV2 objectForKey:key];
+        }
     }
     return nil;
 }
