@@ -148,7 +148,9 @@ describe(@"SEGAdobeIntegration", ^{
                                                            andADBMobile:mockADBMobile];
         });
 
-        it(@"tracks Product Added ", ^{
+        it(@"tracks Product Added with productIdentifier product_id", ^{
+            integration = [[SEGAdobeIntegration alloc] initWithSettings:@{ @"productIdentifier" : @"id" }
+                                                           andADBMobile:mockADBMobile];
             SEGTrackPayload *trackPayload = [[SEGTrackPayload alloc] initWithEvent:@"Product Added" properties:@{
                 @"cart_id" : @"skdjsidjsdkdj29j",
                 @"product_id" : @"507f1f77bcf86cd799439011",
@@ -169,7 +171,34 @@ describe(@"SEGAdobeIntegration", ^{
             [integration track:trackPayload];
             [verify(mockADBMobile) trackAction:@"scAdd" data:@{
                 @"&&events" : @"scAdd",
-                @"&&products" : @"Games;Monopoly: 3rd Edition;1;18.99"
+                @"&&products" : @"Games;507f1f77bcf86cd799439011;1;18.99"
+            }];
+        });
+
+        it(@"tracks Product Added with productIdentifier falling back to id", ^{
+            integration = [[SEGAdobeIntegration alloc] initWithSettings:@{ @"productIdentifier" : @"id" }
+                                                           andADBMobile:mockADBMobile];
+            SEGTrackPayload *trackPayload = [[SEGTrackPayload alloc] initWithEvent:@"Product Added" properties:@{
+                @"cart_id" : @"skdjsidjsdkdj29j",
+                @"id" : @"507f1f77bcf86cd799439011",
+                @"sku" : @"G-32",
+                @"category" : @"Games",
+                @"name" : @"Monopoly: 3rd Edition",
+                @"brand" : @"Hasbro",
+                @"variant" : @"200 pieces",
+                @"price" : @18.99,
+                @"quantity" : @1,
+                @"coupon" : @"MAYDEALS",
+                @"position" : @3,
+                @"url" : @"https://www.company.com/product/path",
+                @"image_url" : @"https://www.company.com/product/path.jpg"
+            }
+                context:@{}
+                integrations:@{}];
+            [integration track:trackPayload];
+            [verify(mockADBMobile) trackAction:@"scAdd" data:@{
+                @"&&events" : @"scAdd",
+                @"&&products" : @"Games;507f1f77bcf86cd799439011;1;18.99"
             }];
         });
 
@@ -204,7 +233,7 @@ describe(@"SEGAdobeIntegration", ^{
             }];
         });
 
-        it(@"tracks Cart Viewed", ^{
+        it(@"does not track products on Cart Viewed without required product identifier", ^{
             NSDictionary *props = @{
                 @"share_via" : @"email",
                 @"share_message" : @"Hey, check out this item",
@@ -221,6 +250,36 @@ describe(@"SEGAdobeIntegration", ^{
                 integrations:@{}];
             [integration track:trackPayload];
             [verify(mockADBMobile) trackAction:@"scView" data:nil];
+        });
+
+        it(@"tracks Product Viewed with product identifier as sku", ^{
+            integration = [[SEGAdobeIntegration alloc] initWithSettings:@{ @"productIdentifier" : @"sku" }
+                                                           andADBMobile:mockADBMobile];
+            NSDictionary *props = @{
+                @"product_id" : @"507f1f77bcf86cd799439011",
+                @"sku" : @"G-32",
+                @"category" : @"Food",
+                @"name" : @"Turkey",
+                @"brand" : @"Farmers",
+                @"variant" : @"Free Range",
+                @"price" : @180.99,
+                @"quantity" : @1,
+                @"coupon" : @"TURKEYDAY",
+                @"currency" : @"usd",
+                @"position" : @3,
+                @"value" : @20.99,
+                @"url" : @"https://www.company.com/product/path",
+                @"image_url" : @"https://www.company.com/product/path.jpg"
+            };
+
+            SEGTrackPayload *trackPayload = [[SEGTrackPayload alloc] initWithEvent:@"Product Viewed" properties:props
+                context:@{}
+                integrations:@{}];
+            [integration track:trackPayload];
+            [verify(mockADBMobile) trackAction:@"prodView" data:@{
+                @"&&events" : @"prodView",
+                @"&&products" : @"Food;G-32;1;180.99"
+            }];
         });
 
         it(@"tracks Checkout Started without category", ^{

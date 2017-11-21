@@ -154,10 +154,19 @@
     // The product argument is REQUIRED for Adobe ecommerce events.
     // This value can be 'name', 'sku', or 'id'. Defaults to name
     NSString *productIdentifier = obj[self.settings[@"productIdentifier"]];
+
+    // Fallback to id. Segment's ecommerce v1 Spec'd `id` as the product identifier
+    // The setting productIdentifier checks for id, where ecommerce V2
+    // is expecting product_id.
+    if ([self.settings[@"productIdentifier"] isEqualToString:@"id"]) {
+        productIdentifier = obj[@"product_id"] ?: obj[@"id"];
+    }
+
     if ([productIdentifier length] == 0) {
         NSLog(@"Product is a required field.");
         return nil;
     }
+
 
     // Adobe expects Price to refer to the total price (unit price x units).
     int quantity = [obj[@"quantity"] intValue] ?: 1;
@@ -183,7 +192,8 @@
         @"Product Removed" : @"scRemove",
         @"Cart Viewed" : @"scView",
         @"Checkout Started" : @"scCheckout",
-        @"Order Completed" : @"purchase"
+        @"Order Completed" : @"purchase",
+        @"Product Viewed" : @"prodView"
     };
     if (adobeEcommerceEvents[event]) {
         contextData = [self mapProducts:adobeEcommerceEvents[event] andProperties:properties];
