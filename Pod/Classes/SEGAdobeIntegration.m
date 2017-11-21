@@ -120,36 +120,35 @@
     // If you do not set that event, it is filtered out during processing.
     [contextData setObject:event forKey:@"&&events"];
 
-    NSString *result = @"";
-
+    NSString *formattedProducts = @"";
     // If Products is of type NSArray (ex. Order Completed),
     // we must end each product with a `,` to denote multiple products
     NSArray *products = properties[@"products"];
     if ([products isKindOfClass:[NSArray class]]) {
         int count = 0;
         for (NSDictionary *obj in products) {
-            NSArray *formattedProducts = [self formatProducts:obj];
+            formattedProducts = [self formatProducts:obj andProductString:formattedProducts];
             // Catch the case where productIdentifier is nil
             if (formattedProducts == nil) {
                 return nil;
             }
-            result = [result stringByAppendingString:[formattedProducts componentsJoinedByString:@";"]];
             count++;
             if (count < [products count]) {
-                result = [result stringByAppendingString:@",;"];
+                formattedProducts = [formattedProducts stringByAppendingString:@",;"];
             }
         }
     } else {
-        NSArray *formattedProducts = [self formatProducts:properties];
-        result = [result stringByAppendingString:[formattedProducts componentsJoinedByString:@";"]];
+        formattedProducts = [self formatProducts:properties andProductString:formattedProducts];
     }
 
-    [contextData setObject:result forKey:@"&&products"];
+    [contextData setObject:formattedProducts forKey:@"&&products"];
     return contextData;
 }
 
-- (NSArray *)formatProducts:(NSDictionary *)obj
+- (NSString *)formatProducts:(NSDictionary *)obj andProductString:(NSString *)products
 {
+    NSString *result = products;
+
     NSString *category = obj[@"category"] ?: @"";
 
     // The product argument is REQUIRED for Adobe ecommerce events.
@@ -168,7 +167,8 @@
     // The products variable is expected to be formated in the following order:
     // `"Category;Product;Quantity;Price;eventN=X[|eventN2=X2];eVarN=merch_category[|eVarN2=merch_category2]"`
     NSArray *output = @[ category, productIdentifier, [NSNumber numberWithInt:quantity], [NSNumber numberWithDouble:total] ];
-    return output;
+    result = [result stringByAppendingString:[output componentsJoinedByString:@";"]];
+    return result;
 }
 
 - (void)realTrack:(NSString *)event andProperties:(NSDictionary *)properties
@@ -178,33 +178,16 @@
     // You can send ecommerce events via either a trackAction or trackState call.
     // Since Segment does not spec sending products on `screen`, we
     // will only support sending this via trackAction
-    if ([event isEqualToString:@"Product Added"]) {
-        contextData = [self mapProducts:event andProperties:properties];
-        [self.ADBMobile trackAction:@"scAdd" data:contextData];
-        return;
-    }
-
-    if ([event isEqualToString:@"Product Removed"]) {
-        contextData = [self mapProducts:event andProperties:properties];
-        [self.ADBMobile trackAction:@"scRemove" data:contextData];
-        return;
-    }
-
-    if ([event isEqualToString:@"Cart Viewed"]) {
-        contextData = [self mapProducts:event andProperties:properties];
-        [self.ADBMobile trackAction:@"scView" data:contextData];
-        return;
-    }
-
-    if ([event isEqualToString:@"Checkout Started"]) {
-        contextData = [self mapProducts:event andProperties:properties];
-        [self.ADBMobile trackAction:@"scCheckout" data:contextData];
-        return;
-    }
-
-    if ([event isEqualToString:@"Order Completed"]) {
-        contextData = [self mapProducts:event andProperties:properties];
-        [self.ADBMobile trackAction:@"purchase" data:contextData];
+    NSDictionary *adobeEcommerceEvents = @{
+        @"Product Added" : @"scAdd",
+        @"Product Removed" : @"scRemove",
+        @"Cart Viewed" : @"scView",
+        @"Checkout Started" : @"scCheckout",
+        @"Order Completed" : @"purchase"
+    };
+    if (adobeEcommerceEvents[event]) {
+        contextData = [self mapProducts:adobeEcommerceEvents[event] andProperties:properties];
+        [self.ADBMobile trackAction:adobeEcommerceEvents[event] data:contextData];
         return;
     }
 

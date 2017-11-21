@@ -168,7 +168,7 @@ describe(@"SEGAdobeIntegration", ^{
                 integrations:@{}];
             [integration track:trackPayload];
             [verify(mockADBMobile) trackAction:@"scAdd" data:@{
-                @"&&events" : @"Product Added",
+                @"&&events" : @"scAdd",
                 @"&&products" : @"Games;Monopoly: 3rd Edition;1;18.99"
             }];
         });
@@ -199,7 +199,7 @@ describe(@"SEGAdobeIntegration", ^{
                 integrations:@{}];
             [integration track:trackPayload];
             [verify(mockADBMobile) trackAction:@"scRemove" data:@{
-                @"&&events" : @"Product Removed",
+                @"&&events" : @"scRemove",
                 @"&&products" : @"Games;Monopoly: 3rd Edition;1;0"
             }];
         });
@@ -254,7 +254,7 @@ describe(@"SEGAdobeIntegration", ^{
                 integrations:@{}];
             [integration track:trackPayload];
             [verify(mockADBMobile) trackAction:@"scCheckout" data:@{
-                @"&&events" : @"Checkout Started",
+                @"&&events" : @"scCheckout",
                 @"&&products" : @";Farmville;1;9.99,;;Words With Friends;1;3.99"
             }];
         });
@@ -294,7 +294,7 @@ describe(@"SEGAdobeIntegration", ^{
                 integrations:@{}];
             [integration track:trackPayload];
             [verify(mockADBMobile) trackAction:@"purchase" data:@{
-                @"&&events" : @"Order Completed",
+                @"&&events" : @"purchase",
                 @"&&products" : @"Games;Monopoly: 3rd Edition;1;21.99,;Games;Battleship;2;27.98"
             }];
         });
