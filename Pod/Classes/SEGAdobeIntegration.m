@@ -103,17 +103,12 @@
 
 - (NSMutableDictionary *)mapProducts:(NSString *)event andProperties:(NSDictionary *)properties
 {
-    // While I don't believe this will happen, Adobe still accepts events if
-    // there is no contextData.
-    // TODO: discuss if we should still send reserved
-    // ecommerce events to Adobe without products
     if ([properties count] == 0) {
         return nil;
     }
 
     NSMutableDictionary *data = [self mapContextValues:properties];
     NSMutableDictionary *contextData = [[NSMutableDictionary alloc] initWithDictionary:data];
-
 
     // If you trigger a product-specific event by using the &&products variable,
     // you must also set that event in the &&events variable.
@@ -127,28 +122,54 @@
     if ([products isKindOfClass:[NSArray class]]) {
         int count = 0;
         for (NSDictionary *obj in products) {
-            formattedProducts = [self formatProducts:obj andProductString:formattedProducts];
             // Catch the case where productIdentifier is nil
-            if (formattedProducts == nil) {
+            if ([self formatProducts:obj] == nil) {
                 return nil;
             }
+            formattedProducts = [formattedProducts stringByAppendingString:[self formatProducts:obj]];
             count++;
             if (count < [products count]) {
                 formattedProducts = [formattedProducts stringByAppendingString:@",;"];
             }
         }
     } else {
-        formattedProducts = [self formatProducts:properties andProductString:formattedProducts];
+        formattedProducts = [self formatProducts:properties];
     }
 
     [contextData setObject:formattedProducts forKey:@"&&products"];
     return contextData;
 }
 
-- (NSString *)formatProducts:(NSDictionary *)obj andProductString:(NSString *)products
-{
-    NSString *result = products;
+// The `&&products` variable is expected to be formated in the following order:
+// `"Category;Product;Quantity;Price;eventN=X[|eventN2=X2];eVarN=merch_category[|eVarN2=merch_category2]"`
+// formatProducts can take in an object from the products array:
+//  @"products" : @[
+//      @{
+//          @"product_id" : @"2013294",
+//          @"category" : @"Games",
+//          @"name" : @"Monopoly: 3rd Edition",
+//          @"brand" : @"Hasbros",
+//          @"price" : @"21.99",
+//          @"quantity" : @"1"
+//      }
+// And output the following : @"Games;Monopoly: 3rd Edition;1;21.99,;Games;Battleship;2;27.98"
+//
+// It can also format a product passed in as a top level property, for example
+//      @{
+//          @"product_id" : @"507f1f77bcf86cd799439011",
+//          @"sku" : @"G-32",
+//          @"category" : @"Food",
+//          @"name" : @"Turkey",
+//          @"brand" : @"Farmers",
+//          @"variant" : @"Free Range",
+//          @"price" : @180.99,
+//          @"quantity" : @1,
+//      }
+//
+// And output the following: @"Food;G-32;1;180.99"
 
+- (NSString *)formatProducts:(NSDictionary *)obj
+{
     NSString *category = obj[@"category"] ?: @"";
 
     // The product argument is REQUIRED for Adobe ecommerce events.
@@ -173,11 +194,8 @@
     double price = [obj[@"price"] doubleValue] ?: 0;
     double total = price * quantity;
 
-    // The products variable is expected to be formated in the following order:
-    // `"Category;Product;Quantity;Price;eventN=X[|eventN2=X2];eVarN=merch_category[|eVarN2=merch_category2]"`
     NSArray *output = @[ category, productIdentifier, [NSNumber numberWithInt:quantity], [NSNumber numberWithDouble:total] ];
-    result = [result stringByAppendingString:[output componentsJoinedByString:@";"]];
-    return result;
+    return [output componentsJoinedByString:@";"];
 }
 
 - (void)realTrack:(NSString *)event andProperties:(NSDictionary *)properties
