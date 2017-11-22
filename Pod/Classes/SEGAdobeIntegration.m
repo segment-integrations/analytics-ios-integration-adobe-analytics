@@ -122,11 +122,12 @@
     if ([products isKindOfClass:[NSArray class]]) {
         int count = 0;
         for (NSDictionary *obj in products) {
+            NSString *result = [self formatProducts:obj];
             // Catch the case where productIdentifier is nil
-            if ([self formatProducts:obj] == nil) {
+            if (result == nil) {
                 return nil;
             }
-            formattedProducts = [formattedProducts stringByAppendingString:[self formatProducts:obj]];
+            formattedProducts = [formattedProducts stringByAppendingString:result];
             count++;
             if (count < [products count]) {
                 formattedProducts = [formattedProducts stringByAppendingString:@",;"];
