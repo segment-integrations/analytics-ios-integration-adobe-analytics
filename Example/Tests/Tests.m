@@ -112,6 +112,48 @@ describe(@"SEGAdobeIntegration", ^{
             [integration track:trackPayload];
             [verify(mockADBMobile) trackAction:@"myapp.testing" data:@{ @"myapp.plan" : @"self-service" }];
         });
+
+        it(@"tracks an action with a property with value type NSArray configured in settings.lVarsV2", ^{
+            integration = [[SEGAdobeIntegration alloc] initWithSettings:@{
+                @"eventsV2" : @{@"Adoption List" : @"myapp.adoptions"},
+                @"lVarsV2" : @[
+                    @{@"value" : @{
+                        @"property" : @"filters",
+                        @"lVar" : @"myapp.filters",
+                        @"delimiter" : @";"
+                    }}
+                ]
+            } andADBMobile:mockADBMobile];
+            SEGTrackPayload *trackPayload = [[SEGTrackPayload alloc] initWithEvent:@"Adoption List" properties:@{ @"filters" : @[ @"cats", @"breed", @"age", @"color" ] }
+                context:@{}
+                integrations:@{}];
+            [integration track:trackPayload];
+            [verify(mockADBMobile) trackAction:@"myapp.adoptions" data:@{ @"myapp.filters" : @"cats;breed;age;color" }];
+        });
+
+        it(@"tracks an action with a property with value type NSString configured in settings.lVarsV2", ^{
+            integration = [[SEGAdobeIntegration alloc] initWithSettings:@{
+                @"eventsV2" : @{@"Adoption List" : @"myapp.adoptions"},
+                @"lVarsV2" : @[
+                    @{@"value" : @{
+                        @"property" : @"filters",
+                        @"lVar" : @"myapp.filters",
+                        @"delimiter" : @";"
+                    }},
+                    @{@"value" : @{
+                        @"property" : @"wish_lists",
+                        @"lVar" : @"myapp.wishlists",
+                        @"delimiter" : @","
+                    }}
+                ]
+            } andADBMobile:mockADBMobile];
+            SEGTrackPayload *trackPayload = [[SEGTrackPayload alloc] initWithEvent:@"Adoption List" properties:@{ @"filters" : @"dogs, breed, age, weight",
+                                                                                                                  @"wish_lists" : @{@"category" : @"electronics", @"item" : @"tv"} }
+                context:@{}
+                integrations:@{}];
+            [integration track:trackPayload];
+            [verify(mockADBMobile) trackAction:@"myapp.adoptions" data:@{ @"myapp.filters" : @"dogs, breed, age, weight" }];
+        });
     });
 
     describe(@"screen", ^{

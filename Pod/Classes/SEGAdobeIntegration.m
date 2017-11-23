@@ -126,6 +126,76 @@
     return nil;
 }
 
+/**
+ * List Variables
+ *
+ * @param properties Segment Properties to check against
+ *
+ * @return data Context Data Object with list variable key and delimited
+ * String value
+ *
+ * You can choose which Segment Property to send as a list variable via Segment's UI
+ * by providing the Segment Property, the expected Adobe lVar key, and the delimiter
+ *
+ * The lVarsV2 setting has the following structure:
+ * "lVarsV2":[
+ *    {
+ *      "value":{
+ *         "property":"filters",
+ *         "lVar":"myapp.filters",
+ *         "delimiter":";"
+ *      }
+ *    }
+ * ]
+ *
+ * Segment will only format and send property values of type NSArray.
+ * If an NSString is passed in, Segment assumes that the values have
+ * been formated with the proper delimiter.
+ *
+ * List Variables will be formatted the following way via the formatListVariables method:
+ * A given output of :
+ *     [[SEGAnalytics sharedAnalytics] track:@"Viewed Cats"
+ *     properties:@{ @"breeds": @[ @"Tabby" , @"Persian", @"Siamese"}];
+ 
+ * And with the assumption that the lVar is set in Adobe
+ * and in Segment's UI with the ; delimiter would output like so:
+ *
+ * @"breed" : @"Tabby; Persian; Siamese"
+ */
+
+- (NSMutableDictionary *)mapListVariables:(NSDictionary *)properties
+{
+    NSArray *lVarsV2 = self.settings[@"lVarsV2"];
+    if (!lVarsV2) {
+        return nil;
+    }
+    NSMutableDictionary *data = [[NSMutableDictionary alloc] initWithCapacity:[lVarsV2 count]];
+    for (NSDictionary *obj in lVarsV2) {
+        NSDictionary *value = obj[@"value"];
+        NSString *segmentProperty = value[@"property"];
+        if (properties[segmentProperty]) {
+            NSString *formattedListVariable = [self formatListVariables:properties[segmentProperty] andDelimiter:value[@"delimiter"]];
+            [data setObject:formattedListVariable forKey:value[@"lVar"]];
+        }
+        return data;
+    }
+    return nil;
+}
+
+- (NSString *)formatListVariables:(id)lVar andDelimiter:(NSString *)delimiter
+{
+    if ([lVar isKindOfClass:[NSArray class]]) {
+        return [lVar componentsJoinedByString:delimiter];
+    }
+    
+    if ([lVar isKindOfClass:[NSString class]]) {
+        return lVar;
+    }
+    
+    SEGLog(@"List Variable values must be of type NSArray.");
+    return nil;
+}
+
 ///-------------------------
 /// @name Ecommerce Mapping
 ///-------------------------
@@ -286,15 +356,21 @@
         return;
     }
 
-    NSMutableDictionary *data = [self mapContextValues:properties];
+    contextData = [self mapContextValues:properties];
+
+    if ([self.settings[@"lVarsV2"] count] > 0) {
+        NSMutableDictionary *listVariables = [self mapListVariables:properties];
+        contextData = [NSMutableDictionary dictionaryWithDictionary:listVariables];
+    }
+
     event = [self mapEventsV2:event];
     if (!event) {
         SEGLog(@"Event must be configured in Adobe and in the EventsV2 setting in Segment before sending.");
         return;
     }
 
-    [self.ADBMobile trackAction:event data:data];
-    SEGLog(@"[ADBMobile trackAction:%@ data:%@];", event, data);
+    [self.ADBMobile trackAction:event data:contextData];
+    SEGLog(@"[ADBMobile trackAction:%@ data:%@];", event, contextData);
 }
 
 @end
