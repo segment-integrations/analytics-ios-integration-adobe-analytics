@@ -74,7 +74,9 @@
     SEGLog(@"[ADBMobile trackState:%@ data:%@];", payload.name, data);
 }
 
-#pragma mark - Util Functions
+///-------------------------
+/// @name Mapping
+///-------------------------
 
 /**
  All context data variables must be mapped by using processing rules,
@@ -123,6 +125,10 @@
     }
     return nil;
 }
+
+///-------------------------
+/// @name Ecommerce Mapping
+///-------------------------
 
 /**
      Adobe expects products to be passed in with the key `&&products`.
