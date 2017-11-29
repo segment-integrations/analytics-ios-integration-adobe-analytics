@@ -172,6 +172,9 @@
     NSMutableDictionary *data = [[NSMutableDictionary alloc] initWithCapacity:[lVarsV2 count]];
     for (NSDictionary *obj in lVarsV2) {
         NSDictionary *value = obj[@"value"];
+        if (!value) {
+            return nil;
+        }
         NSString *segmentProperty = value[@"property"];
         if (properties[segmentProperty]) {
             NSString *formattedListVariable = [self formatListVariables:properties[segmentProperty] andDelimiter:value[@"delimiter"]];
@@ -191,8 +194,8 @@
     if ([lVar isKindOfClass:[NSString class]]) {
         return lVar;
     }
-    
-    SEGLog(@"List Variable values must be of type NSArray.");
+
+    SEGLog(@"SEGAdobeAnalytics: List Variable values must be of type NSArray or of type NSString.");
     return nil;
 }
 
@@ -359,13 +362,12 @@
     contextData = [self mapContextValues:properties];
 
     if ([self.settings[@"lVarsV2"] count] > 0) {
-        NSMutableDictionary *listVariables = [self mapListVariables:properties];
-        contextData = [NSMutableDictionary dictionaryWithDictionary:listVariables];
+        contextData = [self mapListVariables:properties];
     }
 
     event = [self mapEventsV2:event];
     if (!event) {
-        SEGLog(@"Event must be configured in Adobe and in the EventsV2 setting in Segment before sending.");
+        SEGLog(@"SEGAdobeAnalytics: Event must be configured in Adobe and in the EventsV2 setting in Segment before sending.");
         return;
     }
 
