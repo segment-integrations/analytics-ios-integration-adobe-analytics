@@ -127,41 +127,41 @@
 }
 
 /**
- * List Variables
- *
- * @param properties Segment Properties to check against
- *
- * @return data Context Data Object with list variable key and delimited
- * String value
- *
- * You can choose which Segment Property to send as a list variable via Segment's UI
- * by providing the Segment Property, the expected Adobe lVar key, and the delimiter
- *
- * The lVarsV2 setting has the following structure:
- * "lVarsV2":[
- *    {
- *      "value":{
- *         "property":"filters",
- *         "lVar":"myapp.filters",
- *         "delimiter":";"
- *      }
- *    }
- * ]
- *
- * Segment will only format and send property values of type NSArray.
- * If an NSString is passed in, Segment assumes that the values have
- * been formated with the proper delimiter.
- *
- * List Variables will be formatted the following way via the formatListVariables method:
- * A given output of :
- *     [[SEGAnalytics sharedAnalytics] track:@"Viewed Cats"
- *     properties:@{ @"breeds": @[ @"Tabby" , @"Persian", @"Siamese"}];
- 
- * And with the assumption that the lVar is set in Adobe
- * and in Segment's UI with the ; delimiter would output like so:
- *
- * @"breed" : @"Tabby; Persian; Siamese"
- */
+     List Variables
+     
+     @param properties Segment Properties to check against
+     
+     @return data Context Data Object with list variable key and delimited
+     String value
+     
+     You can choose which Segment Property to send as a list variable via Segment's UI
+     by providing the Segment Property, the expected Adobe lVar key, and the delimiter
+     
+     The lVarsV2 setting has the following structure:
+     "lVarsV2":[
+     {
+     "value":{
+     "property":"filters",
+     "lVar":"myapp.filters",
+     "delimiter":";"
+     }
+     }
+     ]
+     
+     Segment will only format and send property values of type NSArray.
+     If an NSString is passed in, Segment assumes that the values have
+     been formated with the proper delimiter.
+     
+     List Variables will be formatted the following way via the formatListVariables method:
+     A given output of :
+     [[SEGAnalytics sharedAnalytics] track:@"Viewed Cats"
+     properties:@{ @"breeds": @[ @"Tabby" , @"Persian", @"Siamese"}];
+     
+     And with the assumption that the lVar is set in Adobe
+     and in Segment's UI with the ; delimiter would output like so:
+     
+     @"breed" : @"Tabby; Persian; Siamese"
+ **/
 
 - (NSMutableDictionary *)mapListVariables:(NSDictionary *)properties
 {
@@ -190,7 +190,7 @@
     if ([lVar isKindOfClass:[NSArray class]]) {
         return [lVar componentsJoinedByString:delimiter];
     }
-    
+
     if ([lVar isKindOfClass:[NSString class]]) {
         return lVar;
     }
