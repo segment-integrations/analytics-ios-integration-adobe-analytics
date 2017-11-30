@@ -126,6 +126,82 @@
     return nil;
 }
 
+/**
+     List Variables
+     
+     @param properties Segment Properties to check against
+     
+     @return data Context Data Object with list variable key and delimited
+     String value
+     
+     You can choose which Segment Property to send as a list variable via Segment's UI
+     by providing the Segment Property, the expected Adobe lVar key, and the delimiter
+     
+     The lVarsV2 setting has the following structure:
+     "lVarsV2":[
+     {
+     "value":{
+     "property":"filters",
+     "lVar":"myapp.filters",
+     "delimiter":";"
+     }
+     }
+     ]
+     
+     Segment will only format and send property values of type NSArray.
+     If an NSString is passed in, Segment assumes that the values have
+     been formated with the proper delimiter.
+     
+     List Variables will be formatted the following way via the formatListVariables method:
+     A given output of :
+     [[SEGAnalytics sharedAnalytics] track:@"Viewed Cats"
+     properties:@{ @"breeds": @[ @"Tabby" , @"Persian", @"Siamese"}];
+     
+     And with the assumption that the lVar is set in Adobe
+     and in Segment's UI with the ; delimiter would output like so:
+     
+     @"breed" : @"Tabby; Persian; Siamese"
+ **/
+
+- (NSMutableDictionary *)mapListVariables:(NSDictionary *)properties
+{
+    NSMutableDictionary *data = [self mapContextValues:properties];
+    NSMutableDictionary *contextData = [[NSMutableDictionary alloc] initWithDictionary:data];
+    NSArray *lVarsV2 = self.settings[@"lVarsV2"];
+    for (NSDictionary *obj in lVarsV2) {
+        NSDictionary *value = obj[@"value"];
+        if (!value) {
+            return nil;
+        }
+        NSString *segmentProperty = value[@"property"];
+        if (properties[segmentProperty]) {
+            NSString *formattedListVariable = [self formatListVariables:properties[segmentProperty] andDelimiter:value[@"delimiter"]];
+            // Check here since formatListVariables can return nil.
+            if (formattedListVariable) {
+                [contextData setObject:formattedListVariable forKey:value[@"lVar"]];
+            }
+        }
+    }
+    return contextData;
+}
+
+- (NSString *)formatListVariables:(id)lVar andDelimiter:(NSString *)delimiter
+{
+    if ([lVar isKindOfClass:[NSArray class]]) {
+        return [lVar componentsJoinedByString:delimiter];
+    }
+
+    if ([lVar isKindOfClass:[NSString class]]) {
+        return lVar;
+    }
+
+    // We will only consider the two value types NSString and
+    // NSArray for lVars because Adobe expects this property
+    // to have one key and multiple values.
+    SEGLog(@"SEGAdobeAnalytics: List Variable values must be of type NSArray or of type NSString.");
+    return nil;
+}
+
 ///-------------------------
 /// @name Ecommerce Mapping
 ///-------------------------
@@ -267,8 +343,6 @@
 
 - (void)realTrack:(NSString *)event andProperties:(NSDictionary *)properties
 {
-    NSDictionary *contextData;
-
     // You can send ecommerce events via either a trackAction or trackState call.
     // Since Segment does not spec sending products on `screen`, we
     // will only support sending this via trackAction
@@ -281,20 +355,28 @@
         @"Product Viewed" : @"prodView"
     };
     if (adobeEcommerceEvents[event]) {
-        contextData = [self mapProducts:adobeEcommerceEvents[event] andProperties:properties];
+        NSDictionary *contextData = [self mapProducts:adobeEcommerceEvents[event] andProperties:properties];
         [self.ADBMobile trackAction:adobeEcommerceEvents[event] data:contextData];
+        SEGLog(@"[ADBMobile trackAction:%@ data:%@];", adobeEcommerceEvents[event], contextData);
         return;
     }
 
-    NSMutableDictionary *data = [self mapContextValues:properties];
     event = [self mapEventsV2:event];
     if (!event) {
-        SEGLog(@"Event must be configured in Adobe and in the EventsV2 setting in Segment before sending.");
+        SEGLog(@"SEGAdobeAnalytics: Event must be configured in Adobe and in the EventsV2 setting in Segment before sending.");
         return;
     }
 
-    [self.ADBMobile trackAction:event data:data];
-    SEGLog(@"[ADBMobile trackAction:%@ data:%@];", event, data);
+    if ([self.settings[@"lVarsV2"] count] > 0) {
+        NSMutableDictionary *contextData = [self mapListVariables:properties];
+        [self.ADBMobile trackAction:event data:contextData];
+        SEGLog(@"[ADBMobile trackAction:%@ data:%@];", event, contextData);
+        return;
+    }
+
+    NSMutableDictionary *contextData = [self mapContextValues:properties];
+    [self.ADBMobile trackAction:event data:contextData];
+    SEGLog(@"[ADBMobile trackAction:%@ data:%@];", event, contextData);
 }
 
 @end
