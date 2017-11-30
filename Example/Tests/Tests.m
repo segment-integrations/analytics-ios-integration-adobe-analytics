@@ -131,7 +131,7 @@ describe(@"SEGAdobeIntegration", ^{
             [verify(mockADBMobile) trackAction:@"myapp.adoptions" data:@{ @"myapp.filters" : @"cats;breed;age;color" }];
         });
 
-        it(@"tracks an action with a property with value type NSString configured in settings.lVarsV2", ^{
+        it(@"tracks an action with a property with value type NSString configured in settings.lVarsV2, and does not map non NSString/NSArray value types for lVarsV2", ^{
             integration = [[SEGAdobeIntegration alloc] initWithSettings:@{
                 @"eventsV2" : @{@"Adoption List" : @"myapp.adoptions"},
                 @"lVarsV2" : @[

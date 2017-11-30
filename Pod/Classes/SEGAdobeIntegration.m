@@ -165,11 +165,14 @@
 
 - (NSMutableDictionary *)mapListVariables:(NSDictionary *)properties
 {
+    NSMutableDictionary *data = [self mapContextValues:properties];
+    NSMutableDictionary *contextData = [[NSMutableDictionary alloc] initWithDictionary:data];
+
     NSArray *lVarsV2 = self.settings[@"lVarsV2"];
     if (!lVarsV2) {
         return nil;
     }
-    NSMutableDictionary *data = [[NSMutableDictionary alloc] initWithCapacity:[lVarsV2 count]];
+
     for (NSDictionary *obj in lVarsV2) {
         NSDictionary *value = obj[@"value"];
         if (!value) {
@@ -178,9 +181,9 @@
         NSString *segmentProperty = value[@"property"];
         if (properties[segmentProperty]) {
             NSString *formattedListVariable = [self formatListVariables:properties[segmentProperty] andDelimiter:value[@"delimiter"]];
-            [data setObject:formattedListVariable forKey:value[@"lVar"]];
+            [contextData setObject:formattedListVariable forKey:value[@"lVar"]];
         }
-        return data;
+        return contextData;
     }
     return nil;
 }
@@ -340,8 +343,6 @@
 
 - (void)realTrack:(NSString *)event andProperties:(NSDictionary *)properties
 {
-    NSDictionary *contextData;
-
     // You can send ecommerce events via either a trackAction or trackState call.
     // Since Segment does not spec sending products on `screen`, we
     // will only support sending this via trackAction
@@ -354,15 +355,10 @@
         @"Product Viewed" : @"prodView"
     };
     if (adobeEcommerceEvents[event]) {
-        contextData = [self mapProducts:adobeEcommerceEvents[event] andProperties:properties];
+        NSDictionary *contextData = [self mapProducts:adobeEcommerceEvents[event] andProperties:properties];
         [self.ADBMobile trackAction:adobeEcommerceEvents[event] data:contextData];
+        SEGLog(@"[ADBMobile trackAction:%@ data:%@];", adobeEcommerceEvents[event], contextData);
         return;
-    }
-
-    contextData = [self mapContextValues:properties];
-
-    if ([self.settings[@"lVarsV2"] count] > 0) {
-        contextData = [self mapListVariables:properties];
     }
 
     event = [self mapEventsV2:event];
@@ -371,6 +367,14 @@
         return;
     }
 
+    if ([self.settings[@"lVarsV2"] count] > 0) {
+        NSMutableDictionary *contextData = [self mapListVariables:properties];
+        [self.ADBMobile trackAction:event data:contextData];
+        SEGLog(@"[ADBMobile trackAction:%@ data:%@];", event, contextData);
+        return;
+    }
+
+    NSMutableDictionary *contextData = [self mapContextValues:properties];
     [self.ADBMobile trackAction:event data:contextData];
     SEGLog(@"[ADBMobile trackAction:%@ data:%@];", event, contextData);
 }
