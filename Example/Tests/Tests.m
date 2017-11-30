@@ -154,6 +154,37 @@ describe(@"SEGAdobeIntegration", ^{
             [integration track:trackPayload];
             [verify(mockADBMobile) trackAction:@"myapp.adoptions" data:@{ @"myapp.filters" : @"dogs, breed, age, weight" }];
         });
+
+        it(@"tracks an action with a property with value type NSString configured in settings.lVarsV2 and settings.contextValues", ^{
+            integration = [[SEGAdobeIntegration alloc] initWithSettings:@{
+                @"eventsV2" : @{@"Adoption List" : @"myapp.adoptions"},
+                @"lVarsV2" : @[
+                    @{@"value" : @{
+                        @"property" : @"filters",
+                        @"lVar" : @"myapp.filters",
+                        @"delimiter" : @";"
+                    }},
+                    @{@"value" : @{
+                        @"property" : @"wish_lists",
+                        @"lVar" : @"myapp.wishlists",
+                        @"delimiter" : @","
+                    }}
+                ],
+                @"contextValues" : @{
+                    @"plan" : @"myapp.plan",
+                    @"subscribed" : @"myapp.subscribed"
+                }
+            } andADBMobile:mockADBMobile];
+            SEGTrackPayload *trackPayload = [[SEGTrackPayload alloc] initWithEvent:@"Adoption List" properties:@{ @"filters" : @"dogs, breed, age, weight",
+                                                                                                                  @"wish_lists" : @{@"category" : @"electronics", @"item" : @"tv"},
+                                                                                                                  @"plan" : @"enterprise"
+            }
+                context:@{}
+                integrations:@{}];
+            [integration track:trackPayload];
+            [verify(mockADBMobile) trackAction:@"myapp.adoptions" data:@{ @"myapp.filters" : @"dogs, breed, age, weight",
+                                                                          @"myapp.plan" : @"enterprise" }];
+        });
     });
 
     describe(@"screen", ^{
