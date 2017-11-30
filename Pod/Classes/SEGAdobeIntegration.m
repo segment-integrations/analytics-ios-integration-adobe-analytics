@@ -169,10 +169,6 @@
     NSMutableDictionary *contextData = [[NSMutableDictionary alloc] initWithDictionary:data];
 
     NSArray *lVarsV2 = self.settings[@"lVarsV2"];
-    if (!lVarsV2) {
-        return nil;
-    }
-
     for (NSDictionary *obj in lVarsV2) {
         NSDictionary *value = obj[@"value"];
         if (!value) {
