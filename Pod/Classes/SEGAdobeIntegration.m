@@ -74,11 +74,19 @@
     SEGLog(@"[ADBMobile trackState:%@ data:%@];", payload.name, data);
 }
 
-#pragma mark - Util Functions
+///-------------------------
+/// @name Mapping
+///-------------------------
 
-// All context data variables must be mapped by using processing rules,
-// meaning they must be configured as a context variable in Adobe's UI
-// and mapped from a Segment Property to the configured variable in Adobe
+/**
+ All context data variables must be mapped by using processing rules,
+ meaning they must be configured as a context variable in Adobe's UI
+ and mapped from a Segment Property to the configured variable in Adobe
+
+ @param properties Segment `track` or `screen` properties
+ @return data Dictionary of context data with Adobe key
+**/
+
 - (NSMutableDictionary *)mapContextValues:(NSDictionary *)properties
 {
     NSInteger contextValuesSize = [self.settings[@"contextValues"] count];
@@ -95,6 +103,18 @@
     return nil;
 }
 
+/**
+    In order to respect Adobe's event naming convention, Segment
+    will have a setting eventsV2 to transform Segment events to
+    Adobe's convention.
+
+    If an event is not configured, Segment will not send the
+    event to Adobe.
+
+    @param event Event name sent via track
+    @return eventV2 Adobe configured event name
+ **/
+
 - (NSString *)mapEventsV2:(NSString *)event
 {
     NSDictionary *eventsV2 = self.settings[@"eventsV2"];
@@ -105,6 +125,28 @@
     }
     return nil;
 }
+
+///-------------------------
+/// @name Ecommerce Mapping
+///-------------------------
+
+/**
+     Adobe expects products to be passed in with the key `&&products`.
+ 
+     If `&&products` contains multiple products, the end of a product will
+     be delimited by a `,`.
+ 
+     Segment will also send in any additional `contextDataVariables` configured
+     in Segment settings.
+ 
+     If a product-specific event is triggered, it must also be sent with the
+     `&&events` variable. Segment will send in the Segment spec'd Ecommerce
+     event as the `&&events` variable.
+ 
+     @param event Event name sent via track
+     @param properties Properties sent via track
+     @return contextData object with &&events and formatted product String in &&products
+ **/
 
 - (NSMutableDictionary *)mapProducts:(NSString *)event andProperties:(NSDictionary *)properties
 {
@@ -146,33 +188,52 @@
     return contextData;
 }
 
-// The `&&products` variable is expected to be formated in the following order:
-// `"Category;Product;Quantity;Price;eventN=X[|eventN2=X2];eVarN=merch_category[|eVarN2=merch_category2]"`
-// formatProducts can take in an object from the products array:
-//  @"products" : @[
-//      @{
-//          @"product_id" : @"2013294",
-//          @"category" : @"Games",
-//          @"name" : @"Monopoly: 3rd Edition",
-//          @"brand" : @"Hasbros",
-//          @"price" : @"21.99",
-//          @"quantity" : @"1"
-//      }
-// And output the following : @"Games;Monopoly: 3rd Edition;1;21.99,;Games;Battleship;2;27.98"
-//
-// It can also format a product passed in as a top level property, for example
-//      @{
-//          @"product_id" : @"507f1f77bcf86cd799439011",
-//          @"sku" : @"G-32",
-//          @"category" : @"Food",
-//          @"name" : @"Turkey",
-//          @"brand" : @"Farmers",
-//          @"variant" : @"Free Range",
-//          @"price" : @180.99,
-//          @"quantity" : @1,
-//      }
-//
-// And output the following: @"Food;G-32;1;180.99"
+/**
+    Adobe expects products to formatted as an NSString, delimited with `;`, with values in the following order:
+    `"Category;Product;Quantity;Price;eventN=X[|eventN2=X2];eVarN=merch_category[|eVarN2=merch_category2]"`
+ 
+     Product is a required argument, so if this is not present, Segment does not create the
+     `&&products` String. This value can be the product name, sku, or productId,
+     which is configured via the Segment setting `productIdentifier`.
+ 
+     If the other values in the String are missing, Segment
+     will leave the space empty but keep the `;` delimiter to preserve the order
+     of the product properties.
+
+    `formatProducts` can take in an object from the products array:
+ 
+     @"products" : @[
+         @{
+             @"product_id" : @"2013294",
+             @"category" : @"Games",
+             @"name" : @"Monopoly: 3rd Edition",
+             @"brand" : @"Hasbros",
+             @"price" : @"21.99",
+             @"quantity" : @"1"
+         }
+     ]
+
+     And output the following : @"Games;Monopoly: 3rd Edition;1;21.99,;Games;Battleship;2;27.98"
+
+     It can also format a product passed in as a top level property, for example
+ 
+     @{
+         @"product_id" : @"507f1f77bcf86cd799439011",
+         @"sku" : @"G-32",
+         @"category" : @"Food",
+         @"name" : @"Turkey",
+         @"brand" : @"Farmers",
+         @"variant" : @"Free Range",
+         @"price" : @180.99,
+         @"quantity" : @1,
+     }
+ 
+     And output the following:  @"Food;G-32;1;180.99"
+ 
+     @param obj Product from the products array
+ 
+     @return Product string representing one product
+ **/
 
 - (NSString *)formatProducts:(NSDictionary *)obj
 {
