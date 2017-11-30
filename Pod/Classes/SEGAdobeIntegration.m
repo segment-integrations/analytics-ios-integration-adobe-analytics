@@ -69,7 +69,7 @@
 
 - (void)screen:(SEGScreenPayload *)payload
 {
-    NSMutableDictionary *data = [self mapContextValues:payload.properties];
+    NSMutableDictionary *data = [self mapContextValuesAndlVars:payload.properties];
     [self.ADBMobile trackState:payload.name data:data];
     SEGLog(@"[ADBMobile trackState:%@ data:%@];", payload.name, data);
 }
@@ -87,20 +87,34 @@
  @return data Dictionary of context data with Adobe key
 **/
 
-- (NSMutableDictionary *)mapContextValues:(NSDictionary *)properties
+- (NSMutableDictionary *)mapContextValuesAndlVars:(NSDictionary *)properties
 {
+    NSMutableDictionary *contextData;
     NSInteger contextValuesSize = [self.settings[@"contextValues"] count];
     if ([properties count] > 0 && contextValuesSize > 0) {
-        NSMutableDictionary *data = [[NSMutableDictionary alloc] initWithCapacity:contextValuesSize];
+        contextData = [[NSMutableDictionary alloc] initWithCapacity:contextValuesSize];
         NSDictionary *contextValues = self.settings[@"contextValues"];
         for (NSString *key in contextValues) {
             if (properties[key]) {
-                [data setObject:properties[key] forKey:contextValues[key]];
+                [contextData setObject:properties[key] forKey:contextValues[key]];
             }
         }
-        return data;
     }
-    return nil;
+
+    NSMutableDictionary *lVars;
+    NSInteger lVarsV2Size = [self.settings[@"lVarsV2"] count];
+    if ([properties count] > 0 && lVarsV2Size > 0) {
+        lVars = [self mapListVariables:properties];
+    }
+
+    if (lVars && contextData) {
+        [contextData addEntriesFromDictionary:lVars];
+        return contextData;
+    } else if (lVars) {
+        return lVars;
+    }
+
+    return contextData;
 }
 
 /**
@@ -165,9 +179,9 @@
 
 - (NSMutableDictionary *)mapListVariables:(NSDictionary *)properties
 {
-    NSMutableDictionary *data = [self mapContextValues:properties];
-    NSMutableDictionary *contextData = [[NSMutableDictionary alloc] initWithDictionary:data];
     NSArray *lVarsV2 = self.settings[@"lVarsV2"];
+    NSMutableDictionary *contextData = [[NSMutableDictionary alloc] initWithCapacity:[lVarsV2 count]];
+
     for (NSDictionary *obj in lVarsV2) {
         NSDictionary *value = obj[@"value"];
         if (!value) {
@@ -230,7 +244,7 @@
         return nil;
     }
 
-    NSMutableDictionary *data = [self mapContextValues:properties];
+    NSMutableDictionary *data = [self mapContextValuesAndlVars:properties];
     NSMutableDictionary *contextData = [[NSMutableDictionary alloc] initWithDictionary:data];
 
     // If you trigger a product-specific event by using the &&products variable,
@@ -367,14 +381,7 @@
         return;
     }
 
-    if ([self.settings[@"lVarsV2"] count] > 0) {
-        NSMutableDictionary *contextData = [self mapListVariables:properties];
-        [self.ADBMobile trackAction:event data:contextData];
-        SEGLog(@"[ADBMobile trackAction:%@ data:%@];", event, contextData);
-        return;
-    }
-
-    NSMutableDictionary *contextData = [self mapContextValues:properties];
+    NSMutableDictionary *contextData = [self mapContextValuesAndlVars:properties];
     [self.ADBMobile trackAction:event data:contextData];
     SEGLog(@"[ADBMobile trackAction:%@ data:%@];", event, contextData);
 }
