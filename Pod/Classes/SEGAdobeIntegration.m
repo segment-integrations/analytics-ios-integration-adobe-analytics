@@ -194,6 +194,9 @@
         return lVar;
     }
 
+    // We will only consider the two value types NSString and
+    // NSArray for lVars because Adobe expects this property
+    // to have one key and multiple values.
     SEGLog(@"SEGAdobeAnalytics: List Variable values must be of type NSArray or of type NSString.");
     return nil;
 }
