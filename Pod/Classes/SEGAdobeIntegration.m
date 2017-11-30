@@ -167,7 +167,6 @@
 {
     NSMutableDictionary *data = [self mapContextValues:properties];
     NSMutableDictionary *contextData = [[NSMutableDictionary alloc] initWithDictionary:data];
-
     NSArray *lVarsV2 = self.settings[@"lVarsV2"];
     for (NSDictionary *obj in lVarsV2) {
         NSDictionary *value = obj[@"value"];
@@ -177,8 +176,13 @@
         NSString *segmentProperty = value[@"property"];
         if (properties[segmentProperty]) {
             NSString *formattedListVariable = [self formatListVariables:properties[segmentProperty] andDelimiter:value[@"delimiter"]];
-            [contextData setObject:formattedListVariable forKey:value[@"lVar"]];
+            // Check here since formatListVariables can return nil.
+            if (formattedListVariable) {
+                [contextData setObject:formattedListVariable forKey:value[@"lVar"]];
+            }
         }
+    }
+    if (contextData) {
         return contextData;
     }
     return nil;

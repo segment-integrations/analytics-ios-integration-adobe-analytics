@@ -131,6 +131,31 @@ describe(@"SEGAdobeIntegration", ^{
             [verify(mockADBMobile) trackAction:@"myapp.adoptions" data:@{ @"myapp.filters" : @"cats;breed;age;color" }];
         });
 
+        it(@"tracks an action with multiple lVars", ^{
+            integration = [[SEGAdobeIntegration alloc] initWithSettings:@{
+                @"eventsV2" : @{@"Adoption List" : @"myapp.adoptions"},
+                @"lVarsV2" : @[
+                    @{@"value" : @{
+                        @"property" : @"filters",
+                        @"lVar" : @"myapp.filters",
+                        @"delimiter" : @";"
+                    }},
+                    @{@"value" : @{
+                        @"property" : @"wish_lists",
+                        @"lVar" : @"myapp.wishlists",
+                        @"delimiter" : @","
+                    }}
+                ]
+            } andADBMobile:mockADBMobile];
+            SEGTrackPayload *trackPayload = [[SEGTrackPayload alloc] initWithEvent:@"Adoption List" properties:@{ @"filters" : @"dogs, breed, age, weight",
+                                                                                                                  @"wish_lists" : @"cats, dogs, birds" }
+                context:@{}
+                integrations:@{}];
+            [integration track:trackPayload];
+            [verify(mockADBMobile) trackAction:@"myapp.adoptions" data:@{ @"myapp.filters" : @"dogs, breed, age, weight",
+                                                                          @"myapp.wishlists" : @"cats, dogs, birds" }];
+        });
+
         it(@"tracks an action with a property with value type NSString configured in settings.lVarsV2, and does not map non NSString/NSArray value types for lVarsV2", ^{
             integration = [[SEGAdobeIntegration alloc] initWithSettings:@{
                 @"eventsV2" : @{@"Adoption List" : @"myapp.adoptions"},
