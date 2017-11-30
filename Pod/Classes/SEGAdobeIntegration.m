@@ -182,10 +182,7 @@
             }
         }
     }
-    if (contextData) {
-        return contextData;
-    }
-    return nil;
+    return contextData;
 }
 
 - (NSString *)formatListVariables:(id)lVar andDelimiter:(NSString *)delimiter
