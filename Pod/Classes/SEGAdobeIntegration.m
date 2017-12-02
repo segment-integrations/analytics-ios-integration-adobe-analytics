@@ -290,7 +290,7 @@
         SEGLog(@"Event must be configured in Adobe and in the EventsV2 setting in Segment before sending.");
         return;
     }
-    NSMutableDictionary *contextData = [self mapContextValues:properties];
+    NSDictionary *contextData = [self mapContextValues:properties];
     [self.ADBMobile trackAction:event data:contextData];
     SEGLog(@"[ADBMobile trackAction:%@ data:%@];", event, contextData);
 }
