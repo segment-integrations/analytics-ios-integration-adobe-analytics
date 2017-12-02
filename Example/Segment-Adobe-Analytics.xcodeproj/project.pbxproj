@@ -27,6 +27,7 @@
 		952A690A1FD3411F0016E7F3 /* ADBMediaHeartbeat.h in Frameworks */ = {isa = PBXBuildFile; fileRef = 952A69091FD3411F0016E7F3 /* ADBMediaHeartbeat.h */; settings = {ATTRIBUTES = (Weak, ); }; };
 		952A690C1FD3412A0016E7F3 /* VideoHeartbeat.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 952A690B1FD341290016E7F3 /* VideoHeartbeat.a */; settings = {ATTRIBUTES = (Weak, ); }; };
 		952A69101FD3415E0016E7F3 /* ADBStandardMetadataKeys.h in Frameworks */ = {isa = PBXBuildFile; fileRef = 952A690F1FD3415E0016E7F3 /* ADBStandardMetadataKeys.h */; };
+		952A693F1FD34B730016E7F3 /* ADBMediaHeartbeatConfig.h in Frameworks */ = {isa = PBXBuildFile; fileRef = 952A693E1FD34B730016E7F3 /* ADBMediaHeartbeatConfig.h */; };
 		956FC58E1FB4D502003028A2 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 956FC58D1FB4D502003028A2 /* SystemConfiguration.framework */; };
 		956FC5901FB4D50B003028A2 /* libsqlite3.0.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 956FC58F1FB4D50B003028A2 /* libsqlite3.0.tbd */; };
 /* End PBXBuildFile section */
@@ -73,6 +74,7 @@
 		952A690B1FD341290016E7F3 /* VideoHeartbeat.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = VideoHeartbeat.a; path = ../libs/VideoHeartbeat.a; sourceTree = "<group>"; };
 		952A690D1FD341330016E7F3 /* VideoHeartbeat_TV.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = VideoHeartbeat_TV.a; path = ../libs/VideoHeartbeat_TV.a; sourceTree = "<group>"; };
 		952A690F1FD3415E0016E7F3 /* ADBStandardMetadataKeys.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = ADBStandardMetadataKeys.h; path = ../libs/Headers/ADBStandardMetadataKeys.h; sourceTree = "<group>"; };
+		952A693E1FD34B730016E7F3 /* ADBMediaHeartbeatConfig.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = ADBMediaHeartbeatConfig.h; path = ../Pod/libs/Headers/ADBMediaHeartbeatConfig.h; sourceTree = "<group>"; };
 		956FC5871FB4D483003028A2 /* ADBMobileConfig.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = ADBMobileConfig.json; sourceTree = "<group>"; };
 		956FC58D1FB4D502003028A2 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		956FC58F1FB4D50B003028A2 /* libsqlite3.0.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.0.tbd; path = usr/lib/libsqlite3.0.tbd; sourceTree = SDKROOT; };
@@ -86,6 +88,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				952A693F1FD34B730016E7F3 /* ADBMediaHeartbeatConfig.h in Frameworks */,
 				952A69101FD3415E0016E7F3 /* ADBStandardMetadataKeys.h in Frameworks */,
 				952A690C1FD3412A0016E7F3 /* VideoHeartbeat.a in Frameworks */,
 				952A690A1FD3411F0016E7F3 /* ADBMediaHeartbeat.h in Frameworks */,
@@ -148,6 +151,7 @@
 		6003F58C195388D20070C39A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				952A693E1FD34B730016E7F3 /* ADBMediaHeartbeatConfig.h */,
 				952A690F1FD3415E0016E7F3 /* ADBStandardMetadataKeys.h */,
 				952A690D1FD341330016E7F3 /* VideoHeartbeat_TV.a */,
 				952A690B1FD341290016E7F3 /* VideoHeartbeat.a */,
