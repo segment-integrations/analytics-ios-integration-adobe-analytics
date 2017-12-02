@@ -267,8 +267,6 @@
 
 - (void)realTrack:(NSString *)event andProperties:(NSDictionary *)properties
 {
-    NSDictionary *contextData;
-
     // You can send ecommerce events via either a trackAction or trackState call.
     // Since Segment does not spec sending products on `screen`, we
     // will only support sending this via trackAction
@@ -281,20 +279,20 @@
         @"Product Viewed" : @"prodView"
     };
     if (adobeEcommerceEvents[event]) {
-        contextData = [self mapProducts:adobeEcommerceEvents[event] andProperties:properties];
+        NSDictionary *contextData = [self mapProducts:adobeEcommerceEvents[event] andProperties:properties];
         [self.ADBMobile trackAction:adobeEcommerceEvents[event] data:contextData];
+        SEGLog(@"[ADBMobile trackAction:%@ data:%@];", event, contextData);
         return;
     }
 
-    NSMutableDictionary *data = [self mapContextValues:properties];
     event = [self mapEventsV2:event];
     if (!event) {
         SEGLog(@"Event must be configured in Adobe and in the EventsV2 setting in Segment before sending.");
         return;
     }
-
-    [self.ADBMobile trackAction:event data:data];
-    SEGLog(@"[ADBMobile trackAction:%@ data:%@];", event, data);
+    NSDictionary *contextData = [self mapContextValues:properties];
+    [self.ADBMobile trackAction:event data:contextData];
+    SEGLog(@"[ADBMobile trackAction:%@ data:%@];", event, contextData);
 }
 
 @end
