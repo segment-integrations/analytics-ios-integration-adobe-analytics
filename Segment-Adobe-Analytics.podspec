@@ -17,7 +17,14 @@ Pod::Spec.new do |s|
 
   s.ios.deployment_target = '8.0'
 
+<<<<<<< HEAD
   s.source_files = 'Pod/Classes/**/*'
+=======
+  s.source_files = 'Pod/Classes/**/*', 'Pod/libs/Headers/*.h'
+
+  s.libraries = "sqlite3.0"
+  s.vendored_libraries = 'Pod/libs/libVideoHeartbeat.a'
+>>>>>>> Add Heartbeat
 
   s.dependency 'Analytics', '~> 3.5'
   s.dependency 'AdobeMobileSDK'
