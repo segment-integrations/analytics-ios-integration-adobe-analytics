@@ -28,6 +28,7 @@
 		952A695B1FD3DA660016E7F3 /* ADBMediaHeartbeat.h in Frameworks */ = {isa = PBXBuildFile; fileRef = 952A69561FD3DA4F0016E7F3 /* ADBMediaHeartbeat.h */; };
 		952A695C1FD3DA660016E7F3 /* ADBMediaHeartbeatConfig.h in Frameworks */ = {isa = PBXBuildFile; fileRef = 952A69571FD3DA4F0016E7F3 /* ADBMediaHeartbeatConfig.h */; };
 		952A695D1FD3DA660016E7F3 /* ADBStandardMetadataKeys.h in Frameworks */ = {isa = PBXBuildFile; fileRef = 952A69581FD3DA4F0016E7F3 /* ADBStandardMetadataKeys.h */; };
+		953496D41FD6889700AAF30E /* libVideoHeartbeat.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 953496D31FD6889700AAF30E /* libVideoHeartbeat.a */; };
 		956FC58E1FB4D502003028A2 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 956FC58D1FB4D502003028A2 /* SystemConfiguration.framework */; };
 		956FC5901FB4D50B003028A2 /* libsqlite3.0.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 956FC58F1FB4D50B003028A2 /* libsqlite3.0.tbd */; };
 /* End PBXBuildFile section */
@@ -79,6 +80,8 @@
 		952A69571FD3DA4F0016E7F3 /* ADBMediaHeartbeatConfig.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ADBMediaHeartbeatConfig.h; sourceTree = "<group>"; };
 		952A69581FD3DA4F0016E7F3 /* ADBStandardMetadataKeys.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ADBStandardMetadataKeys.h; sourceTree = "<group>"; };
 		952A69591FD3DA4F0016E7F3 /* VideoHeartbeat.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = VideoHeartbeat.a; path = ../Pod/libs/VideoHeartbeat.a; sourceTree = "<group>"; };
+		953496D31FD6889700AAF30E /* libVideoHeartbeat.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libVideoHeartbeat.a; path = ../Pod/libs/libVideoHeartbeat.a; sourceTree = "<group>"; };
+		953496D61FD68C0F00AAF30E /* libAdobeMobileSDK.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libAdobeMobileSDK.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		956FC5871FB4D483003028A2 /* ADBMobileConfig.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = ADBMobileConfig.json; sourceTree = "<group>"; };
 		956FC58D1FB4D502003028A2 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		956FC58F1FB4D50B003028A2 /* libsqlite3.0.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.0.tbd; path = usr/lib/libsqlite3.0.tbd; sourceTree = SDKROOT; };
@@ -92,10 +95,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				953496D41FD6889700AAF30E /* libVideoHeartbeat.a in Frameworks */,
+				952A695A1FD3DA590016E7F3 /* VideoHeartbeat.a in Frameworks */,
 				952A695B1FD3DA660016E7F3 /* ADBMediaHeartbeat.h in Frameworks */,
 				952A695C1FD3DA660016E7F3 /* ADBMediaHeartbeatConfig.h in Frameworks */,
 				952A695D1FD3DA660016E7F3 /* ADBStandardMetadataKeys.h in Frameworks */,
-				952A695A1FD3DA590016E7F3 /* VideoHeartbeat.a in Frameworks */,
 				956FC5901FB4D50B003028A2 /* libsqlite3.0.tbd in Frameworks */,
 				956FC58E1FB4D502003028A2 /* SystemConfiguration.framework in Frameworks */,
 				6003F590195388D20070C39A /* CoreGraphics.framework in Frameworks */,
@@ -155,6 +159,8 @@
 		6003F58C195388D20070C39A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				953496D61FD68C0F00AAF30E /* libAdobeMobileSDK.a */,
+				953496D31FD6889700AAF30E /* libVideoHeartbeat.a */,
 				952A69551FD3DA4F0016E7F3 /* Headers */,
 				952A69591FD3DA4F0016E7F3 /* VideoHeartbeat.a */,
 				952A693E1FD34B730016E7F3 /* ADBMediaHeartbeatConfig.h */,
@@ -610,6 +616,7 @@
 				);
 				"LIBRARY_SEARCH_PATHS[arch=*]" = "$(inherited)";
 				MODULE_NAME = ExampleApp;
+				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.demo.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
@@ -630,6 +637,7 @@
 					"$(PROJECT_DIR)/AdobeMobileLibrary",
 				);
 				MODULE_NAME = ExampleApp;
+				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.demo.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
@@ -654,6 +662,7 @@
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = "Tests/Tests-Info.plist";
+				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.demo.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Segment-Adobe-Analytics_Example.app/Segment-Adobe-Analytics_Example";
@@ -675,6 +684,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Tests/Tests-Prefix.pch";
 				INFOPLIST_FILE = "Tests/Tests-Info.plist";
+				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.demo.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Segment-Adobe-Analytics_Example.app/Segment-Adobe-Analytics_Example";
