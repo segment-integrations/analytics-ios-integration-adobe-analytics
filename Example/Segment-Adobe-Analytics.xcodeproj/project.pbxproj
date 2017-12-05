@@ -25,12 +25,6 @@
 		6E0E12A41FD67EB700279C0B /* libVideoHeartbeat.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E0E12A31FD67EB700279C0B /* libVideoHeartbeat.a */; };
 		71719F9F1E33DC2100824A3D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 71719F9D1E33DC2100824A3D /* LaunchScreen.storyboard */; };
 		873B8AEB1B1F5CCA007FD442 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 873B8AEA1B1F5CCA007FD442 /* Main.storyboard */; };
-<<<<<<< HEAD
-=======
-		952A695B1FD3DA660016E7F3 /* ADBMediaHeartbeat.h in Frameworks */ = {isa = PBXBuildFile; fileRef = 952A69561FD3DA4F0016E7F3 /* ADBMediaHeartbeat.h */; };
-		952A695C1FD3DA660016E7F3 /* ADBMediaHeartbeatConfig.h in Frameworks */ = {isa = PBXBuildFile; fileRef = 952A69571FD3DA4F0016E7F3 /* ADBMediaHeartbeatConfig.h */; };
-		952A695D1FD3DA660016E7F3 /* ADBStandardMetadataKeys.h in Frameworks */ = {isa = PBXBuildFile; fileRef = 952A69581FD3DA4F0016E7F3 /* ADBStandardMetadataKeys.h */; };
->>>>>>> Add Heartbeat
 		956FC58E1FB4D502003028A2 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 956FC58D1FB4D502003028A2 /* SystemConfiguration.framework */; };
 		956FC5901FB4D50B003028A2 /* libsqlite3.0.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 956FC58F1FB4D50B003028A2 /* libsqlite3.0.tbd */; };
 /* End PBXBuildFile section */
@@ -87,13 +81,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-<<<<<<< HEAD
-=======
-				6E0E12A41FD67EB700279C0B /* libVideoHeartbeat.a in Frameworks */,
-				952A695B1FD3DA660016E7F3 /* ADBMediaHeartbeat.h in Frameworks */,
-				952A695C1FD3DA660016E7F3 /* ADBMediaHeartbeatConfig.h in Frameworks */,
-				952A695D1FD3DA660016E7F3 /* ADBStandardMetadataKeys.h in Frameworks */,
->>>>>>> Add Heartbeat
 				956FC5901FB4D50B003028A2 /* libsqlite3.0.tbd in Frameworks */,
 				956FC58E1FB4D502003028A2 /* SystemConfiguration.framework in Frameworks */,
 				6003F590195388D20070C39A /* CoreGraphics.framework in Frameworks */,
