@@ -8,19 +8,12 @@
 #import "SEGAdobeHeartbeat.h"
 #import <Analytics/SEGAnalytics.h>
 
-@interface VideoAnalyticsProvider : NSObject <ADBMediaHeartbeatDelegate>
-
-id<ADBMediaHeartbeatDelegate> playBackDelegate();
-
-@end
-
 ///-------------------------
 /// @name Media Heartbeat Initialization
 ///-------------------------
 
 ADBMediaHeartbeatConfig *createConfig(SEGTrackPayload *payload, NSDictionary *settings)
 {
-    NSDictionary *app = payload.context[@"app"];
     NSDictionary *properties = payload.properties;
     NSDictionary *options = payload.integrations[@"Adobe Analytics"];
     
@@ -35,10 +28,13 @@ ADBMediaHeartbeatConfig *createConfig(SEGTrackPayload *payload, NSDictionary *se
         debugEnabled = @YES;
     }
     
+    NSMutableDictionary *infoDictionary = [[[NSBundle mainBundle] infoDictionary] mutableCopy];
+    [infoDictionary addEntriesFromDictionary:[[NSBundle mainBundle] localizedInfoDictionary]];
+    config.appVersion = infoDictionary[@"CFBundleShortVersionString"] ?: @"";
+    
     config.trackingServer = settings[@"heartbeatTrackingServer"];
     config.channel = properties[@"channel"];
     config.ovp = options[@"ovp_name"];
-    config.appVersion = app[@"version"];
     config.playerName = properties[@"video_player"];
     config.ssl = sslEnabled;
     config.debugLogging = debugEnabled;
@@ -57,6 +53,6 @@ ADBMediaHeartbeat *initializeMediaHeartbeat(ADBMediaHeartbeatConfig *config, id<
 void videoPlaybackStarted(SEGTrackPayload *payload, NSDictionary *settings)
 {
     ADBMediaHeartbeatConfig *config = createConfig(payload, settings);
-    initializeMediaHeartbeat(config, playBackDelegate());
+    initializeMediaHeartbeat(config, nil);
 }
 
