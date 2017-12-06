@@ -10,6 +10,15 @@
 #import <Analytics/SEGIntegration.h>
 #import <Analytics/SEGAnalyticsUtils.h>
 #import <Analytics/SEGAnalytics.h>
+#import "ADBMediaHeartbeat.h"
+
+
+@implementation SEGRealADBMediaHeartbeatFactory
+- (ADBMediaHeartbeat *)createWithDelegate:(id)delegate andConfig:(ADBMediaHeartbeatConfig *)config;
+{
+    return [[ADBMediaHeartbeat alloc] initWithDelegate:delegate config:config];
+}
+@end
 
 
 @implementation SEGAdobeIntegration
@@ -21,6 +30,7 @@
     if (self = [super init]) {
         self.settings = settings;
         self.ADBMobile = [ADBMobile class];
+        self.config = [[ADBMediaHeartbeatConfig alloc] init];
     }
 
     [self.ADBMobile collectLifecycleData];
@@ -28,11 +38,13 @@
     return self;
 }
 
-- (instancetype)initWithSettings:(NSDictionary *)settings andADBMobile:(id _Nullable)ADBMobile
+- (instancetype)initWithSettings:(NSDictionary *)settings andADBMobile:(id _Nullable)ADBMobile andADBMediaHeartbeatFactory:(id<SEGADBMediaHeartbeatFactory>)ADBMediaHeartbeatFactory andADBMediaHeartbeatConfig:(ADBMediaHeartbeatConfig *)config
 {
     if (self = [super init]) {
         self.settings = settings;
         self.ADBMobile = ADBMobile;
+        self.ADBMediaHeartbeatFactory = ADBMediaHeartbeatFactory;
+        self.config = config;
     }
 
     [self.ADBMobile collectLifecycleData];
@@ -83,6 +95,25 @@
         SEGLog(@"[ADBMobile trackAction:%@ data:%@];", event, contextData);
         return;
     }
+
+    NSArray *adobeVideoEvents = @[
+        @"Video Playback Started",
+        @"Video Playback Paused",
+        @"Video Playback Buffer Started",
+        @"Checkout Started",
+        @"Video Playback Buffer Completed",
+        @"Video Playback Seek Started",
+        @"Video Playback Seek Completed",
+        @"Video Playback Resumed",
+        @"Video Playback Completed"
+    ];
+    for (NSString *videoEvent in adobeVideoEvents) {
+        if ([videoEvent isEqualToString:event]) {
+            [self trackHeartbeatEvents:payload];
+            return;
+        }
+    }
+
 
     event = [self mapEventsV2:event];
     if (!event) {
@@ -159,17 +190,17 @@
 
 /**
      Adobe expects products to be passed in with the key `&&products`.
- 
+
      If `&&products` contains multiple products, the end of a product will
      be delimited by a `,`.
- 
+
      Segment will also send in any additional `contextDataVariables` configured
      in Segment settings.
- 
+
      If a product-specific event is triggered, it must also be sent with the
      `&&events` variable. Segment will send in the Segment spec'd Ecommerce
      event as the `&&events` variable.
- 
+
      @param event Event name sent via track
      @param properties Properties sent via track
      @return contextData object with &&events and formatted product String in &&products
@@ -218,17 +249,17 @@
 /**
     Adobe expects products to formatted as an NSString, delimited with `;`, with values in the following order:
     `"Category;Product;Quantity;Price;eventN=X[|eventN2=X2];eVarN=merch_category[|eVarN2=merch_category2]"`
- 
+
      Product is a required argument, so if this is not present, Segment does not create the
      `&&products` String. This value can be the product name, sku, or productId,
      which is configured via the Segment setting `productIdentifier`.
- 
+
      If the other values in the String are missing, Segment
      will leave the space empty but keep the `;` delimiter to preserve the order
      of the product properties.
 
     `formatProducts` can take in an object from the products array:
- 
+
      @"products" : @[
          @{
              @"product_id" : @"2013294",
@@ -243,7 +274,7 @@
      And output the following : @"Games;Monopoly: 3rd Edition;1;21.99,;Games;Battleship;2;27.98"
 
      It can also format a product passed in as a top level property, for example
- 
+
      @{
          @"product_id" : @"507f1f77bcf86cd799439011",
          @"sku" : @"G-32",
@@ -254,11 +285,11 @@
          @"price" : @180.99,
          @"quantity" : @1,
      }
- 
+
      And output the following:  @"Food;G-32;1;180.99"
- 
+
      @param obj Product from the products array
- 
+
      @return Product string representing one product
  **/
 
@@ -290,6 +321,80 @@
 
     NSArray *output = @[ category, productIdentifier, [NSNumber numberWithInt:quantity], [NSNumber numberWithDouble:total] ];
     return [output componentsJoinedByString:@";"];
+}
+
+///-------------------------
+/// @name Video Tracking
+///-------------------------
+
+
+/**
+ Event tracking for Adobe Heartbeats.
+
+ Must follow Segment's Video Spec to leverage Adobe Heartbeat tracking.
+ https://segment.com/docs/spec/video/
+
+ @param payload Payload sent on Segment `track` call
+ */
+- (void)trackHeartbeatEvents:(SEGTrackPayload *)payload
+{
+    if ([payload.event isEqualToString:@"Video Playback Started"]) {
+        self.config = [self createConfig:payload];
+        // createConfig can return nil if the Adobe required field
+        // trackingServer is not properly configured in Segment's UI.
+        if (!self.config) {
+            return;
+        }
+        self.ADBMediaHeartbeat = [self.ADBMediaHeartbeatFactory createWithDelegate:nil andConfig:self.config];
+
+        [self.ADBMediaHeartbeat trackSessionStart:nil data:@{}];
+        SEGLog(@"ADBMediaHeartbeat trackSessionStart:%@ data:@%", nil, @{});
+        return;
+    }
+}
+
+/**
+ Create a MediaHeartbeatConfig instance required to
+ initialize an instance of ADBMediaHearbeat
+ 
+ The only required value is the trackingServer,
+ which is configured via the Segment Integration
+ Settings UI under heartbeat tracking server.
+
+ @param payload Payload sent on Segment `track` call
+ @return config Instance of MediaHeartbeatConfig
+ */
+- (ADBMediaHeartbeatConfig *)createConfig:(SEGTrackPayload *)payload
+{
+    NSDictionary *properties = payload.properties;
+    NSDictionary *options = payload.integrations[@"Adobe Analytics"];
+
+    bool sslEnabled = false;
+    if (self.settings[@"ssl"]) {
+        sslEnabled = true;
+    }
+
+    bool debugEnabled = false;
+    if (options[@"debug"]) {
+        debugEnabled = true;
+    }
+
+    NSMutableDictionary *infoDictionary = [[[NSBundle mainBundle] infoDictionary] mutableCopy];
+    [infoDictionary addEntriesFromDictionary:[[NSBundle mainBundle] localizedInfoDictionary]];
+    self.config.appVersion = infoDictionary[@"CFBundleShortVersionString"] ?: @"unknown";
+
+    if ([self.settings[@"heartbeatTrackingServer"] length] == 0) {
+        SEGLog(@"Adobe requires a heartbeat tracking sever configured via Segment's UI in order to initialize and start tracking heartbeat events.");
+        return nil;
+    }
+    self.config.trackingServer = self.settings[@"heartbeatTrackingServer"];
+    self.config.channel = properties[@"channel"] ?: @"";
+    self.config.ovp = options[@"ovp_name"] ?: @"unknown";
+    self.config.playerName = properties[@"video_player"] ?: @"";
+    self.config.ssl = sslEnabled;
+    self.config.debugLogging = debugEnabled;
+
+    return self.config;
 }
 
 @end

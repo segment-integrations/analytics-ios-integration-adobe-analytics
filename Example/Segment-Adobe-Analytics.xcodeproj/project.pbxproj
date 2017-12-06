@@ -22,6 +22,7 @@
 		6003F5BA195388D20070C39A /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6003F5B8195388D20070C39A /* InfoPlist.strings */; };
 		6003F5BC195388D20070C39A /* Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6003F5BB195388D20070C39A /* Tests.m */; };
 		6B5278193005A8CBCF8B1BDF /* libPods-Segment-Adobe-Analytics_Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 03108D42F9B3F734F0E744D9 /* libPods-Segment-Adobe-Analytics_Tests.a */; };
+		6E0E12A41FD67EB700279C0B /* libVideoHeartbeat.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E0E12A31FD67EB700279C0B /* libVideoHeartbeat.a */; };
 		71719F9F1E33DC2100824A3D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 71719F9D1E33DC2100824A3D /* LaunchScreen.storyboard */; };
 		873B8AEB1B1F5CCA007FD442 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 873B8AEA1B1F5CCA007FD442 /* Main.storyboard */; };
 		956FC58E1FB4D502003028A2 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 956FC58D1FB4D502003028A2 /* SystemConfiguration.framework */; };
@@ -64,6 +65,7 @@
 		6003F5B9195388D20070C39A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		6003F5BB195388D20070C39A /* Tests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Tests.m; sourceTree = "<group>"; };
 		606FC2411953D9B200FFA9A0 /* Tests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Tests-Prefix.pch"; sourceTree = "<group>"; };
+		6E0E12A31FD67EB700279C0B /* libVideoHeartbeat.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libVideoHeartbeat.a; path = ../Pod/libs/libVideoHeartbeat.a; sourceTree = "<group>"; };
 		71719F9E1E33DC2100824A3D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		873B8AEA1B1F5CCA007FD442 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Main.storyboard; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		956FC5871FB4D483003028A2 /* ADBMobileConfig.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = ADBMobileConfig.json; sourceTree = "<group>"; };
@@ -138,6 +140,7 @@
 		6003F58C195388D20070C39A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				6E0E12A31FD67EB700279C0B /* libVideoHeartbeat.a */,
 				952A69551FD3DA4F0016E7F3 /* Headers */,
 				956FC58F1FB4D50B003028A2 /* libsqlite3.0.tbd */,
 				956FC58D1FB4D502003028A2 /* SystemConfiguration.framework */,

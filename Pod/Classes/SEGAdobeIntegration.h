@@ -9,14 +9,27 @@
 #import <Foundation/Foundation.h>
 #import <Analytics/SEGIntegration.h>
 #import <AdobeMobileSDK/ADBMobile.h>
+#import "ADBMediaHeartbeat.h"
+#import "ADBMediaHeartbeatConfig.h"
+
+@protocol SEGADBMediaHeartbeatFactory <NSObject>
+- (ADBMediaHeartbeat *_Nullable)createWithDelegate:(id _Nullable)delegate andConfig:(ADBMediaHeartbeatConfig *_Nonnull)config;
+;
+@end
+
+
+@interface SEGRealADBMediaHeartbeatFactory : NSObject <SEGADBMediaHeartbeatFactory>
+@end
 
 
 @interface SEGAdobeIntegration : NSObject <SEGIntegration>
-
 @property (nonatomic, strong, nonnull) NSDictionary *settings;
 @property (nonatomic, strong) Class _Nullable ADBMobile;
+@property (nonatomic, strong, nullable) ADBMediaHeartbeat *ADBMediaHeartbeat;
+@property (nonatomic, strong, nullable) id<SEGADBMediaHeartbeatFactory> ADBMediaHeartbeatFactory;
+@property (nonatomic, strong, nullable) ADBMediaHeartbeatConfig *config;
 
 - (instancetype _Nonnull)initWithSettings:(NSDictionary *_Nonnull)settings;
-- (instancetype _Nonnull)initWithSettings:(NSDictionary *_Nonnull)settings andADBMobile:(id _Nullable)ADBMobile;
+- (instancetype _Nonnull)initWithSettings:(NSDictionary *_Nonnull)settings andADBMobile:(id _Nullable)ADBMobile andADBMediaHeartbeatFactory:(id<SEGADBMediaHeartbeatFactory> _Nullable)ADBMediaHeartbeatFactory andADBMediaHeartbeatConfig:(ADBMediaHeartbeatConfig *_Nullable)config;
 
 @end
