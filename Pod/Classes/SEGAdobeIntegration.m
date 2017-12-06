@@ -68,14 +68,14 @@
     // Since Segment does not spec sending products on `screen`, we
     // will only support sending this via trackAction
     NSDictionary *adobeEcommerceEvents = @{
-                                           @"Product Added" : @"scAdd",
-                                           @"Product Removed" : @"scRemove",
-                                           @"Cart Viewed" : @"scView",
-                                           @"Checkout Started" : @"scCheckout",
-                                           @"Order Completed" : @"purchase",
-                                           @"Product Viewed" : @"prodView"
-                                           };
-    
+        @"Product Added" : @"scAdd",
+        @"Product Removed" : @"scRemove",
+        @"Cart Viewed" : @"scView",
+        @"Checkout Started" : @"scCheckout",
+        @"Order Completed" : @"purchase",
+        @"Product Viewed" : @"prodView"
+    };
+
     NSString *event = payload.event;
     if (adobeEcommerceEvents[event]) {
         NSDictionary *contextData = [self mapProducts:adobeEcommerceEvents[event] andProperties:payload.properties];
@@ -83,7 +83,7 @@
         SEGLog(@"[ADBMobile trackAction:%@ data:%@];", event, contextData);
         return;
     }
-    
+
     event = [self mapEventsV2:event];
     if (!event) {
         SEGLog(@"Event must be configured in Adobe and in the EventsV2 setting in Segment before sending.");
@@ -91,7 +91,8 @@
     }
     NSDictionary *contextData = [self mapContextValues:payload.properties];
     [self.ADBMobile trackAction:event data:contextData];
-    SEGLog(@"[ADBMobile trackAction:%@ data:%@];", event, contextData);}
+    SEGLog(@"[ADBMobile trackAction:%@ data:%@];", event, contextData);
+}
 
 - (void)screen:(SEGScreenPayload *)payload
 {

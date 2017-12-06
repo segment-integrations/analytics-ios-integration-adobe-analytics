@@ -24,10 +24,6 @@
 		6B5278193005A8CBCF8B1BDF /* libPods-Segment-Adobe-Analytics_Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 03108D42F9B3F734F0E744D9 /* libPods-Segment-Adobe-Analytics_Tests.a */; };
 		71719F9F1E33DC2100824A3D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 71719F9D1E33DC2100824A3D /* LaunchScreen.storyboard */; };
 		873B8AEB1B1F5CCA007FD442 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 873B8AEA1B1F5CCA007FD442 /* Main.storyboard */; };
-		952A695A1FD3DA590016E7F3 /* VideoHeartbeat.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 952A69591FD3DA4F0016E7F3 /* VideoHeartbeat.a */; };
-		952A695B1FD3DA660016E7F3 /* ADBMediaHeartbeat.h in Frameworks */ = {isa = PBXBuildFile; fileRef = 952A69561FD3DA4F0016E7F3 /* ADBMediaHeartbeat.h */; };
-		952A695C1FD3DA660016E7F3 /* ADBMediaHeartbeatConfig.h in Frameworks */ = {isa = PBXBuildFile; fileRef = 952A69571FD3DA4F0016E7F3 /* ADBMediaHeartbeatConfig.h */; };
-		952A695D1FD3DA660016E7F3 /* ADBStandardMetadataKeys.h in Frameworks */ = {isa = PBXBuildFile; fileRef = 952A69581FD3DA4F0016E7F3 /* ADBStandardMetadataKeys.h */; };
 		956FC58E1FB4D502003028A2 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 956FC58D1FB4D502003028A2 /* SystemConfiguration.framework */; };
 		956FC5901FB4D50B003028A2 /* libsqlite3.0.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 956FC58F1FB4D50B003028A2 /* libsqlite3.0.tbd */; };
 /* End PBXBuildFile section */
@@ -70,15 +66,6 @@
 		606FC2411953D9B200FFA9A0 /* Tests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Tests-Prefix.pch"; sourceTree = "<group>"; };
 		71719F9E1E33DC2100824A3D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		873B8AEA1B1F5CCA007FD442 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Main.storyboard; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		952A69091FD3411F0016E7F3 /* ADBMediaHeartbeat.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = ADBMediaHeartbeat.h; path = ../libs/Headers/ADBMediaHeartbeat.h; sourceTree = "<group>"; };
-		952A690B1FD341290016E7F3 /* VideoHeartbeat.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = VideoHeartbeat.a; path = ../libs/VideoHeartbeat.a; sourceTree = "<group>"; };
-		952A690D1FD341330016E7F3 /* VideoHeartbeat_TV.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = VideoHeartbeat_TV.a; path = ../libs/VideoHeartbeat_TV.a; sourceTree = "<group>"; };
-		952A690F1FD3415E0016E7F3 /* ADBStandardMetadataKeys.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = ADBStandardMetadataKeys.h; path = ../libs/Headers/ADBStandardMetadataKeys.h; sourceTree = "<group>"; };
-		952A693E1FD34B730016E7F3 /* ADBMediaHeartbeatConfig.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = ADBMediaHeartbeatConfig.h; path = ../Pod/libs/Headers/ADBMediaHeartbeatConfig.h; sourceTree = "<group>"; };
-		952A69561FD3DA4F0016E7F3 /* ADBMediaHeartbeat.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ADBMediaHeartbeat.h; sourceTree = "<group>"; };
-		952A69571FD3DA4F0016E7F3 /* ADBMediaHeartbeatConfig.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ADBMediaHeartbeatConfig.h; sourceTree = "<group>"; };
-		952A69581FD3DA4F0016E7F3 /* ADBStandardMetadataKeys.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ADBStandardMetadataKeys.h; sourceTree = "<group>"; };
-		952A69591FD3DA4F0016E7F3 /* VideoHeartbeat.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = VideoHeartbeat.a; path = ../Pod/libs/VideoHeartbeat.a; sourceTree = "<group>"; };
 		956FC5871FB4D483003028A2 /* ADBMobileConfig.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = ADBMobileConfig.json; sourceTree = "<group>"; };
 		956FC58D1FB4D502003028A2 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		956FC58F1FB4D50B003028A2 /* libsqlite3.0.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.0.tbd; path = usr/lib/libsqlite3.0.tbd; sourceTree = SDKROOT; };
@@ -92,10 +79,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				952A695B1FD3DA660016E7F3 /* ADBMediaHeartbeat.h in Frameworks */,
-				952A695C1FD3DA660016E7F3 /* ADBMediaHeartbeatConfig.h in Frameworks */,
-				952A695D1FD3DA660016E7F3 /* ADBStandardMetadataKeys.h in Frameworks */,
-				952A695A1FD3DA590016E7F3 /* VideoHeartbeat.a in Frameworks */,
 				956FC5901FB4D50B003028A2 /* libsqlite3.0.tbd in Frameworks */,
 				956FC58E1FB4D502003028A2 /* SystemConfiguration.framework in Frameworks */,
 				6003F590195388D20070C39A /* CoreGraphics.framework in Frameworks */,
@@ -156,12 +139,6 @@
 			isa = PBXGroup;
 			children = (
 				952A69551FD3DA4F0016E7F3 /* Headers */,
-				952A69591FD3DA4F0016E7F3 /* VideoHeartbeat.a */,
-				952A693E1FD34B730016E7F3 /* ADBMediaHeartbeatConfig.h */,
-				952A690F1FD3415E0016E7F3 /* ADBStandardMetadataKeys.h */,
-				952A690D1FD341330016E7F3 /* VideoHeartbeat_TV.a */,
-				952A690B1FD341290016E7F3 /* VideoHeartbeat.a */,
-				952A69091FD3411F0016E7F3 /* ADBMediaHeartbeat.h */,
 				956FC58F1FB4D50B003028A2 /* libsqlite3.0.tbd */,
 				956FC58D1FB4D502003028A2 /* SystemConfiguration.framework */,
 				6003F58D195388D20070C39A /* Foundation.framework */,
@@ -233,9 +210,6 @@
 		952A69551FD3DA4F0016E7F3 /* Headers */ = {
 			isa = PBXGroup;
 			children = (
-				952A69561FD3DA4F0016E7F3 /* ADBMediaHeartbeat.h */,
-				952A69571FD3DA4F0016E7F3 /* ADBMediaHeartbeatConfig.h */,
-				952A69581FD3DA4F0016E7F3 /* ADBStandardMetadataKeys.h */,
 			);
 			name = Headers;
 			path = ../Pod/libs/Headers;
