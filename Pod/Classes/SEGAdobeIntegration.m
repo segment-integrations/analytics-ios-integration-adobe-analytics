@@ -14,9 +14,34 @@
 
 
 @implementation SEGRealADBMediaHeartbeatFactory
+
 - (ADBMediaHeartbeat *)createWithDelegate:(id)delegate andConfig:(ADBMediaHeartbeatConfig *)config;
 {
     return [[ADBMediaHeartbeat alloc] initWithDelegate:delegate config:config];
+}
+@end
+
+
+@implementation SEGRealADBMediaObjectFactory
+
+- (ADBMediaObject *_Nullable)createWithProperties:(NSDictionary *_Nullable)properties;
+{
+    NSString *videoName = properties[@"title"];
+    NSString *mediaId = properties[@"content_asset_id"];
+    double length = [properties[@"total_length"] doubleValue];
+
+    // Adobe also has a third type: linear, which we have chosen
+    // to omit as it does not conform to Segment's Video spec
+    bool isLivestream = properties[@"livestream"];
+    NSString *streamType = ADBMediaHeartbeatStreamTypeVOD;
+    if (isLivestream) {
+        streamType = ADBMediaHeartbeatStreamTypeLIVE;
+    }
+
+    return [ADBMediaHeartbeat createMediaObjectWithName:videoName
+                                                mediaId:mediaId
+                                                 length:length
+                                             streamType:streamType];
 }
 @end
 
@@ -38,12 +63,13 @@
     return self;
 }
 
-- (instancetype)initWithSettings:(NSDictionary *)settings andADBMobile:(id _Nullable)ADBMobile andADBMediaHeartbeatFactory:(id<SEGADBMediaHeartbeatFactory>)ADBMediaHeartbeatFactory andADBMediaHeartbeatConfig:(ADBMediaHeartbeatConfig *)config
+- (instancetype)initWithSettings:(NSDictionary *)settings andADBMobile:(id _Nullable)ADBMobile andADBMediaHeartbeatFactory:(id<SEGADBMediaHeartbeatFactory>)ADBMediaHeartbeatFactory andADBMediaHeartbeatConfig:(ADBMediaHeartbeatConfig *)config andADBMediaObjectFactory:(id<SEGADBMediaObjectFactory> _Nullable)ADBMediaObjectFactory
 {
     if (self = [super init]) {
         self.settings = settings;
         self.ADBMobile = ADBMobile;
         self.ADBMediaHeartbeatFactory = ADBMediaHeartbeatFactory;
+        self.ADBMediaObjectFactory = ADBMediaObjectFactory;
         self.config = config;
     }
 
@@ -346,9 +372,15 @@
             return;
         }
         self.ADBMediaHeartbeat = [self.ADBMediaHeartbeatFactory createWithDelegate:nil andConfig:self.config];
+        self.mediaObject = [self.ADBMediaObjectFactory createWithProperties:payload.properties];
 
-        [self.ADBMediaHeartbeat trackSessionStart:nil data:@{}];
-        SEGLog(@"ADBMediaHeartbeat trackSessionStart:%@ data:@%", nil, @{});
+        NSMutableDictionary *standardVideoMetadata = [self mapStandardVideoMetadata:payload.properties];
+        [self.mediaObject setValue:standardVideoMetadata forKey:ADBMediaObjectKeyStandardVideoMetadata];
+
+        //TODO: check to see if we need to handle custom metadata (second argument) like with
+        // contextDataVariables
+        [self.ADBMediaHeartbeat trackSessionStart:self.mediaObject data:payload.properties];
+        SEGLog(@"[ADBMediaHeartbeat trackSessionStart:%@ data:@%]", self.mediaObject, payload.properties);
         return;
     }
 }
@@ -356,7 +388,7 @@
 /**
  Create a MediaHeartbeatConfig instance required to
  initialize an instance of ADBMediaHearbeat
- 
+
  The only required value is the trackingServer,
  which is configured via the Segment Integration
  Settings UI under heartbeat tracking server.
@@ -395,6 +427,46 @@
     self.config.debugLogging = debugEnabled;
 
     return self.config;
+}
+
+
+/**
+ Adobe has standard video metadata to pass in on
+ Segment's Video Playback events.
+
+ @param properties Properties passed in on Segment `track`
+ @return A dictionary of mapped Standard Video metadata
+ */
+- (NSMutableDictionary *)mapStandardVideoMetadata:(NSDictionary *)properties
+{
+    NSDictionary *videoMetadata = @{
+        @"asset_id" : ADBVideoMetadataKeyASSET_ID,
+        @"program" : ADBVideoMetadataKeySHOW,
+        @"season" : ADBVideoMetadataKeySEASON,
+        @"episode" : ADBVideoMetadataKeyEPISODE,
+        @"genre" : ADBVideoMetadataKeyGENRE,
+        @"channel" : ADBVideoMetadataKeyNETWORK,
+        @"airdate" : ADBVideoMetadataKeyFIRST_AIR_DATE,
+        @"publisher" : ADBVideoMetadataKeyORIGINATOR
+    };
+    NSMutableDictionary *standardVideoMetadata = [[NSMutableDictionary alloc] init];
+
+    for (id key in videoMetadata) {
+        if (properties[key]) {
+            [standardVideoMetadata setObject:properties[key] forKey:videoMetadata[key]];
+        }
+    }
+
+    // Adobe also has a third type: linear, which we have chosen
+    // to omit as it does not conform to Segment's Video spec
+    bool isLivestream = properties[@"livestream"];
+    if (isLivestream) {
+        [standardVideoMetadata setObject:ADBMediaHeartbeatStreamTypeLIVE forKey:ADBVideoMetadataKeySTREAM_FORMAT];
+    } else {
+        [standardVideoMetadata setObject:ADBMediaHeartbeatStreamTypeVOD forKey:ADBVideoMetadataKeySTREAM_FORMAT];
+    }
+
+    return standardVideoMetadata;
 }
 
 @end
