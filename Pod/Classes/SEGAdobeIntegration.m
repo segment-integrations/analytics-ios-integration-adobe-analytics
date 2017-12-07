@@ -438,8 +438,11 @@
         SEGLog(@"[ADBMediaHeartbeat trackComplete]");
 
         self.mediaObject = [self createMediaObject:payload.properties andEventType:@"Content"];
-        [self.ADBMediaHeartbeat trackEvent:ADBMediaHeartbeatEventChapterComplete mediaObject:self.mediaObject data:payload.properties];
-        SEGLog(@"[ADBMediaHeartbeat trackEvent:ADBMediaHeartbeatEventChapterComplete mediaObject:%@ data:%@]", self.mediaObject, payload.properties);
+
+        // Adobe examples show that the mediaObject and data should be nil on Chapter Complete events
+        // https://github.com/Adobe-Marketing-Cloud/video-heartbeat-v2/blob/master/sdks/iOS/samples/BasicPlayerSample/BasicPlayerSample/Classes/analytics/VideoAnalyticsProvider.m#L158
+        [self.ADBMediaHeartbeat trackEvent:ADBMediaHeartbeatEventChapterComplete mediaObject:nil data:nil];
+        SEGLog(@"[ADBMediaHeartbeat trackEvent:ADBMediaHeartbeatEventChapterComplete mediaObject:nil data:nil]");
         return;
     }
 

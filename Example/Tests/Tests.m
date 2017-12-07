@@ -789,19 +789,7 @@ describe(@"SEGAdobeIntegration", ^{
 
                 [integration track:payload];
                 [verify(mockADBMediaHeartbeat) trackComplete];
-                [verify(mockADBMediaHeartbeat) trackEvent:ADBMediaHeartbeatEventChapterComplete mediaObject:mockADBMediaObject data:@{
-                    @"asset_id" : @"3543",
-                    @"pod_id" : @"65462",
-                    @"title" : @"Big Trouble in Little Sanchez",
-                    @"season" : @"2",
-                    @"episode" : @"7",
-                    @"genre" : @"cartoon",
-                    @"program" : @"Rick and Morty",
-                    @"total_length" : @400,
-                    @"full_episode" : @"true",
-                    @"publisher" : @"Turner Broadcasting Network",
-                    @"channel" : @"Cartoon Network"
-                }];
+                [verify(mockADBMediaHeartbeat) trackEvent:ADBMediaHeartbeatEventChapterComplete mediaObject:nil data:nil];
             });
         });
 
