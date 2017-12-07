@@ -24,11 +24,29 @@
 
 @implementation SEGRealADBMediaObjectFactory
 
-- (ADBMediaObject *_Nullable)createWithProperties:(NSDictionary *_Nullable)properties;
+
+/**
+ Creates an instance of ADBMediaObject to pass through
+ Adobe Heartbeat Events.
+
+ ADBMediaObject can build a Video, Chapter, or Ad object.
+ Passing in a value for event type as Playback, Content, or
+ Ad will build the relevant instance of ADBMediaObject,
+ respectively.
+ 
+ @param properties Properties sent on Segment `track` call
+ @param eventType Denotes whether the event is a Playback, Content, or Ad event
+ @return An instance of ADBMediaObject
+ */
+- (ADBMediaObject *_Nullable)createWithProperties:(NSDictionary *_Nullable)properties andEventType:(NSString *_Nullable)eventType;
 {
     NSString *videoName = properties[@"title"];
     NSString *mediaId = properties[@"content_asset_id"];
     double length = [properties[@"total_length"] doubleValue];
+
+    // TODO: not spec'd, follow up with spec committee proposal
+    double startTime = [properties[@"start_time"] doubleValue];
+    double position = [properties[@"position"] doubleValue];
 
     // Adobe also has a third type: linear, which we have chosen
     // to omit as it does not conform to Segment's Video spec
@@ -38,10 +56,17 @@
         streamType = ADBMediaHeartbeatStreamTypeLIVE;
     }
 
-    return [ADBMediaHeartbeat createMediaObjectWithName:videoName
-                                                mediaId:mediaId
-                                                 length:length
-                                             streamType:streamType];
+    if ([eventType isEqualToString:@"Playback"]) {
+        return [ADBMediaHeartbeat createMediaObjectWithName:videoName
+                                                    mediaId:mediaId
+                                                     length:length
+                                                 streamType:streamType];
+    } else {
+        return [ADBMediaHeartbeat createChapterObjectWithName:videoName
+                                                     position:position
+                                                       length:length
+                                                    startTime:startTime];
+    }
 }
 @end
 
@@ -126,12 +151,13 @@
         @"Video Playback Started",
         @"Video Playback Paused",
         @"Video Playback Buffer Started",
-        @"Checkout Started",
         @"Video Playback Buffer Completed",
         @"Video Playback Seek Started",
         @"Video Playback Seek Completed",
         @"Video Playback Resumed",
-        @"Video Playback Completed"
+        @"Video Playback Completed",
+        @"Video Content Started",
+        @"Video Content Completed"
     ];
     for (NSString *videoEvent in adobeVideoEvents) {
         if ([videoEvent isEqualToString:event]) {
@@ -139,7 +165,6 @@
             return;
         }
     }
-
 
     event = [self mapEventsV2:event];
     if (!event) {
@@ -372,7 +397,7 @@
             return;
         }
         self.ADBMediaHeartbeat = [self.ADBMediaHeartbeatFactory createWithDelegate:nil andConfig:self.config];
-        self.mediaObject = [self createMediaObject:payload.properties];
+        self.mediaObject = [self createMediaObject:payload.properties andEventType:@"Playback"];
         //TODO: check to see if we need to handle custom metadata (second argument) like with
         // contextDataVariables
         [self.ADBMediaHeartbeat trackSessionStart:self.mediaObject data:payload.properties];
@@ -398,6 +423,26 @@
         return;
     }
 
+    if ([payload.event isEqualToString:@"Video Content Started"]) {
+        [self.ADBMediaHeartbeat trackPlay];
+        SEGLog(@"[ADBMediaHeartbeat trackPlay]");
+
+        self.mediaObject = [self createMediaObject:payload.properties andEventType:@"Content"];
+        [self.ADBMediaHeartbeat trackEvent:ADBMediaHeartbeatEventChapterStart mediaObject:self.mediaObject data:payload.properties];
+        SEGLog(@"[ADBMediaHeartbeat trackEvent:ADBMediaHeartbeatEventChapterStart mediaObject:%@ data:%@]", self.mediaObject, payload.properties);
+        return;
+    }
+
+    if ([payload.event isEqualToString:@"Video Content Completed"]) {
+        [self.ADBMediaHeartbeat trackComplete];
+        SEGLog(@"[ADBMediaHeartbeat trackComplete]");
+
+        self.mediaObject = [self createMediaObject:payload.properties andEventType:@"Content"];
+        [self.ADBMediaHeartbeat trackEvent:ADBMediaHeartbeatEventChapterComplete mediaObject:self.mediaObject data:payload.properties];
+        SEGLog(@"[ADBMediaHeartbeat trackEvent:ADBMediaHeartbeatEventChapterComplete mediaObject:%@ data:%@]", self.mediaObject, payload.properties);
+        return;
+    }
+
     NSDictionary *videoTrackEvents = @{
         @"Video Playback Buffer Started" : @(ADBMediaHeartbeatEventBufferStart),
         @"Video Playback Buffer Completed" : @(ADBMediaHeartbeatEventBufferComplete),
@@ -407,7 +452,7 @@
 
     enum ADBMediaHeartbeatEvent videoEvent = [videoTrackEvents[payload.event] intValue];
     if (videoEvent) {
-        self.mediaObject = [self createMediaObject:payload.properties];
+        self.mediaObject = [self createMediaObject:payload.properties andEventType:@"Video"];
         [self.ADBMediaHeartbeat trackEvent:videoEvent mediaObject:self.mediaObject data:payload.properties];
         SEGLog(@"[ADBMediaHeartbeat trackEvent:ADBMediaHeartbeatEventBufferStart mediaObject:%@ data:%@]", self.mediaObject, payload.properties);
         return;
@@ -498,9 +543,9 @@
     return standardVideoMetadata;
 }
 
-- (ADBMediaObject *)createMediaObject:(NSDictionary *)properties
+- (ADBMediaObject *)createMediaObject:(NSDictionary *)properties andEventType:(NSString *)eventType
 {
-    self.mediaObject = [self.ADBMediaObjectFactory createWithProperties:properties];
+    self.mediaObject = [self.ADBMediaObjectFactory createWithProperties:properties andEventType:eventType];
     NSMutableDictionary *standardVideoMetadata = [self mapStandardVideoMetadata:properties];
     [self.mediaObject setValue:standardVideoMetadata forKey:ADBMediaObjectKeyStandardVideoMetadata];
     return self.mediaObject;
