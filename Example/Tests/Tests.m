@@ -29,7 +29,7 @@
 
 
 @implementation SEGMockADBMediaObjectFactory
-- (ADBMediaObject *)createWithProperties:(NSDictionary *)properties
+- (ADBMediaObject *)createWithProperties:(NSDictionary *)properties andEventType:(NSString *_Nullable)eventType
 {
     return self.ADBMediaObject;
 }
@@ -438,6 +438,7 @@ describe(@"SEGAdobeIntegration", ^{
                 integrations:@{}];
             [integration track:payload];
         });
+
         describe(@"initialization", ^{
 
             it(@"Video Playback Started initializes ADBMediaHeartbeat object", ^{
@@ -718,6 +719,80 @@ describe(@"SEGAdobeIntegration", ^{
             });
 
         });
+
+        describe(@"Content Events", ^{
+            it(@"track Video Content Started", ^{
+                SEGMockADBMediaHeartbeatFactory *mockADBMediaHeartbeatFactory = [[SEGMockADBMediaHeartbeatFactory alloc] init];
+                mockADBMediaHeartbeatFactory.ADBMediaHeartbeat = mockADBMediaHeartbeat;
+
+                SEGMockADBMediaObjectFactory *mockADBMediaObjectFactory = [[SEGMockADBMediaObjectFactory alloc] init];
+                mockADBMediaObjectFactory.ADBMediaObject = mockADBMediaObject;
+
+                SEGTrackPayload *payload = [[SEGTrackPayload alloc] initWithEvent:@"Video Content Started" properties:@{
+                    @"asset_id" : @"3543",
+                    @"pod_id" : @"65462",
+                    @"title" : @"Big Trouble in Little Sanchez",
+                    @"season" : @"2",
+                    @"episode" : @"7",
+                    @"genre" : @"cartoon",
+                    @"program" : @"Rick and Morty",
+                    @"total_length" : @400,
+                    @"full_episode" : @YES,
+                    @"publisher" : @"Turner Broadcasting Network",
+                    @"position" : @22,
+                    @"channel" : @"Cartoon Network",
+                    @"start_time" : @140,
+                    @"position" : @5
+                } context:@{}
+                    integrations:@{}];
+                [integration track:payload];
+                [verify(mockADBMediaHeartbeat) trackPlay];
+                [verify(mockADBMediaHeartbeat) trackEvent:ADBMediaHeartbeatEventChapterStart mediaObject:mockADBMediaObject data:@{
+                    @"asset_id" : @"3543",
+                    @"pod_id" : @"65462",
+                    @"title" : @"Big Trouble in Little Sanchez",
+                    @"season" : @"2",
+                    @"episode" : @"7",
+                    @"genre" : @"cartoon",
+                    @"program" : @"Rick and Morty",
+                    @"total_length" : @400,
+                    @"full_episode" : @YES,
+                    @"publisher" : @"Turner Broadcasting Network",
+                    @"position" : @22,
+                    @"channel" : @"Cartoon Network",
+                    @"start_time" : @140,
+                    @"position" : @5
+                }];
+            });
+
+            it(@"track Video Content Completed", ^{
+                SEGMockADBMediaHeartbeatFactory *mockADBMediaHeartbeatFactory = [[SEGMockADBMediaHeartbeatFactory alloc] init];
+                mockADBMediaHeartbeatFactory.ADBMediaHeartbeat = mockADBMediaHeartbeat;
+
+                SEGMockADBMediaObjectFactory *mockADBMediaObjectFactory = [[SEGMockADBMediaObjectFactory alloc] init];
+                mockADBMediaObjectFactory.ADBMediaObject = mockADBMediaObject;
+
+                SEGTrackPayload *payload = [[SEGTrackPayload alloc] initWithEvent:@"Video Content Completed" properties:@{
+                    @"asset_id" : @"3543",
+                    @"pod_id" : @"65462",
+                    @"title" : @"Big Trouble in Little Sanchez",
+                    @"season" : @"2",
+                    @"episode" : @"7",
+                    @"genre" : @"cartoon",
+                    @"program" : @"Rick and Morty",
+                    @"total_length" : @400,
+                    @"full_episode" : @"true",
+                    @"publisher" : @"Turner Broadcasting Network",
+                    @"channel" : @"Cartoon Network"
+                } context:@{}
+                    integrations:@{}];
+
+                [integration track:payload];
+                [verify(mockADBMediaHeartbeat) trackComplete];
+                [verify(mockADBMediaHeartbeat) trackEvent:ADBMediaHeartbeatEventChapterComplete mediaObject:nil data:nil];
+            });
+        });
+
     });
 
 });

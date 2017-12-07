@@ -21,7 +21,7 @@
 @end
 
 @protocol SEGADBMediaObjectFactory <NSObject>
-- (ADBMediaObject *_Nullable)createWithProperties:(NSDictionary *_Nullable)properties;
+- (ADBMediaObject *_Nullable)createWithProperties:(NSDictionary *_Nullable)properties andEventType:(NSString *_Nullable)eventType;
 @end
 
 
