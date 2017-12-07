@@ -372,15 +372,57 @@
             return;
         }
         self.ADBMediaHeartbeat = [self.ADBMediaHeartbeatFactory createWithDelegate:nil andConfig:self.config];
-        self.mediaObject = [self.ADBMediaObjectFactory createWithProperties:payload.properties];
-
-        NSMutableDictionary *standardVideoMetadata = [self mapStandardVideoMetadata:payload.properties];
-        [self.mediaObject setValue:standardVideoMetadata forKey:ADBMediaObjectKeyStandardVideoMetadata];
-
+        self.mediaObject = [self createMediaObject:payload.properties];
         //TODO: check to see if we need to handle custom metadata (second argument) like with
         // contextDataVariables
         [self.ADBMediaHeartbeat trackSessionStart:self.mediaObject data:payload.properties];
         SEGLog(@"[ADBMediaHeartbeat trackSessionStart:%@ data:@%]", self.mediaObject, payload.properties);
+        return;
+    }
+
+    if ([payload.event isEqualToString:@"Video Playback Paused"]) {
+        [self.ADBMediaHeartbeat trackPause];
+        SEGLog(@"[ADBMediaHeartbeat trackPause]");
+        return;
+    }
+
+    if ([payload.event isEqualToString:@"Video Playback Buffer Started"]) {
+        self.mediaObject = [self createMediaObject:payload.properties];
+        [self.ADBMediaHeartbeat trackEvent:ADBMediaHeartbeatEventBufferStart mediaObject:self.mediaObject data:payload.properties];
+        SEGLog(@"[ADBMediaHeartbeat trackEvent:ADBMediaHeartbeatEventBufferStart mediaObject:%@ data:%@]", self.mediaObject, payload.properties);
+        return;
+    }
+
+    if ([payload.event isEqualToString:@"Video Playback Buffer Completed"]) {
+        self.mediaObject = [self createMediaObject:payload.properties];
+        [self.ADBMediaHeartbeat trackEvent:ADBMediaHeartbeatEventBufferComplete mediaObject:self.mediaObject data:payload.properties];
+        SEGLog(@"[ADBMediaHeartbeat trackEvent:ADBMediaHeartbeatEventBufferComplete mediaObject:%@ data:%@]", self.mediaObject, payload.properties);
+        return;
+    }
+
+    if ([payload.event isEqualToString:@"Video Playback Seek Started"]) {
+        self.mediaObject = [self createMediaObject:payload.properties];
+        [self.ADBMediaHeartbeat trackEvent:ADBMediaHeartbeatEventSeekStart mediaObject:self.mediaObject data:payload.properties];
+        SEGLog(@"[ADBMediaHeartbeat trackEvent:ADBMediaHeartbeatEventSeekStart mediaObject:%@ data:%@]", self.mediaObject, payload.properties);
+        return;
+    }
+
+    if ([payload.event isEqualToString:@"Video Playback Seek Completed"]) {
+        self.mediaObject = [self createMediaObject:payload.properties];
+        [self.ADBMediaHeartbeat trackEvent:ADBMediaHeartbeatEventSeekComplete mediaObject:self.mediaObject data:payload.properties];
+        SEGLog(@"[ADBMediaHeartbeat trackEvent:ADBMediaHeartbeatEventSeekComplete mediaObject:%@ data:%@]", self.mediaObject, payload.properties);
+        return;
+    }
+
+    if ([payload.event isEqualToString:@"Video Playback Resumed"]) {
+        [self.ADBMediaHeartbeat trackPlay];
+        SEGLog(@"[ADBMediaHeartbeat trackPlay]");
+        return;
+    }
+
+    if ([payload.event isEqualToString:@"Video Playback Completed"]) {
+        [self.ADBMediaHeartbeat trackSessionEnd];
+        SEGLog(@"[ADBMediaHeartbeat trackSessionEnd]");
         return;
     }
 }
@@ -467,6 +509,14 @@
     }
 
     return standardVideoMetadata;
+}
+
+- (ADBMediaObject *)createMediaObject:(NSDictionary *)properties
+{
+    self.mediaObject = [self.ADBMediaObjectFactory createWithProperties:properties];
+    NSMutableDictionary *standardVideoMetadata = [self mapStandardVideoMetadata:properties];
+    [self.mediaObject setValue:standardVideoMetadata forKey:ADBMediaObjectKeyStandardVideoMetadata];
+    return self.mediaObject;
 }
 
 @end
