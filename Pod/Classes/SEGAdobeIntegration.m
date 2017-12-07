@@ -405,14 +405,12 @@
         @"Video Playback Seek Completed" : @(ADBMediaHeartbeatEventSeekComplete)
     };
 
-    for (NSString *event in videoTrackEvents) {
-        if ([event isEqualToString:payload.event]) {
-            enum ADBMediaHeartbeatEvent videoEvent = [videoTrackEvents[event] intValue];
-            self.mediaObject = [self createMediaObject:payload.properties];
-            [self.ADBMediaHeartbeat trackEvent:videoEvent mediaObject:self.mediaObject data:payload.properties];
-            SEGLog(@"[ADBMediaHeartbeat trackEvent:ADBMediaHeartbeatEventBufferStart mediaObject:%@ data:%@]", self.mediaObject, payload.properties);
-            return;
-        }
+    enum ADBMediaHeartbeatEvent videoEvent = [videoTrackEvents[payload.event] intValue];
+    if (videoEvent) {
+        self.mediaObject = [self createMediaObject:payload.properties];
+        [self.ADBMediaHeartbeat trackEvent:videoEvent mediaObject:self.mediaObject data:payload.properties];
+        SEGLog(@"[ADBMediaHeartbeat trackEvent:ADBMediaHeartbeatEventBufferStart mediaObject:%@ data:%@]", self.mediaObject, payload.properties);
+        return;
     }
 }
 
