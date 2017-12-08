@@ -87,37 +87,26 @@
 
 #pragma mark - Initialization
 
-- (instancetype)initWithSettings:(NSDictionary *)settings
+- (instancetype)initWithSettings:(NSDictionary *)settings andADBMobile:(id _Nullable)ADBMobileClass andADBMediaHeartbeat:(ADBMediaHeartbeat *)ADBMediaHeartbeat andADBMediaHeartbeatFactory:(id<SEGADBMediaHeartbeatFactory>)ADBMediaHeartbeatFactory andADBMediaHeartbeatConfig:(ADBMediaHeartbeatConfig *)config andADBMediaObject:(ADBMediaObject *)mediaObject andADBMediaObjectFactory:(id<SEGADBMediaObjectFactory> _Nullable)ADBMediaObjectFactory
 {
     if (self = [super init]) {
         self.settings = settings;
-        self.ADBMobile = [ADBMobile class];
-        self.config = [[ADBMediaHeartbeatConfig alloc] init];
-    }
-
-    [self.ADBMobile collectLifecycleData];
-
-    return self;
-}
-
-- (instancetype)initWithSettings:(NSDictionary *)settings andADBMobile:(id _Nullable)ADBMobile andADBMediaHeartbeatFactory:(id<SEGADBMediaHeartbeatFactory>)ADBMediaHeartbeatFactory andADBMediaHeartbeatConfig:(ADBMediaHeartbeatConfig *)config andADBMediaObjectFactory:(id<SEGADBMediaObjectFactory> _Nullable)ADBMediaObjectFactory
-{
-    if (self = [super init]) {
-        self.settings = settings;
-        self.ADBMobile = ADBMobile;
+        self.ADBMobileClass = ADBMobileClass;
+        self.ADBMediaHeartbeat = ADBMediaHeartbeat;
         self.ADBMediaHeartbeatFactory = ADBMediaHeartbeatFactory;
+        self.mediaObject = mediaObject;
         self.ADBMediaObjectFactory = ADBMediaObjectFactory;
         self.config = config;
     }
 
-    [self.ADBMobile collectLifecycleData];
+    [self.ADBMobileClass collectLifecycleData];
 
     return self;
 }
 
 - (void)reset
 {
-    [self.ADBMobile trackingClearCurrentBeacon];
+    [self.ADBMobileClass trackingClearCurrentBeacon];
     SEGLog(@"[ADBMobile trackingClearCurrentBeacon];");
 }
 
@@ -126,14 +115,14 @@
     // Choosing to use `trackingSendQueuedHits` in lieu of
     // `trackingClearQueue` because the latter also
     // removes the queued events from the database
-    [self.ADBMobile trackingSendQueuedHits];
+    [self.ADBMobileClass trackingSendQueuedHits];
     SEGLog(@"ADBMobile trackingSendQueuedHits");
 }
 
 - (void)identify:(SEGIdentifyPayload *)payload
 {
     if (!payload.userId) return;
-    [self.ADBMobile setUserIdentifier:payload.userId];
+    [self.ADBMobileClass setUserIdentifier:payload.userId];
     SEGLog(@"[ADBMobile setUserIdentifier:%@]", payload.userId);
 }
 
@@ -154,7 +143,7 @@
     NSString *event = payload.event;
     if (adobeEcommerceEvents[event]) {
         NSDictionary *contextData = [self mapProducts:adobeEcommerceEvents[event] andProperties:payload.properties];
-        [self.ADBMobile trackAction:adobeEcommerceEvents[event] data:contextData];
+        [self.ADBMobileClass trackAction:adobeEcommerceEvents[event] data:contextData];
         SEGLog(@"[ADBMobile trackAction:%@ data:%@];", event, contextData);
         return;
     }
@@ -189,14 +178,14 @@
         return;
     }
     NSDictionary *contextData = [self mapContextValues:payload.properties];
-    [self.ADBMobile trackAction:event data:contextData];
+    [self.ADBMobileClass trackAction:event data:contextData];
     SEGLog(@"[ADBMobile trackAction:%@ data:%@];", event, contextData);
 }
 
 - (void)screen:(SEGScreenPayload *)payload
 {
     NSMutableDictionary *data = [self mapContextValues:payload.properties];
-    [self.ADBMobile trackState:payload.name data:data];
+    [self.ADBMobileClass trackState:payload.name data:data];
     SEGLog(@"[ADBMobile trackState:%@ data:%@];", payload.name, data);
 }
 
@@ -530,15 +519,17 @@
     NSDictionary *properties = payload.properties;
     NSDictionary *options = payload.integrations[@"Adobe Analytics"];
 
-    bool sslEnabled = false;
+    BOOL sslEnabled = false;
     if (self.settings[@"ssl"]) {
         sslEnabled = true;
     }
 
-    bool debugEnabled = false;
+    BOOL debugEnabled = false;
     if (options[@"debug"]) {
         debugEnabled = true;
     }
+
+    //    self.config = [[ADBMediaHeartbeatConfig alloc] init];
 
     NSMutableDictionary *infoDictionary = [[[NSBundle mainBundle] infoDictionary] mutableCopy];
     [infoDictionary addEntriesFromDictionary:[[NSBundle mainBundle] localizedInfoDictionary]];
