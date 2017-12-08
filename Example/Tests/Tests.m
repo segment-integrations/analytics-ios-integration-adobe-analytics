@@ -793,6 +793,130 @@ describe(@"SEGAdobeIntegration", ^{
             });
         });
 
+        describe(@"Ad Events", ^{
+
+            it(@"tracks Video Ad Break Started", ^{
+                SEGMockADBMediaHeartbeatFactory *mockADBMediaHeartbeatFactory = [[SEGMockADBMediaHeartbeatFactory alloc] init];
+                mockADBMediaHeartbeatFactory.ADBMediaHeartbeat = mockADBMediaHeartbeat;
+
+                SEGMockADBMediaObjectFactory *mockADBMediaObjectFactory = [[SEGMockADBMediaObjectFactory alloc] init];
+                mockADBMediaObjectFactory.ADBMediaObject = mockADBMediaObject;
+
+                SEGTrackPayload *payload = [[SEGTrackPayload alloc] initWithEvent:@"Video Ad Break Started"
+                    properties:@{
+                        @"asset_id" : @"1231312",
+                        @"pod_id" : @"43434234534",
+                        @"type" : @"mid-roll",
+                        @"total_length" : @110,
+                        @"position" : @43,
+                        @"publisher" : @"Adult Swim",
+                        @"title" : @"Rick and Morty Ad"
+                    }
+                    context:@{}
+                    integrations:@{}];
+
+                [integration track:payload];
+                [verify(mockADBMediaHeartbeat) trackEvent:ADBMediaHeartbeatEventAdBreakStart mediaObject:mockADBMediaObject data:nil];
+
+            });
+
+            it(@"tracks Video Ad Break Completed", ^{
+                SEGMockADBMediaHeartbeatFactory *mockADBMediaHeartbeatFactory = [[SEGMockADBMediaHeartbeatFactory alloc] init];
+                mockADBMediaHeartbeatFactory.ADBMediaHeartbeat = mockADBMediaHeartbeat;
+
+                SEGMockADBMediaObjectFactory *mockADBMediaObjectFactory = [[SEGMockADBMediaObjectFactory alloc] init];
+                mockADBMediaObjectFactory.ADBMediaObject = mockADBMediaObject;
+
+                SEGTrackPayload *payload = [[SEGTrackPayload alloc] initWithEvent:@"Video Ad Break Completed"
+                    properties:@{
+                        @"asset_id" : @"1231312",
+                        @"pod_id" : @"43434234534",
+                        @"type" : @"mid-roll",
+                        @"total_length" : @110,
+                        @"position" : @43,
+                        @"publisher" : @"Adult Swim",
+                        @"title" : @"Rick and Morty Ad"
+                    }
+                    context:@{}
+                    integrations:@{}];
+
+                [integration track:payload];
+                [verify(mockADBMediaHeartbeat) trackEvent:ADBMediaHeartbeatEventAdBreakComplete mediaObject:nil data:nil];
+
+            });
+
+            it(@"tracks Video Ad Started", ^{
+                SEGMockADBMediaHeartbeatFactory *mockADBMediaHeartbeatFactory = [[SEGMockADBMediaHeartbeatFactory alloc] init];
+                mockADBMediaHeartbeatFactory.ADBMediaHeartbeat = mockADBMediaHeartbeat;
+
+                SEGMockADBMediaObjectFactory *mockADBMediaObjectFactory = [[SEGMockADBMediaObjectFactory alloc] init];
+                mockADBMediaObjectFactory.ADBMediaObject = mockADBMediaObject;
+
+                SEGTrackPayload *payload = [[SEGTrackPayload alloc] initWithEvent:@"Video Ad Started"
+                    properties:@{
+                        @"asset_id" : @"1231312",
+                        @"pod_id" : @"43434234534",
+                        @"type" : @"mid-roll",
+                        @"total_length" : @110,
+                        @"position" : @43,
+                        @"publisher" : @"Adult Swim",
+                        @"title" : @"Rick and Morty Ad"
+                    }
+                    context:@{}
+                    integrations:@{}];
+
+                [integration track:payload];
+                [verify(mockADBMediaHeartbeat) trackEvent:ADBMediaHeartbeatEventAdStart mediaObject:mockADBMediaObject data:@{
+                    @"asset_id" : @"1231312",
+                    @"pod_id" : @"43434234534",
+                    @"type" : @"mid-roll",
+                    @"total_length" : @110,
+                    @"position" : @43,
+                    @"publisher" : @"Adult Swim",
+                    @"title" : @"Rick and Morty Ad"
+                }];
+
+
+            });
+
+            it(@"tracks Video Ad Skipped", ^{
+                SEGMockADBMediaHeartbeatFactory *mockADBMediaHeartbeatFactory = [[SEGMockADBMediaHeartbeatFactory alloc] init];
+                mockADBMediaHeartbeatFactory.ADBMediaHeartbeat = mockADBMediaHeartbeat;
+
+                SEGTrackPayload *payload = [[SEGTrackPayload alloc] initWithEvent:@"Video Ad Skipped" properties:@{
+                    @"asset_id" : @"1231312",
+                    @"pod_id" : @"43434234534",
+                    @"type" : @"mid-roll",
+                    @"total_length" : @110,
+                    @"title" : @"Rick and Morty Ad"
+
+                } context:@{}
+                    integrations:@{}];
+
+                [integration track:payload];
+                [verify(mockADBMediaHeartbeat) trackEvent:ADBMediaHeartbeatEventAdSkip mediaObject:nil data:nil];
+            });
+
+            it(@"tracks Video Ad Completed", ^{
+                SEGMockADBMediaHeartbeatFactory *mockADBMediaHeartbeatFactory = [[SEGMockADBMediaHeartbeatFactory alloc] init];
+                mockADBMediaHeartbeatFactory.ADBMediaHeartbeat = mockADBMediaHeartbeat;
+
+                SEGTrackPayload *payload = [[SEGTrackPayload alloc] initWithEvent:@"Video Ad Completed" properties:@{
+                    @"asset_id" : @"1231312",
+                    @"pod_id" : @"43434234534",
+                    @"type" : @"mid-roll",
+                    @"total_length" : @110,
+                    @"title" : @"Rick and Morty Ad"
+
+                } context:@{}
+                    integrations:@{}];
+
+                [integration track:payload];
+                [verify(mockADBMediaHeartbeat) trackEvent:ADBMediaHeartbeatEventAdComplete mediaObject:nil data:nil];
+            });
+
+        });
+
     });
 
 });
