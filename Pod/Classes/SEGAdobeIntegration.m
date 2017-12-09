@@ -29,9 +29,9 @@
  Creates an instance of ADBMediaObject to pass through
  Adobe Heartbeat Events.
 
- ADBMediaObject can build a Video, Chapter, or Ad object.
- Passing in a value for event type as Playback, Content, or
- Ad will build the relevant instance of ADBMediaObject,
+ ADBMediaObject can build a Video, Chapter, Ad Break or Ad object.
+ Passing in a value for event type as Playback, Content, Ad Break
+ or Ad will build the relevant instance of ADBMediaObject,
  respectively.
  
  @param properties Properties sent on Segment `track` call
@@ -43,10 +43,11 @@
     NSString *videoName = properties[@"title"];
     NSString *mediaId = properties[@"content_asset_id"];
     double length = [properties[@"total_length"] doubleValue];
+    NSString *adId = properties[@"asset_id"];
 
     // TODO: not spec'd, follow up with spec committee proposal
     double startTime = [properties[@"start_time"] doubleValue];
-    double position = [properties[@"position"] doubleValue];
+    double position = [properties[@"indexPosition"] doubleValue];
 
     // Adobe also has a third type: linear, which we have chosen
     // to omit as it does not conform to Segment's Video spec
@@ -61,12 +62,23 @@
                                                     mediaId:mediaId
                                                      length:length
                                                  streamType:streamType];
-    } else {
+    } else if ([eventType isEqualToString:@"Content"]) {
         return [ADBMediaHeartbeat createChapterObjectWithName:videoName
                                                      position:position
                                                        length:length
                                                     startTime:startTime];
+    } else if ([eventType isEqualToString:@"Ad Break"]) {
+        return [ADBMediaHeartbeat createAdBreakObjectWithName:videoName
+                                                     position:position
+                                                    startTime:startTime];
+    } else if ([eventType isEqualToString:@"Ad"]) {
+        return [ADBMediaHeartbeat createAdObjectWithName:videoName
+                                                    adId:adId
+                                                position:position
+                                                  length:length];
     }
+    SEGLog(@"Event type not passed through.");
+    return nil;
 }
 @end
 
@@ -157,7 +169,12 @@
         @"Video Playback Resumed",
         @"Video Playback Completed",
         @"Video Content Started",
-        @"Video Content Completed"
+        @"Video Content Completed",
+        @"Video Ad Break Started",   // not spec'd
+        @"Video Ad Break Completed", // not spec'd
+        @"Video Ad Started",
+        @"Video Ad Skipped", // not spec'd
+        @"Video Ad Completed"
     ];
     for (NSString *videoEvent in adobeVideoEvents) {
         if ([videoEvent isEqualToString:event]) {
@@ -460,6 +477,41 @@
         SEGLog(@"[ADBMediaHeartbeat trackEvent:ADBMediaHeartbeatEventBufferStart mediaObject:%@ data:%@]", self.mediaObject, payload.properties);
         return;
     }
+
+    // Video Ad Break Started/Completed are not spec'd. For now, will document for Adobe and
+    // write a proposal to add this to the Video Spec
+    if ([payload.event isEqualToString:@"Video Ad Break Started"]) {
+        self.mediaObject = [self createMediaObject:payload.properties andEventType:@"Ad Break"];
+        [self.ADBMediaHeartbeat trackEvent:ADBMediaHeartbeatEventAdBreakStart mediaObject:self.mediaObject data:nil];
+        SEGLog(@"[ADBMediaHeartbeat trackEvent:ADBMediaHeartbeatEventAdBreakStart mediaObject:%@ data:nil]", self.mediaObject);
+        return;
+    }
+
+    if ([payload.event isEqualToString:@"Video Ad Break Completed"]) {
+        [self.ADBMediaHeartbeat trackEvent:ADBMediaHeartbeatEventAdBreakComplete mediaObject:nil data:nil];
+        SEGLog(@"[ADBMediaHeartbeat trackEvent:ADBMediaHeartbeatEventAdBreakComplete mediaObject:nil data:nil]");
+        return;
+    }
+
+    if ([payload.event isEqualToString:@"Video Ad Started"]) {
+        self.mediaObject = [self createMediaObject:payload.properties andEventType:@"Ad"];
+        [self.ADBMediaHeartbeat trackEvent:ADBMediaHeartbeatEventAdStart mediaObject:self.mediaObject data:payload.properties];
+        SEGLog(@"[ADBMediaHeartbeat trackEvent:ADBMediaHeartbeatEventAdStart mediaObject:%@ data:%@]", self.mediaObject, payload.properties);
+        return;
+    }
+
+    // Not spec'd
+    if ([payload.event isEqualToString:@"Video Ad Skipped"]) {
+        [self.ADBMediaHeartbeat trackEvent:ADBMediaHeartbeatEventAdSkip mediaObject:nil data:nil];
+        SEGLog(@"[ADBMediaHeartbeat trackEvent:ADBMediaHeartbeatEventAdSkip mediaObject:nil data:nil]");
+        return;
+    }
+
+    if ([payload.event isEqualToString:@"Video Ad Completed"]) {
+        [self.ADBMediaHeartbeat trackEvent:ADBMediaHeartbeatEventAdComplete mediaObject:nil data:nil];
+        SEGLog(@"[self.ADBMediaHeartbeat trackEvent:ADBMediaHeartbeatEventAdComplete mediaObject:nil data:nil];");
+        return;
+    }
 }
 
 /**
@@ -514,7 +566,7 @@
  @param properties Properties passed in on Segment `track`
  @return A dictionary of mapped Standard Video metadata
  */
-- (NSMutableDictionary *)mapStandardVideoMetadata:(NSDictionary *)properties
+- (NSMutableDictionary *)mapStandardVideoMetadata:(NSDictionary *)properties andEventType:(NSString *)eventType
 {
     NSDictionary *videoMetadata = @{
         @"asset_id" : ADBVideoMetadataKeyASSET_ID,
@@ -524,7 +576,6 @@
         @"genre" : ADBVideoMetadataKeyGENRE,
         @"channel" : ADBVideoMetadataKeyNETWORK,
         @"airdate" : ADBVideoMetadataKeyFIRST_AIR_DATE,
-        @"publisher" : ADBVideoMetadataKeyORIGINATOR
     };
     NSMutableDictionary *standardVideoMetadata = [[NSMutableDictionary alloc] init];
 
@@ -532,6 +583,14 @@
         if (properties[key]) {
             [standardVideoMetadata setObject:properties[key] forKey:videoMetadata[key]];
         }
+    }
+
+    // Segment's paublisher property exists on the content and ad level. Adobe
+    // needs to interpret this either as and Advertiser (ad events) or Originator (content events)
+    if ([eventType isEqualToString:@"Ad"] || [eventType isEqualToString:@"Ad Break"]) {
+        [standardVideoMetadata setObject:properties[@"publisher"] forKey:ADBAdMetadataKeyADVERTISER];
+    } else if ([eventType isEqualToString:@"Content"]) {
+        [standardVideoMetadata setObject:properties[@"publisher"] forKey:ADBVideoMetadataKeyORIGINATOR];
     }
 
     // Adobe also has a third type: linear, which we have chosen
@@ -549,7 +608,7 @@
 - (ADBMediaObject *)createMediaObject:(NSDictionary *)properties andEventType:(NSString *)eventType
 {
     self.mediaObject = [self.ADBMediaObjectFactory createWithProperties:properties andEventType:eventType];
-    NSMutableDictionary *standardVideoMetadata = [self mapStandardVideoMetadata:properties];
+    NSMutableDictionary *standardVideoMetadata = [self mapStandardVideoMetadata:properties andEventType:eventType];
     [self.mediaObject setValue:standardVideoMetadata forKey:ADBMediaObjectKeyStandardVideoMetadata];
     return self.mediaObject;
 }
