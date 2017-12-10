@@ -50,7 +50,7 @@ describe(@"SEGAdobeIntegration", ^{
 
     beforeEach(^{
         mockADBMobile = mockClass([ADBMobile class]);
-        integration = [[SEGAdobeIntegration alloc] initWithSettings:@{} andADBMobile:mockADBMobile andADBMediaHeartbeat:nil andADBMediaHeartbeatFactory:nil andADBMediaHeartbeatConfig:nil andADBMediaObject:nil andADBMediaObjectFactory:nil];
+        integration = [[SEGAdobeIntegration alloc] initWithSettings:@{} adobe:mockADBMobile andMediaHeartbeatFactory:nil andMediaHeartbeatConfig:nil andMediaObjectFactory:nil];
     });
 
     describe(@"reset", ^{
@@ -108,11 +108,10 @@ describe(@"SEGAdobeIntegration", ^{
                     @"Signed Up" : @"myapp.signedup",
                     @"Testing" : @"myapp.testing"
                 }
-            } andADBMobile:mockADBMobile andADBMediaHeartbeat:nil
-                                            andADBMediaHeartbeatFactory:nil
-                                             andADBMediaHeartbeatConfig:nil
-                                                      andADBMediaObject:nil
-                                               andADBMediaObjectFactory:nil];
+            } adobe:mockADBMobile
+                                               andMediaHeartbeatFactory:nil
+                                                andMediaHeartbeatConfig:nil
+                                                  andMediaObjectFactory:nil];
             SEGTrackPayload *trackPayload = [[SEGTrackPayload alloc] initWithEvent:@"Testing" properties:@{} context:@{} integrations:@{}];
             [integration track:trackPayload];
             [verify(mockADBMobile) trackAction:@"myapp.testing" data:nil];
@@ -122,11 +121,10 @@ describe(@"SEGAdobeIntegration", ^{
             integration = [[SEGAdobeIntegration alloc] initWithSettings:@{ @"eventsV2" : @{
                 @"Signed Up" : @"myapp.signedup",
                 @"Testing" : @"myapp.testing"
-            } } andADBMobile:mockADBMobile andADBMediaHeartbeat:nil
-                                            andADBMediaHeartbeatFactory:nil
-                                             andADBMediaHeartbeatConfig:nil
-                                                      andADBMediaObject:nil
-                                               andADBMediaObjectFactory:nil];
+            } } adobe:mockADBMobile
+                                               andMediaHeartbeatFactory:nil
+                                                andMediaHeartbeatConfig:nil
+                                                  andMediaObjectFactory:nil];
 
             SEGTrackPayload *trackPayload = [[SEGTrackPayload alloc] initWithEvent:@"Testing" properties:@{ @"plan" : @"self-service" } context:@{} integrations:@{}];
             [integration track:trackPayload];
@@ -141,11 +139,10 @@ describe(@"SEGAdobeIntegration", ^{
                                                                            @"eventsV2" : @{
                                                                                @"Testing" : @"myapp.testing"
                                                                            }
-            } andADBMobile:mockADBMobile andADBMediaHeartbeat:nil
-                                            andADBMediaHeartbeatFactory:nil
-                                             andADBMediaHeartbeatConfig:nil
-                                                      andADBMediaObject:nil
-                                               andADBMediaObjectFactory:nil];
+            } adobe:mockADBMobile
+                                               andMediaHeartbeatFactory:nil
+                                                andMediaHeartbeatConfig:nil
+                                                  andMediaObjectFactory:nil];
             SEGTrackPayload *trackPayload = [[SEGTrackPayload alloc] initWithEvent:@"Testing" properties:@{ @"plan" : @"self-service" }
                 context:@{}
                 integrations:@{}];
@@ -159,11 +156,10 @@ describe(@"SEGAdobeIntegration", ^{
             integration = [[SEGAdobeIntegration alloc] initWithSettings:@{ @"contextValues" : @{
                 @"plan" : @"myapp.plan",
                 @"subscribed" : @"myapp.subscribed"
-            } } andADBMobile:mockADBMobile andADBMediaHeartbeat:nil
-                                            andADBMediaHeartbeatFactory:nil
-                                             andADBMediaHeartbeatConfig:nil
-                                                      andADBMediaObject:nil
-                                               andADBMediaObjectFactory:nil];
+            } } adobe:mockADBMobile
+                                               andMediaHeartbeatFactory:nil
+                                                andMediaHeartbeatConfig:nil
+                                                  andMediaObjectFactory:nil];
             SEGScreenPayload *screenPayload = [[SEGScreenPayload alloc] initWithName:@"Login" properties:@{} context:@{} integrations:@{}];
             [integration screen:screenPayload];
             [verify(mockADBMobile) trackState:@"Login" data:nil];
@@ -178,12 +174,10 @@ describe(@"SEGAdobeIntegration", ^{
         it(@"tracks a screen state with some properties configured in settings.contextValues", ^{
             integration = [[SEGAdobeIntegration alloc] initWithSettings:@{ @"contextValues" : @{@"title" : @"myapp.title",
                                                                                                 @"new_user" : @"myapp.new_user"} }
-                                                           andADBMobile:mockADBMobile
-                                                   andADBMediaHeartbeat:nil
-                                            andADBMediaHeartbeatFactory:nil
-                                             andADBMediaHeartbeatConfig:nil
-                                                      andADBMediaObject:nil
-                                               andADBMediaObjectFactory:nil];
+                                                                  adobe:mockADBMobile
+                                               andMediaHeartbeatFactory:nil
+                                                andMediaHeartbeatConfig:nil
+                                                  andMediaObjectFactory:nil];
 
             SEGScreenPayload *screenPayload = [[SEGScreenPayload alloc] initWithName:@"Sign Up" properties:@{ @"new_user" : @YES }
                 context:@{}
@@ -196,22 +190,18 @@ describe(@"SEGAdobeIntegration", ^{
     describe(@"ecommmerce", ^{
         beforeEach(^{
             integration = [[SEGAdobeIntegration alloc] initWithSettings:@{ @"productIdentifier" : @"name" }
-                                                           andADBMobile:mockADBMobile
-                                                   andADBMediaHeartbeat:nil
-                                            andADBMediaHeartbeatFactory:nil
-                                             andADBMediaHeartbeatConfig:nil
-                                                      andADBMediaObject:nil
-                                               andADBMediaObjectFactory:nil];
+                                                                  adobe:mockADBMobile
+                                               andMediaHeartbeatFactory:nil
+                                                andMediaHeartbeatConfig:nil
+                                                  andMediaObjectFactory:nil];
         });
 
         it(@"tracks Product Added with productIdentifier product_id", ^{
             integration = [[SEGAdobeIntegration alloc] initWithSettings:@{ @"productIdentifier" : @"id" }
-                                                           andADBMobile:mockADBMobile
-                                                   andADBMediaHeartbeat:nil
-                                            andADBMediaHeartbeatFactory:nil
-                                             andADBMediaHeartbeatConfig:nil
-                                                      andADBMediaObject:nil
-                                               andADBMediaObjectFactory:nil];
+                                                                  adobe:mockADBMobile
+                                               andMediaHeartbeatFactory:nil
+                                                andMediaHeartbeatConfig:nil
+                                                  andMediaObjectFactory:nil];
             SEGTrackPayload *trackPayload = [[SEGTrackPayload alloc] initWithEvent:@"Product Added" properties:@{
                 @"cart_id" : @"skdjsidjsdkdj29j",
                 @"product_id" : @"507f1f77bcf86cd799439011",
@@ -238,12 +228,10 @@ describe(@"SEGAdobeIntegration", ^{
 
         it(@"tracks Product Added with productIdentifier falling back to id", ^{
             integration = [[SEGAdobeIntegration alloc] initWithSettings:@{ @"productIdentifier" : @"id" }
-                                                           andADBMobile:mockADBMobile
-                                                   andADBMediaHeartbeat:nil
-                                            andADBMediaHeartbeatFactory:nil
-                                             andADBMediaHeartbeatConfig:nil
-                                                      andADBMediaObject:nil
-                                               andADBMediaObjectFactory:nil];
+                                                                  adobe:mockADBMobile
+                                               andMediaHeartbeatFactory:nil
+                                                andMediaHeartbeatConfig:nil
+                                                  andMediaObjectFactory:nil];
             SEGTrackPayload *trackPayload = [[SEGTrackPayload alloc] initWithEvent:@"Product Added" properties:@{
                 @"cart_id" : @"skdjsidjsdkdj29j",
                 @"id" : @"507f1f77bcf86cd799439011",
@@ -320,12 +308,10 @@ describe(@"SEGAdobeIntegration", ^{
 
         it(@"tracks Product Viewed with product identifier as sku", ^{
             integration = [[SEGAdobeIntegration alloc] initWithSettings:@{ @"productIdentifier" : @"sku" }
-                                                           andADBMobile:mockADBMobile
-                                                   andADBMediaHeartbeat:nil
-                                            andADBMediaHeartbeatFactory:nil
-                                             andADBMediaHeartbeatConfig:nil
-                                                      andADBMediaObject:nil
-                                               andADBMediaObjectFactory:nil];
+                                                                  adobe:mockADBMobile
+                                               andMediaHeartbeatFactory:nil
+                                                andMediaHeartbeatConfig:nil
+                                                  andMediaObjectFactory:nil];
             NSDictionary *props = @{
                 @"product_id" : @"507f1f77bcf86cd799439011",
                 @"sku" : @"G-32",
@@ -447,12 +433,10 @@ describe(@"SEGAdobeIntegration", ^{
 
             integration = [[SEGAdobeIntegration alloc] initWithSettings:@{ @"heartbeatTrackingServer" : @"example",
                                                                            @"ssl" : @YES }
-                                                           andADBMobile:mockADBMobile
-                                                   andADBMediaHeartbeat:mockADBMediaHeartbeat
-                                            andADBMediaHeartbeatFactory:mockADBMediaHeartbeatFactory
-                                             andADBMediaHeartbeatConfig:config
-                                                      andADBMediaObject:mockADBMediaObject
-                                               andADBMediaObjectFactory:mockADBMediaObjectFactory];
+                                                                  adobe:mockADBMobile
+                                               andMediaHeartbeatFactory:mockADBMediaHeartbeatFactory
+                                                andMediaHeartbeatConfig:config
+                                                  andMediaObjectFactory:mockADBMediaObjectFactory];
         });
 
         describe(@"initialization", ^{
@@ -490,12 +474,10 @@ describe(@"SEGAdobeIntegration", ^{
                 mockADBMediaObjectFactory.ADBMediaObject = mockADBMediaObject;
 
                 integration = [[SEGAdobeIntegration alloc] initWithSettings:@{ @"heartbeatTrackingServer" : @"example" }
-                                                               andADBMobile:mockADBMobile
-                                                       andADBMediaHeartbeat:mockADBMediaHeartbeat
-                                                andADBMediaHeartbeatFactory:mockADBMediaHeartbeatFactory
-                                                 andADBMediaHeartbeatConfig:config
-                                                          andADBMediaObject:mockADBMediaObject
-                                                   andADBMediaObjectFactory:mockADBMediaObjectFactory];
+                                                                      adobe:mockADBMobile
+                                                   andMediaHeartbeatFactory:mockADBMediaHeartbeatFactory
+                                                    andMediaHeartbeatConfig:config
+                                                      andMediaObjectFactory:mockADBMediaObjectFactory];
                 SEGTrackPayload *payload = [[SEGTrackPayload alloc] initWithEvent:@"Video Playback Started" properties:@{
                     @"content_asset_id" : @"1234",
                     @"ad_type" : @"pre-roll"
@@ -523,12 +505,10 @@ describe(@"SEGAdobeIntegration", ^{
                 mockADBMediaObjectFactory.ADBMediaObject = mockADBMediaObject;
 
                 integration = [[SEGAdobeIntegration alloc] initWithSettings:@{}
-                                                               andADBMobile:mockADBMobile
-                                                       andADBMediaHeartbeat:mockADBMediaHeartbeat
-                                                andADBMediaHeartbeatFactory:mockADBMediaHeartbeatFactory
-                                                 andADBMediaHeartbeatConfig:config
-                                                          andADBMediaObject:mockADBMediaObject
-                                                   andADBMediaObjectFactory:mockADBMediaObjectFactory];
+                                                                      adobe:mockADBMobile
+                                                   andMediaHeartbeatFactory:mockADBMediaHeartbeatFactory
+                                                    andMediaHeartbeatConfig:config
+                                                      andMediaObjectFactory:mockADBMediaObjectFactory];
                 SEGTrackPayload *payload = [[SEGTrackPayload alloc] initWithEvent:@"Video Playback Started" properties:@{
                     @"content_asset_id" : @"1234",
                     @"ad_type" : @"pre-roll",
@@ -748,6 +728,12 @@ describe(@"SEGAdobeIntegration", ^{
         });
 
         describe(@"Content Events", ^{
+            beforeEach(^{
+                // Video Playback Started initializes an instance of ADBMediaHeartbeat, which we need for testing subsequent Video Events
+                SEGTrackPayload *payload = [[SEGTrackPayload alloc] initWithEvent:@"Video Playback Started" properties:@{} context:@{}
+                    integrations:@{}];
+                [integration track:payload];
+            });
             it(@"track Video Content Started", ^{
                 SEGMockADBMediaHeartbeatFactory *mockADBMediaHeartbeatFactory = [[SEGMockADBMediaHeartbeatFactory alloc] init];
                 mockADBMediaHeartbeatFactory.ADBMediaHeartbeat = mockADBMediaHeartbeat;
@@ -821,7 +807,12 @@ describe(@"SEGAdobeIntegration", ^{
         });
 
         describe(@"Ad Events", ^{
-
+            beforeEach(^{
+                // Video Playback Started initializes an instance of ADBMediaHeartbeat, which we need for testing subsequent Video Events
+                SEGTrackPayload *payload = [[SEGTrackPayload alloc] initWithEvent:@"Video Playback Started" properties:@{} context:@{}
+                    integrations:@{}];
+                [integration track:payload];
+            });
             it(@"tracks Video Ad Break Started", ^{
                 SEGMockADBMediaHeartbeatFactory *mockADBMediaHeartbeatFactory = [[SEGMockADBMediaHeartbeatFactory alloc] init];
                 mockADBMediaHeartbeatFactory.ADBMediaHeartbeat = mockADBMediaHeartbeat;

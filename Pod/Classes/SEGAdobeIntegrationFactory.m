@@ -23,14 +23,12 @@
 
 - (id<SEGIntegration>)createWithSettings:(NSDictionary *)settings forAnalytics:(nonnull SEGAnalytics *)analytics
 {
-    id<SEGADBMediaObjectFactory> ADBMediaObjectFactory = [[SEGRealADBMediaObjectFactory alloc] init];
-    id<SEGADBMediaHeartbeatFactory> ADBMediaHeartbeatFactory = [[SEGRealADBMediaHeartbeatFactory alloc] init];
-    id ADBMobileClass = [ADBMobile class];
-    id ADBMediaHeartbeatClass = [ADBMediaHeartbeat class];
-    id ADBMediaObjectClass = [ADBMediaObject class];
+    id<SEGADBMediaObjectFactory> mediaObjectFactory = [[SEGRealADBMediaObjectFactory alloc] init];
+    id<SEGADBMediaHeartbeatFactory> mediaHeartbeatFactory = [[SEGRealADBMediaHeartbeatFactory alloc] init];
+    id adobeMobile = [ADBMobile class];
     id config = [[ADBMediaHeartbeatConfig alloc] init];
 
-    return [[SEGAdobeIntegration alloc] initWithSettings:settings andADBMobile:ADBMobileClass andADBMediaHeartbeat:ADBMediaHeartbeatClass andADBMediaHeartbeatFactory:ADBMediaHeartbeatFactory andADBMediaHeartbeatConfig:config andADBMediaObject:ADBMediaObjectClass andADBMediaObjectFactory:ADBMediaObjectFactory];
+    return [[SEGAdobeIntegration alloc] initWithSettings:settings adobe:adobeMobile andMediaHeartbeatFactory:mediaHeartbeatFactory andMediaHeartbeatConfig:config andMediaObjectFactory:mediaObjectFactory];
 }
 
 
