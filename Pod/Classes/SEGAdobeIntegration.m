@@ -12,6 +12,148 @@
 #import <Analytics/SEGAnalytics.h>
 #import "ADBMediaHeartbeat.h"
 
+@protocol VideoAnalyticsProvider <NSObject>
+- (void)createPlaybackSession;
+- (NSTimeInterval)getCurrentPlaybackTime;
+- (void)updatePlayheadPosition:(long)playheadPosition;
+- (void)resumePlayheadAfterSeeking;
+- (void)unPausePlayhead;
+- (void)pausePlayhead;
+- (void)incrementPlayheadPosition;
+
+@end
+
+
+@implementation VideoAnalyticsProvider
+/**
+ * The system time in millis at which the playhead is first set or updated. The playhead is
+ * first set upon instantiation of the PlaybackDelegate. The value is updated whenever
+ * updatePlayheadPosition is invoked.
+ */
+long initialTime;
+/** The current playhead position in seconds. */
+long playheadPosition;
+/** The position of the playhead in seconds when the video was paused. */
+long pausedPlayheadPosition;
+/** The system time in millis at which {@link #pausePlayhead} was invoked. */
+long pausedStartedTime;
+/**
+ * The updated playhead position - this variable is assigned to the value a customer passes as
+ * properties.seekPosition in a "Video Playback Seek Completed" event or properties.position in
+ * a "Video Content Started" event
+ */
+long updatedPlayheadPosition;
+/** The total time in seconds a video has been in a paused state during a video session. */
+long offset = 0;
+/** Whether the video playhead is in a paused state. */
+BOOL isPaused = false;
+
+
+/**
+  Sets initial time upon delegate creation. This will be called
+  on Video Playback Started, at the time the VideoAnalyticsProvider
+  instance is created.
+ */
+- (void)createPlaybackSession
+{
+    initialTime = CFAbsoluteTimeGetCurrent();
+}
+
+/**
+ * Adobe invokes this method once per second to resolve the current position of the video
+ * playhead. Unless paused, this method increments the value of playheadPosition by one
+ * every second by calling incrementPlayheadPosition
+ */
+- (NSTimeInterval)getCurrentPlaybackTime
+{
+    if (!isPaused) {
+        [self incrementPlayheadPosition];
+        return playheadPosition;
+    }
+    return pausedPlayheadPosition;
+}
+
+/**
+ * getCurrentPlaybackTime invokes this method once per second to resolve the current
+ * location of the video playhead:
+ *
+ * updatedPlayheadPosition + (currentSystemTime - videoSessionStartTime) - offset
+ *
+ * updatedPlayheadPosition represents a user-specified position of the playhead.
+ * This is useful for updating the playhead position after a "Video Content Started" or "Video
+ * Playback Seek Completed" event. The user must provide the updated playhead position in order
+ * for this method to update the playhead position here properly.
+ */
+
+- (void)incrementPlayheadPosition
+{
+    playheadPosition = updatedPlayheadPosition + ((CFAbsoluteTimeGetCurrent() - initialTime) / 1000) - offset;
+}
+
+/**
+ * Stores the current playhead position in pausedPlayheadPosition. Also stores the
+ * system time at which the video was paused in pauseStartedTime. Sets
+ * isPaused to true so getCurrentPlaybackTime knows the video is in a paused state.
+ */
+
+- (void)pausePlayhead
+{
+    pausedPlayheadPosition = playheadPosition;
+    pausedStartedTime = CFAbsoluteTimeGetCurrent();
+    isPaused = true;
+}
+
+/**
+ * This method sets the isPaused flag to false, as well as calculates the
+ * offset value. The offset represents the total cumulative time in seconds a video was
+ * in a paused state during a session. If no offset exists:
+ *
+ * offset = currentSystemTime - timePlayerWasPaused
+ *
+ * Otherwise, the offset is added to the existing offset value. This may be the case if a
+ * user pauses and unpauses the video many times during a single session:
+ *
+ * offset = originalOffset + (currentSystemTime - timePlayerWasPaused)
+ */
+
+- (void)unPausePlayhead
+{
+    if (offset == 0) {
+        offset = (CFAbsoluteTimeGetCurrent() - pausedStartedTime) / 1000;
+    } else {
+        offset += (CFAbsoluteTimeGetCurrent() - pausedStartedTime) / 1000;
+    }
+    isPaused = false;
+}
+
+/**
+ * Resumes invocation of getCurrentPlaybackTime by setting isPaused to
+ * false. This is only called when a customer sends a "Video Playback Seek Completed" event.
+ */
+
+- (void)resumePlayheadAfterSeeking
+{
+    isPaused = false;
+}
+
+/**
+ * Updates member variables initialTime and updatedPlayheadPosition whenever
+ * either a "Video Playback Seek Completed" or "Video Content Started" event is received AND
+ * contains properties.seekPosition or properties.position, respectively. After invocation,
+ * initialTime is assigned to the system time at which the video event was received.
+ *
+ * @param playheadPosition properties.position passed by the customer into a "Video Playback
+ *     Seek Completed" or "Video Content Started" event. This value is required for accurate
+ *     reporting in the Adobe dashboard. It defaults to 0.
+ */
+- (void)updatePlayheadPosition:(long)playheadPosition
+{
+    initialTime = CFAbsoluteTimeGetCurrent();
+    updatedPlayheadPosition = playheadPosition;
+}
+
+@end
+
 
 @implementation SEGRealADBMediaHeartbeatFactory
 
@@ -400,7 +542,10 @@
         if (!self.config) {
             return;
         }
-        self.mediaHeartbeat = [self.heartbeatFactory createWithDelegate:nil andConfig:self.config];
+
+        self.playbackDelegate = [[VideoAnalyticsProvider alloc] init];
+        [self.playbackDelegate createPlaybackSession]; // We want to capture this initial time as soon as possible.
+        self.mediaHeartbeat = [self.heartbeatFactory createWithDelegate:self.playbackDelegate andConfig:self.config];
         self.mediaObject = [self createMediaObject:payload.properties andEventType:@"Playback"];
         //TODO: check to see if we need to handle custom metadata (second argument) like with
         // contextDataVariables
@@ -410,12 +555,14 @@
     }
 
     if ([payload.event isEqualToString:@"Video Playback Paused"]) {
+        [self.playbackDelegate pausePlayhead];
         [self.mediaHeartbeat trackPause];
         SEGLog(@"[ADBMediaHeartbeat trackPause]");
         return;
     }
 
     if ([payload.event isEqualToString:@"Video Playback Resumed"]) {
+        [self.playbackDelegate unPausePlayhead];
         [self.mediaHeartbeat trackPlay];
         SEGLog(@"[ADBMediaHeartbeat trackPlay]");
         return;
@@ -428,6 +575,10 @@
     }
 
     if ([payload.event isEqualToString:@"Video Content Started"]) {
+        if ([payload.properties[@"position"] doubleValue] > 0) {
+            [self.playbackDelegate updatePlayheadPosition:[payload.properties[@"position"] longValue]];
+        };
+
         [self.mediaHeartbeat trackPlay];
         SEGLog(@"[ADBMediaHeartbeat trackPlay]");
 
@@ -458,10 +609,33 @@
     };
 
     enum ADBMediaHeartbeatEvent videoEvent = [videoTrackEvents[payload.event] intValue];
+    switch (videoEvent) {
+        case ADBMediaHeartbeatEventBufferStart:
+            [self.playbackDelegate pausePlayhead];
+            break;
+        case ADBMediaHeartbeatEventBufferComplete:
+            [self.playbackDelegate unPausePlayhead];
+            break;
+        case ADBMediaHeartbeatEventSeekStart:
+            [self.playbackDelegate pausePlayhead];
+            break;
+        case ADBMediaHeartbeatEventSeekComplete:
+            [self.playbackDelegate updatePlayheadPosition:[payload.properties[@"seekPosition"] longValue]];
+            [self.playbackDelegate resumePlayheadAfterSeeking];
+            break;
+        default:
+            break;
+    }
+
     if (videoEvent) {
         self.mediaObject = [self createMediaObject:payload.properties andEventType:@"Video"];
         [self.mediaHeartbeat trackEvent:videoEvent mediaObject:self.mediaObject data:payload.properties];
         SEGLog(@"[ADBMediaHeartbeat trackEvent:ADBMediaHeartbeatEventBufferStart mediaObject:%@ data:%@]", self.mediaObject, payload.properties);
+        return;
+    }
+
+    if ([payload.event isEqualToString:@"Video Playback Interrupted"]) {
+        [self.playbackDelegate pausePlayhead];
         return;
     }
 
