@@ -29,7 +29,47 @@
 @end
 
 
-@interface VideoAnalyticsProvider : NSObject <ADBMediaHeartbeatDelegate>
+@interface SEGPlaybackDelegate : NSObject <ADBMediaHeartbeatDelegate>
+@property (nonatomic, strong, nullable) SEGPlaybackDelegate *playbackDelegate;
+/**
+ * The system time in millis at which the playhead is first set or updated. The playhead is
+ * first set upon instantiation of the PlaybackDelegate. The value is updated whenever
+ * updatePlayheadPosition is invoked.
+ */
+@property (nonatomic) long initialTime;
+/** The current playhead position in seconds. */
+@property (nonatomic) long playheadPosition;
+/** The position of the playhead in seconds when the video was paused. */
+@property (nonatomic) long pausedPlayheadPosition;
+/** The system time in millis at which {@link #pausePlayhead} was invoked. */
+@property (nonatomic) long pausedStartedTime;
+/**
+ * The updated playhead position - this variable is assigned to the value a customer passes as
+ * properties.seekPosition in a "Video Playback Seek Completed" event or properties.position in
+ * a "Video Content Started" event
+ */
+@property (nonatomic) long updatedPlayheadPosition;
+/** The total time in seconds a video has been in a paused state during a video session. */
+@property (nonatomic) long offset;
+/** Whether the video playhead is in a paused state. */
+@property (nonatomic) BOOL isPaused;
+
+- (NSTimeInterval)getCurrentPlaybackTime;
+- (void)updatePlayheadPosition:(long)playheadPosition;
+- (void)resumePlayheadAfterSeeking;
+- (void)unPausePlayhead;
+- (void)pausePlayhead;
+- (void)incrementPlayheadPosition;
+- (instancetype _Nullable)initWithDelegate:(SEGPlaybackDelegate *_Nullable)playbackDelegate;
+@end
+
+@protocol SEGPlaybackDelegateFactory <NSObject>
+- (SEGPlaybackDelegate *_Nullable)createPlaybackDelegate;
+@end
+
+
+@interface SEGRealPlaybackDelegateFactory : NSObject <SEGPlaybackDelegateFactory>
+@property (nonatomic, strong, nullable) SEGPlaybackDelegate *playbackDelegate;
 @end
 
 
@@ -44,8 +84,9 @@
 @property (nonatomic, strong, nullable) ADBMediaObject *mediaObject;
 @property (nonatomic, strong, nullable) id<SEGADBMediaObjectFactory> objectFactory;
 
-@property (nonatomic, strong, nullable) VideoAnalyticsProvider *playbackDelegate;
+@property (nonatomic, strong, nullable) SEGPlaybackDelegate *playbackDelegate;
+@property (nonatomic, strong, nullable) id<SEGPlaybackDelegateFactory> delegateFactory;
 
-- (instancetype _Nonnull)initWithSettings:(NSDictionary *_Nonnull)settings adobe:(id _Nullable)adobeMobile andMediaHeartbeatFactory:(id<SEGADBMediaHeartbeatFactory> _Nullable)heartbeatFactory andMediaHeartbeatConfig:(ADBMediaHeartbeatConfig *_Nullable)config andMediaObjectFactory:(id<SEGADBMediaObjectFactory> _Nullable)objectFactory;
+- (instancetype _Nonnull)initWithSettings:(NSDictionary *_Nonnull)settings adobe:(id _Nullable)adobeMobile andMediaHeartbeatFactory:(id<SEGADBMediaHeartbeatFactory> _Nullable)heartbeatFactory andMediaHeartbeatConfig:(ADBMediaHeartbeatConfig *_Nullable)config andMediaObjectFactory:(id<SEGADBMediaObjectFactory> _Nullable)objectFactory andPlaybackDelegateFactory:(id<SEGPlaybackDelegateFactory> _Nullable)delegateFactory;
 
 @end

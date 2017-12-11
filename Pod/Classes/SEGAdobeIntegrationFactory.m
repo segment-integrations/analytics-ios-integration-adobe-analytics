@@ -27,8 +27,9 @@
     id<SEGADBMediaHeartbeatFactory> mediaHeartbeatFactory = [[SEGRealADBMediaHeartbeatFactory alloc] init];
     id adobeMobile = [ADBMobile class];
     id config = [[ADBMediaHeartbeatConfig alloc] init];
+    id<SEGPlaybackDelegateFactory> delegateFactory = [[SEGRealPlaybackDelegateFactory alloc] init];
 
-    return [[SEGAdobeIntegration alloc] initWithSettings:settings adobe:adobeMobile andMediaHeartbeatFactory:mediaHeartbeatFactory andMediaHeartbeatConfig:config andMediaObjectFactory:mediaObjectFactory];
+    return [[SEGAdobeIntegration alloc] initWithSettings:settings adobe:adobeMobile andMediaHeartbeatFactory:mediaHeartbeatFactory andMediaHeartbeatConfig:config andMediaObjectFactory:mediaObjectFactory andPlaybackDelegateFactory:delegateFactory];
 }
 
 
