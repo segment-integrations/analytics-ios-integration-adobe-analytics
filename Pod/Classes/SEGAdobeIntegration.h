@@ -32,6 +32,17 @@
 @interface VideoAnalyticsProvider : NSObject <ADBMediaHeartbeatDelegate>
 @end
 
+@protocol VideoAnalyticsProvider <NSObject>
+- (void)startDelegateWithInitialTime;
+- (NSTimeInterval)getCurrentPlaybackTime;
+- (void)updatePlayheadPosition:(long)playheadPosition;
+- (void)resumePlayheadAfterSeeking;
+- (void)unPausePlayhead;
+- (void)pausePlayhead;
+- (void)incrementPlayheadPosition;
+
+@end
+
 
 @interface SEGAdobeIntegration : NSObject <SEGIntegration>
 @property (nonatomic, strong, nonnull) NSDictionary *settings;
@@ -46,6 +57,6 @@
 
 @property (nonatomic, strong, nullable) VideoAnalyticsProvider *playbackDelegate;
 
-- (instancetype _Nonnull)initWithSettings:(NSDictionary *_Nonnull)settings adobe:(id _Nullable)adobeMobile andMediaHeartbeatFactory:(id<SEGADBMediaHeartbeatFactory> _Nullable)heartbeatFactory andMediaHeartbeatConfig:(ADBMediaHeartbeatConfig *_Nullable)config andMediaObjectFactory:(id<SEGADBMediaObjectFactory> _Nullable)objectFactory;
+- (instancetype _Nonnull)initWithSettings:(NSDictionary *_Nonnull)settings adobe:(id _Nullable)adobeMobile andMediaHeartbeatFactory:(id<SEGADBMediaHeartbeatFactory> _Nullable)heartbeatFactory andMediaHeartbeatConfig:(ADBMediaHeartbeatConfig *_Nullable)config andMediaObjectFactory:(id<SEGADBMediaObjectFactory> _Nullable)objectFactory andPlaybackDelegate:(id<ADBMediaHeartbeatDelegate>)playbackDelegate;
 
 @end

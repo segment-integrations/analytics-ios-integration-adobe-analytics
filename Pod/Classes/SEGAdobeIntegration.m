@@ -12,17 +12,6 @@
 #import <Analytics/SEGAnalytics.h>
 #import "ADBMediaHeartbeat.h"
 
-@protocol VideoAnalyticsProvider <NSObject>
-- (void)createPlaybackSession;
-- (NSTimeInterval)getCurrentPlaybackTime;
-- (void)updatePlayheadPosition:(long)playheadPosition;
-- (void)resumePlayheadAfterSeeking;
-- (void)unPausePlayhead;
-- (void)pausePlayhead;
-- (void)incrementPlayheadPosition;
-
-@end
-
 
 @implementation VideoAnalyticsProvider
 /**
@@ -54,7 +43,7 @@ BOOL isPaused = false;
   on Video Playback Started, at the time the VideoAnalyticsProvider
   instance is created.
  */
-- (void)createPlaybackSession
+- (void)startDelegateWithInitialTime
 {
     initialTime = CFAbsoluteTimeGetCurrent();
 }
@@ -229,7 +218,7 @@ BOOL isPaused = false;
 
 #pragma mark - Initialization
 
-- (instancetype)initWithSettings:(NSDictionary *)settings adobe:(id _Nullable)ADBMobileClass andMediaHeartbeatFactory:(id<SEGADBMediaHeartbeatFactory>)ADBMediaHeartbeatFactory andMediaHeartbeatConfig:(ADBMediaHeartbeatConfig *)config andMediaObjectFactory:(id<SEGADBMediaObjectFactory> _Nullable)ADBMediaObjectFactory
+- (instancetype)initWithSettings:(NSDictionary *)settings adobe:(id _Nullable)ADBMobileClass andMediaHeartbeatFactory:(id<SEGADBMediaHeartbeatFactory>)ADBMediaHeartbeatFactory andMediaHeartbeatConfig:(ADBMediaHeartbeatConfig *)config andMediaObjectFactory:(id<SEGADBMediaObjectFactory> _Nullable)ADBMediaObjectFactory andPlaybackDelegate:(id<ADBMediaHeartbeatDelegate>)playbackDelegate
 {
     if (self = [super init]) {
         self.settings = settings;
@@ -237,6 +226,7 @@ BOOL isPaused = false;
         self.heartbeatFactory = ADBMediaHeartbeatFactory;
         self.objectFactory = ADBMediaObjectFactory;
         self.config = config;
+        self.playbackDelegate = playbackDelegate;
     }
 
     [self.adobeMobile collectLifecycleData];
@@ -543,8 +533,7 @@ BOOL isPaused = false;
             return;
         }
 
-        self.playbackDelegate = [[VideoAnalyticsProvider alloc] init];
-        [self.playbackDelegate createPlaybackSession]; // We want to capture this initial time as soon as possible.
+        [self.playbackDelegate startDelegateWithInitialTime]; // We want to capture this initial time as soon as possible.
         self.mediaHeartbeat = [self.heartbeatFactory createWithDelegate:self.playbackDelegate andConfig:self.config];
         self.mediaObject = [self createMediaObject:payload.properties andEventType:@"Playback"];
         //TODO: check to see if we need to handle custom metadata (second argument) like with
@@ -611,16 +600,14 @@ BOOL isPaused = false;
     enum ADBMediaHeartbeatEvent videoEvent = [videoTrackEvents[payload.event] intValue];
     switch (videoEvent) {
         case ADBMediaHeartbeatEventBufferStart:
+        case ADBMediaHeartbeatEventSeekStart:
             [self.playbackDelegate pausePlayhead];
             break;
         case ADBMediaHeartbeatEventBufferComplete:
             [self.playbackDelegate unPausePlayhead];
             break;
-        case ADBMediaHeartbeatEventSeekStart:
-            [self.playbackDelegate pausePlayhead];
-            break;
         case ADBMediaHeartbeatEventSeekComplete:
-            [self.playbackDelegate updatePlayheadPosition:[payload.properties[@"seekPosition"] longValue]];
+            [self.playbackDelegate updatePlayheadPosition:[payload.properties[@"seek_position"] longValue]];
             [self.playbackDelegate resumePlayheadAfterSeeking];
             break;
         default:
