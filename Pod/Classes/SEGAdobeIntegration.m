@@ -87,37 +87,24 @@
 
 #pragma mark - Initialization
 
-- (instancetype)initWithSettings:(NSDictionary *)settings
+- (instancetype)initWithSettings:(NSDictionary *)settings adobe:(id _Nullable)ADBMobileClass andMediaHeartbeatFactory:(id<SEGADBMediaHeartbeatFactory>)ADBMediaHeartbeatFactory andMediaHeartbeatConfig:(ADBMediaHeartbeatConfig *)config andMediaObjectFactory:(id<SEGADBMediaObjectFactory> _Nullable)ADBMediaObjectFactory
 {
     if (self = [super init]) {
         self.settings = settings;
-        self.ADBMobile = [ADBMobile class];
-        self.config = [[ADBMediaHeartbeatConfig alloc] init];
-    }
-
-    [self.ADBMobile collectLifecycleData];
-
-    return self;
-}
-
-- (instancetype)initWithSettings:(NSDictionary *)settings andADBMobile:(id _Nullable)ADBMobile andADBMediaHeartbeatFactory:(id<SEGADBMediaHeartbeatFactory>)ADBMediaHeartbeatFactory andADBMediaHeartbeatConfig:(ADBMediaHeartbeatConfig *)config andADBMediaObjectFactory:(id<SEGADBMediaObjectFactory> _Nullable)ADBMediaObjectFactory
-{
-    if (self = [super init]) {
-        self.settings = settings;
-        self.ADBMobile = ADBMobile;
-        self.ADBMediaHeartbeatFactory = ADBMediaHeartbeatFactory;
-        self.ADBMediaObjectFactory = ADBMediaObjectFactory;
+        self.adobeMobile = ADBMobileClass;
+        self.heartbeatFactory = ADBMediaHeartbeatFactory;
+        self.objectFactory = ADBMediaObjectFactory;
         self.config = config;
     }
 
-    [self.ADBMobile collectLifecycleData];
+    [self.adobeMobile collectLifecycleData];
 
     return self;
 }
 
 - (void)reset
 {
-    [self.ADBMobile trackingClearCurrentBeacon];
+    [self.adobeMobile trackingClearCurrentBeacon];
     SEGLog(@"[ADBMobile trackingClearCurrentBeacon];");
 }
 
@@ -126,14 +113,14 @@
     // Choosing to use `trackingSendQueuedHits` in lieu of
     // `trackingClearQueue` because the latter also
     // removes the queued events from the database
-    [self.ADBMobile trackingSendQueuedHits];
+    [self.adobeMobile trackingSendQueuedHits];
     SEGLog(@"ADBMobile trackingSendQueuedHits");
 }
 
 - (void)identify:(SEGIdentifyPayload *)payload
 {
     if (!payload.userId) return;
-    [self.ADBMobile setUserIdentifier:payload.userId];
+    [self.adobeMobile setUserIdentifier:payload.userId];
     SEGLog(@"[ADBMobile setUserIdentifier:%@]", payload.userId);
 }
 
@@ -154,7 +141,7 @@
     NSString *event = payload.event;
     if (adobeEcommerceEvents[event]) {
         NSDictionary *contextData = [self mapProducts:adobeEcommerceEvents[event] andProperties:payload.properties];
-        [self.ADBMobile trackAction:adobeEcommerceEvents[event] data:contextData];
+        [self.adobeMobile trackAction:adobeEcommerceEvents[event] data:contextData];
         SEGLog(@"[ADBMobile trackAction:%@ data:%@];", event, contextData);
         return;
     }
@@ -189,14 +176,14 @@
         return;
     }
     NSDictionary *contextData = [self mapContextValues:payload.properties];
-    [self.ADBMobile trackAction:event data:contextData];
+    [self.adobeMobile trackAction:event data:contextData];
     SEGLog(@"[ADBMobile trackAction:%@ data:%@];", event, contextData);
 }
 
 - (void)screen:(SEGScreenPayload *)payload
 {
     NSMutableDictionary *data = [self mapContextValues:payload.properties];
-    [self.ADBMobile trackState:payload.name data:data];
+    [self.adobeMobile trackState:payload.name data:data];
     SEGLog(@"[ADBMobile trackState:%@ data:%@];", payload.name, data);
 }
 
@@ -413,52 +400,52 @@
         if (!self.config) {
             return;
         }
-        self.ADBMediaHeartbeat = [self.ADBMediaHeartbeatFactory createWithDelegate:nil andConfig:self.config];
+        self.mediaHeartbeat = [self.heartbeatFactory createWithDelegate:nil andConfig:self.config];
         self.mediaObject = [self createMediaObject:payload.properties andEventType:@"Playback"];
         //TODO: check to see if we need to handle custom metadata (second argument) like with
         // contextDataVariables
-        [self.ADBMediaHeartbeat trackSessionStart:self.mediaObject data:payload.properties];
+        [self.mediaHeartbeat trackSessionStart:self.mediaObject data:payload.properties];
         SEGLog(@"[ADBMediaHeartbeat trackSessionStart:%@ data:@%]", self.mediaObject, payload.properties);
         return;
     }
 
     if ([payload.event isEqualToString:@"Video Playback Paused"]) {
-        [self.ADBMediaHeartbeat trackPause];
+        [self.mediaHeartbeat trackPause];
         SEGLog(@"[ADBMediaHeartbeat trackPause]");
         return;
     }
 
     if ([payload.event isEqualToString:@"Video Playback Resumed"]) {
-        [self.ADBMediaHeartbeat trackPlay];
+        [self.mediaHeartbeat trackPlay];
         SEGLog(@"[ADBMediaHeartbeat trackPlay]");
         return;
     }
 
     if ([payload.event isEqualToString:@"Video Playback Completed"]) {
-        [self.ADBMediaHeartbeat trackSessionEnd];
+        [self.mediaHeartbeat trackSessionEnd];
         SEGLog(@"[ADBMediaHeartbeat trackSessionEnd]");
         return;
     }
 
     if ([payload.event isEqualToString:@"Video Content Started"]) {
-        [self.ADBMediaHeartbeat trackPlay];
+        [self.mediaHeartbeat trackPlay];
         SEGLog(@"[ADBMediaHeartbeat trackPlay]");
 
         self.mediaObject = [self createMediaObject:payload.properties andEventType:@"Content"];
-        [self.ADBMediaHeartbeat trackEvent:ADBMediaHeartbeatEventChapterStart mediaObject:self.mediaObject data:payload.properties];
+        [self.mediaHeartbeat trackEvent:ADBMediaHeartbeatEventChapterStart mediaObject:self.mediaObject data:payload.properties];
         SEGLog(@"[ADBMediaHeartbeat trackEvent:ADBMediaHeartbeatEventChapterStart mediaObject:%@ data:%@]", self.mediaObject, payload.properties);
         return;
     }
 
     if ([payload.event isEqualToString:@"Video Content Completed"]) {
-        [self.ADBMediaHeartbeat trackComplete];
+        [self.mediaHeartbeat trackComplete];
         SEGLog(@"[ADBMediaHeartbeat trackComplete]");
 
         self.mediaObject = [self createMediaObject:payload.properties andEventType:@"Content"];
 
         // Adobe examples show that the mediaObject and data should be nil on Chapter Complete events
         // https://github.com/Adobe-Marketing-Cloud/video-heartbeat-v2/blob/master/sdks/iOS/samples/BasicPlayerSample/BasicPlayerSample/Classes/analytics/VideoAnalyticsProvider.m#L158
-        [self.ADBMediaHeartbeat trackEvent:ADBMediaHeartbeatEventChapterComplete mediaObject:nil data:nil];
+        [self.mediaHeartbeat trackEvent:ADBMediaHeartbeatEventChapterComplete mediaObject:nil data:nil];
         SEGLog(@"[ADBMediaHeartbeat trackEvent:ADBMediaHeartbeatEventChapterComplete mediaObject:nil data:nil]");
         return;
     }
@@ -473,7 +460,7 @@
     enum ADBMediaHeartbeatEvent videoEvent = [videoTrackEvents[payload.event] intValue];
     if (videoEvent) {
         self.mediaObject = [self createMediaObject:payload.properties andEventType:@"Video"];
-        [self.ADBMediaHeartbeat trackEvent:videoEvent mediaObject:self.mediaObject data:payload.properties];
+        [self.mediaHeartbeat trackEvent:videoEvent mediaObject:self.mediaObject data:payload.properties];
         SEGLog(@"[ADBMediaHeartbeat trackEvent:ADBMediaHeartbeatEventBufferStart mediaObject:%@ data:%@]", self.mediaObject, payload.properties);
         return;
     }
@@ -482,33 +469,33 @@
     // write a proposal to add this to the Video Spec
     if ([payload.event isEqualToString:@"Video Ad Break Started"]) {
         self.mediaObject = [self createMediaObject:payload.properties andEventType:@"Ad Break"];
-        [self.ADBMediaHeartbeat trackEvent:ADBMediaHeartbeatEventAdBreakStart mediaObject:self.mediaObject data:nil];
+        [self.mediaHeartbeat trackEvent:ADBMediaHeartbeatEventAdBreakStart mediaObject:self.mediaObject data:nil];
         SEGLog(@"[ADBMediaHeartbeat trackEvent:ADBMediaHeartbeatEventAdBreakStart mediaObject:%@ data:nil]", self.mediaObject);
         return;
     }
 
     if ([payload.event isEqualToString:@"Video Ad Break Completed"]) {
-        [self.ADBMediaHeartbeat trackEvent:ADBMediaHeartbeatEventAdBreakComplete mediaObject:nil data:nil];
+        [self.mediaHeartbeat trackEvent:ADBMediaHeartbeatEventAdBreakComplete mediaObject:nil data:nil];
         SEGLog(@"[ADBMediaHeartbeat trackEvent:ADBMediaHeartbeatEventAdBreakComplete mediaObject:nil data:nil]");
         return;
     }
 
     if ([payload.event isEqualToString:@"Video Ad Started"]) {
         self.mediaObject = [self createMediaObject:payload.properties andEventType:@"Ad"];
-        [self.ADBMediaHeartbeat trackEvent:ADBMediaHeartbeatEventAdStart mediaObject:self.mediaObject data:payload.properties];
+        [self.mediaHeartbeat trackEvent:ADBMediaHeartbeatEventAdStart mediaObject:self.mediaObject data:payload.properties];
         SEGLog(@"[ADBMediaHeartbeat trackEvent:ADBMediaHeartbeatEventAdStart mediaObject:%@ data:%@]", self.mediaObject, payload.properties);
         return;
     }
 
     // Not spec'd
     if ([payload.event isEqualToString:@"Video Ad Skipped"]) {
-        [self.ADBMediaHeartbeat trackEvent:ADBMediaHeartbeatEventAdSkip mediaObject:nil data:nil];
+        [self.mediaHeartbeat trackEvent:ADBMediaHeartbeatEventAdSkip mediaObject:nil data:nil];
         SEGLog(@"[ADBMediaHeartbeat trackEvent:ADBMediaHeartbeatEventAdSkip mediaObject:nil data:nil]");
         return;
     }
 
     if ([payload.event isEqualToString:@"Video Ad Completed"]) {
-        [self.ADBMediaHeartbeat trackEvent:ADBMediaHeartbeatEventAdComplete mediaObject:nil data:nil];
+        [self.mediaHeartbeat trackEvent:ADBMediaHeartbeatEventAdComplete mediaObject:nil data:nil];
         SEGLog(@"[self.ADBMediaHeartbeat trackEvent:ADBMediaHeartbeatEventAdComplete mediaObject:nil data:nil];");
         return;
     }
@@ -530,12 +517,12 @@
     NSDictionary *properties = payload.properties;
     NSDictionary *options = payload.integrations[@"Adobe Analytics"];
 
-    bool sslEnabled = false;
+    BOOL sslEnabled = false;
     if (self.settings[@"ssl"]) {
         sslEnabled = true;
     }
 
-    bool debugEnabled = false;
+    BOOL debugEnabled = false;
     if (options[@"debug"]) {
         debugEnabled = true;
     }
@@ -607,7 +594,7 @@
 
 - (ADBMediaObject *)createMediaObject:(NSDictionary *)properties andEventType:(NSString *)eventType
 {
-    self.mediaObject = [self.ADBMediaObjectFactory createWithProperties:properties andEventType:eventType];
+    self.mediaObject = [self.objectFactory createWithProperties:properties andEventType:eventType];
     NSMutableDictionary *standardVideoMetadata = [self mapStandardVideoMetadata:properties andEventType:eventType];
     [self.mediaObject setValue:standardVideoMetadata forKey:ADBMediaObjectKeyStandardVideoMetadata];
     return self.mediaObject;

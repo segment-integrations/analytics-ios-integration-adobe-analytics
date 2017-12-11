@@ -31,16 +31,15 @@
 
 @interface SEGAdobeIntegration : NSObject <SEGIntegration>
 @property (nonatomic, strong, nonnull) NSDictionary *settings;
-@property (nonatomic, strong) Class _Nullable ADBMobile;
+@property (nonatomic, strong) Class _Nullable adobeMobile;
 
-@property (nonatomic, strong, nullable) ADBMediaHeartbeat *ADBMediaHeartbeat;
-@property (nonatomic, strong, nullable) id<SEGADBMediaHeartbeatFactory> ADBMediaHeartbeatFactory;
+@property (nonatomic, strong, nullable) ADBMediaHeartbeat *mediaHeartbeat;
+@property (nonatomic, strong, nullable) id<SEGADBMediaHeartbeatFactory> heartbeatFactory;
 @property (nonatomic, strong, nullable) ADBMediaHeartbeatConfig *config;
 
 @property (nonatomic, strong, nullable) ADBMediaObject *mediaObject;
-@property (nonatomic, strong, nullable) id<SEGADBMediaObjectFactory> ADBMediaObjectFactory;
+@property (nonatomic, strong, nullable) id<SEGADBMediaObjectFactory> objectFactory;
 
-- (instancetype _Nonnull)initWithSettings:(NSDictionary *_Nonnull)settings;
-- (instancetype _Nonnull)initWithSettings:(NSDictionary *_Nonnull)settings andADBMobile:(id _Nullable)ADBMobile andADBMediaHeartbeatFactory:(id<SEGADBMediaHeartbeatFactory> _Nullable)ADBMediaHeartbeatFactory andADBMediaHeartbeatConfig:(ADBMediaHeartbeatConfig *_Nullable)config andADBMediaObjectFactory:(id<SEGADBMediaObjectFactory> _Nullable)ADBMediaObjectFactory;
+- (instancetype _Nonnull)initWithSettings:(NSDictionary *_Nonnull)settings adobe:(id _Nullable)adobeMobile andMediaHeartbeatFactory:(id<SEGADBMediaHeartbeatFactory> _Nullable)heartbeatFactory andMediaHeartbeatConfig:(ADBMediaHeartbeatConfig *_Nullable)config andMediaObjectFactory:(id<SEGADBMediaObjectFactory> _Nullable)objectFactory;
 
 @end
