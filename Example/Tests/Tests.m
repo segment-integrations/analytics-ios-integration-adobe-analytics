@@ -981,6 +981,54 @@ describe(@"SEGAdobeIntegration", ^{
             });
 
         });
+        describe(@"Quality of Service Events", ^{
+            beforeEach(^{
+                // Video Playback Started initializes an instance of ADBMediaHeartbeat, which we need for testing subsequent Video Events
+                SEGTrackPayload *payload = [[SEGTrackPayload alloc] initWithEvent:@"Video Playback Started" properties:@{} context:@{}
+                                                                     integrations:@{}];
+                [integration track:payload];
+            });
+            
+            it(@"tracks Quality of Service event", ^{
+                SEGMockADBMediaHeartbeatFactory *mockADBMediaHeartbeatFactory = [[SEGMockADBMediaHeartbeatFactory alloc] init];
+                mockADBMediaHeartbeatFactory.ADBMediaHeartbeat = mockADBMediaHeartbeat;
+                
+                SEGMockPlaybackDelegateFactory *mockPlaybackDelegateFactory = [[SEGMockPlaybackDelegateFactory alloc] init];
+                mockPlaybackDelegateFactory.playbackDelegate = mockPlaybackDelegate;
+                
+                SEGTrackPayload *payload = [[SEGTrackPayload alloc] initWithEvent:@"Video Quality Updated" properties:@{
+                                                                                                                        @"bitrate" : @500000,
+                                                                                                                        @"startup_time" : @2,
+                                                                                                                        @"fps" : @24,
+                                                                                                                        @"dropped_frames" : @10
+                                                                                                                        } context:@{}
+                                                                     integrations:@{}];
+                
+                [integration track:payload];
+                [verify(mockPlaybackDelegate) createAndUpdateQOSObject:@{
+                                                                 @"bitrate" : @500000,
+                                                                 @"startup_time" : @2,
+                                                                 @"fps" : @24,
+                                                                 @"dropped_frames" : @10
+                                                                 }];
+            });
+            
+            it(@"tracks Quality of Service event without properties", ^{
+                SEGMockADBMediaHeartbeatFactory *mockADBMediaHeartbeatFactory = [[SEGMockADBMediaHeartbeatFactory alloc] init];
+                mockADBMediaHeartbeatFactory.ADBMediaHeartbeat = mockADBMediaHeartbeat;
+                
+                SEGMockPlaybackDelegateFactory *mockPlaybackDelegateFactory = [[SEGMockPlaybackDelegateFactory alloc] init];
+                mockPlaybackDelegateFactory.playbackDelegate = mockPlaybackDelegate;
+                
+                SEGTrackPayload *payload = [[SEGTrackPayload alloc] initWithEvent:@"Video Quality Updated" properties:@{} context:@{}
+                                                                     integrations:@{}];
+                
+                [integration track:payload];
+                [verify(mockPlaybackDelegate) createAndUpdateQOSObject:@{}];
+            });
+            
+        });
+
     });
 });
 
@@ -1064,10 +1112,7 @@ describe(@"SEGPlaybackDelegate", ^{
             assertThatLong(playbackDelegate.initialTime, equalToLong(CFAbsoluteTimeGetCurrent()));
             assertThatLong(playbackDelegate.updatedPlayheadPosition, equalToLong(5));
         });
-
     });
-
-
 });
 
 SpecEnd

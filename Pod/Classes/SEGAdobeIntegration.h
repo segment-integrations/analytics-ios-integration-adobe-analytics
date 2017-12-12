@@ -61,6 +61,7 @@
 - (void)pausePlayhead;
 - (void)incrementPlayheadPosition;
 - (instancetype _Nullable)initWithDelegate:(SEGPlaybackDelegate *_Nullable)playbackDelegate;
+- (void)createAndUpdateQOSObject:(NSDictionary *_Nullable)properties;
 @end
 
 @protocol SEGPlaybackDelegateFactory <NSObject>
