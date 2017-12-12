@@ -13,7 +13,7 @@
 #import "ADBMediaHeartbeat.h"
 
 
-@implementation VideoAnalyticsProvider
+@implementation SEGPlaybackDelegate
 /**
  * The system time in millis at which the playhead is first set or updated. The playhead is
  * first set upon instantiation of the PlaybackDelegate. The value is updated whenever
@@ -37,16 +37,14 @@ long offset = 0;
 /** Whether the video playhead is in a paused state. */
 BOOL isPaused = false;
 
-
-/**
-  Sets initial time upon delegate creation. This will be called
-  on Video Playback Started, at the time the VideoAnalyticsProvider
-  instance is created.
- */
-- (void)startDelegateWithInitialTime
+- (instancetype)init
 {
-    initialTime = CFAbsoluteTimeGetCurrent();
+    if (self = [super init]) {
+        initialTime = CFAbsoluteTimeGetCurrent();
+    }
+    return self;
 }
+
 
 /**
  * Adobe invokes this method once per second to resolve the current position of the video
@@ -144,6 +142,14 @@ BOOL isPaused = false;
 @end
 
 
+@implementation SEGRealPlaybackDelegateFactory
+- (SEGPlaybackDelegate *)createPlaybackDelegate
+{
+    return [[SEGPlaybackDelegate alloc] init];
+}
+@end
+
+
 @implementation SEGRealADBMediaHeartbeatFactory
 
 - (ADBMediaHeartbeat *)createWithDelegate:(id)delegate andConfig:(ADBMediaHeartbeatConfig *)config;
@@ -218,7 +224,7 @@ BOOL isPaused = false;
 
 #pragma mark - Initialization
 
-- (instancetype)initWithSettings:(NSDictionary *)settings adobe:(id _Nullable)ADBMobileClass andMediaHeartbeatFactory:(id<SEGADBMediaHeartbeatFactory>)ADBMediaHeartbeatFactory andMediaHeartbeatConfig:(ADBMediaHeartbeatConfig *)config andMediaObjectFactory:(id<SEGADBMediaObjectFactory> _Nullable)ADBMediaObjectFactory andPlaybackDelegate:(id<ADBMediaHeartbeatDelegate>)playbackDelegate
+- (instancetype)initWithSettings:(NSDictionary *)settings adobe:(id _Nullable)ADBMobileClass andMediaHeartbeatFactory:(id<SEGADBMediaHeartbeatFactory>)ADBMediaHeartbeatFactory andMediaHeartbeatConfig:(ADBMediaHeartbeatConfig *)config andMediaObjectFactory:(id<SEGADBMediaObjectFactory> _Nullable)ADBMediaObjectFactory andPlaybackDelegateFactory:(id<SEGPlaybackDelegateFactory>)delegateFactory
 {
     if (self = [super init]) {
         self.settings = settings;
@@ -226,7 +232,7 @@ BOOL isPaused = false;
         self.heartbeatFactory = ADBMediaHeartbeatFactory;
         self.objectFactory = ADBMediaObjectFactory;
         self.config = config;
-        self.playbackDelegate = playbackDelegate;
+        self.delegateFactory = delegateFactory;
     }
 
     [self.adobeMobile collectLifecycleData];
@@ -533,7 +539,7 @@ BOOL isPaused = false;
             return;
         }
 
-        [self.playbackDelegate startDelegateWithInitialTime]; // We want to capture this initial time as soon as possible.
+        self.playbackDelegate = [self.delegateFactory createPlaybackDelegate];
         self.mediaHeartbeat = [self.heartbeatFactory createWithDelegate:self.playbackDelegate andConfig:self.config];
         self.mediaObject = [self createMediaObject:payload.properties andEventType:@"Playback"];
         //TODO: check to see if we need to handle custom metadata (second argument) like with

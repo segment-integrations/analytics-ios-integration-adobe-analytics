@@ -28,19 +28,25 @@
 @interface SEGRealADBMediaObjectFactory : NSObject <SEGADBMediaObjectFactory>
 @end
 
-
-@interface VideoAnalyticsProvider : NSObject <ADBMediaHeartbeatDelegate>
+@protocol SEGPlaybackDelegate <NSObject>
 @end
 
-@protocol VideoAnalyticsProvider <NSObject>
-- (void)startDelegateWithInitialTime;
+
+@interface SEGPlaybackDelegate : NSObject <ADBMediaHeartbeatDelegate>
 - (NSTimeInterval)getCurrentPlaybackTime;
 - (void)updatePlayheadPosition:(long)playheadPosition;
 - (void)resumePlayheadAfterSeeking;
 - (void)unPausePlayhead;
 - (void)pausePlayhead;
 - (void)incrementPlayheadPosition;
+@end
 
+@protocol SEGPlaybackDelegateFactory <NSObject>
+- (SEGPlaybackDelegate *_Nullable)createPlaybackDelegate;
+@end
+
+
+@interface SEGRealPlaybackDelegateFactory : NSObject <SEGPlaybackDelegateFactory>
 @end
 
 
@@ -55,8 +61,9 @@
 @property (nonatomic, strong, nullable) ADBMediaObject *mediaObject;
 @property (nonatomic, strong, nullable) id<SEGADBMediaObjectFactory> objectFactory;
 
-@property (nonatomic, strong, nullable) VideoAnalyticsProvider *playbackDelegate;
+@property (nonatomic, strong, nullable) SEGPlaybackDelegate *playbackDelegate;
+@property (nonatomic, strong, nullable) id<SEGPlaybackDelegateFactory> delegateFactory;
 
-- (instancetype _Nonnull)initWithSettings:(NSDictionary *_Nonnull)settings adobe:(id _Nullable)adobeMobile andMediaHeartbeatFactory:(id<SEGADBMediaHeartbeatFactory> _Nullable)heartbeatFactory andMediaHeartbeatConfig:(ADBMediaHeartbeatConfig *_Nullable)config andMediaObjectFactory:(id<SEGADBMediaObjectFactory> _Nullable)objectFactory andPlaybackDelegate:(id<ADBMediaHeartbeatDelegate>)playbackDelegate;
+- (instancetype _Nonnull)initWithSettings:(NSDictionary *_Nonnull)settings adobe:(id _Nullable)adobeMobile andMediaHeartbeatFactory:(id<SEGADBMediaHeartbeatFactory> _Nullable)heartbeatFactory andMediaHeartbeatConfig:(ADBMediaHeartbeatConfig *_Nullable)config andMediaObjectFactory:(id<SEGADBMediaObjectFactory> _Nullable)objectFactory andPlaybackDelegateFactory:(id<SEGPlaybackDelegateFactory> _Nullable)delegateFactory;
 
 @end
