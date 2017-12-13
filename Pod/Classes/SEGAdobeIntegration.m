@@ -15,12 +15,6 @@
 
 @implementation SEGPlaybackDelegate
 
-/**
- * Quality of service object. This is created and updated upon receipt of a "Video Quality
- * Updated" event, which triggers createAndUpdateQosObject(Properties).
- */
-ADBMediaObject *qosObject;
-
 - (instancetype)initWithDelegate:(SEGPlaybackDelegate *)playbackDelegate
 {
     self.playbackDelegate = playbackDelegate;
@@ -135,10 +129,10 @@ ADBMediaObject *qosObject;
     long startupTime = [properties[@"startup_time"] longValue] ?: 0;
     long fps = [properties[@"fps"] longValue] ?: 0;
     long droppedFrames = [properties[@"dropped_frames"] longValue] ?: 0;
-    qosObject = [ADBMediaHeartbeat createQoSObjectWithBitrate:bitrate
-                                                  startupTime:startupTime
-                                                          fps:fps
-                                                droppedFrames:droppedFrames];
+    self.qosObject = [ADBMediaHeartbeat createQoSObjectWithBitrate:bitrate
+                                                       startupTime:startupTime
+                                                               fps:fps
+                                                     droppedFrames:droppedFrames];
 }
 
 
@@ -149,7 +143,7 @@ ADBMediaObject *qosObject;
  */
 - (ADBMediaObject *)getQoSObject
 {
-    return qosObject;
+    return self.qosObject;
 }
 
 @end

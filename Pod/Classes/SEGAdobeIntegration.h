@@ -32,6 +32,11 @@
 @interface SEGPlaybackDelegate : NSObject <ADBMediaHeartbeatDelegate>
 @property (nonatomic, strong, nullable) SEGPlaybackDelegate *playbackDelegate;
 /**
+ * Quality of service object. This is created and updated upon receipt of a "Video Quality
+ * Updated" event, which triggers createAndUpdateQosObject(Properties).
+ */
+@property (nonatomic, strong, nullable) ADBMediaObject *qosObject;
+/**
  * The system time in millis at which the playhead is first set or updated. The playhead is
  * first set upon instantiation of the PlaybackDelegate. The value is updated whenever
  * updatePlayheadPosition is invoked.
