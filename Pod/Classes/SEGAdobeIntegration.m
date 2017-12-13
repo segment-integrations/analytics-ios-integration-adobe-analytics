@@ -14,33 +14,12 @@
 
 
 @implementation SEGPlaybackDelegate
-/**
- * The system time in millis at which the playhead is first set or updated. The playhead is
- * first set upon instantiation of the PlaybackDelegate. The value is updated whenever
- * updatePlayheadPosition is invoked.
- */
-long initialTime;
-/** The current playhead position in seconds. */
-long playheadPosition;
-/** The position of the playhead in seconds when the video was paused. */
-long pausedPlayheadPosition;
-/** The system time in millis at which {@link #pausePlayhead} was invoked. */
-long pausedStartedTime;
-/**
- * The updated playhead position - this variable is assigned to the value a customer passes as
- * properties.seekPosition in a "Video Playback Seek Completed" event or properties.position in
- * a "Video Content Started" event
- */
-long updatedPlayheadPosition;
-/** The total time in seconds a video has been in a paused state during a video session. */
-long offset = 0;
-/** Whether the video playhead is in a paused state. */
-BOOL isPaused = false;
 
-- (instancetype)init
+- (instancetype)initWithDelegate:(SEGPlaybackDelegate *)playbackDelegate
 {
+    self.playbackDelegate = playbackDelegate;
     if (self = [super init]) {
-        initialTime = CFAbsoluteTimeGetCurrent();
+        self.initialTime = CFAbsoluteTimeGetCurrent();
     }
     return self;
 }
@@ -53,11 +32,11 @@ BOOL isPaused = false;
  */
 - (NSTimeInterval)getCurrentPlaybackTime
 {
-    if (!isPaused) {
-        [self incrementPlayheadPosition];
-        return playheadPosition;
+    if (!self.isPaused) {
+        [self.playbackDelegate incrementPlayheadPosition];
+        return self.playheadPosition;
     }
-    return pausedPlayheadPosition;
+    return self.pausedPlayheadPosition;
 }
 
 /**
@@ -74,7 +53,7 @@ BOOL isPaused = false;
 
 - (void)incrementPlayheadPosition
 {
-    playheadPosition = updatedPlayheadPosition + ((CFAbsoluteTimeGetCurrent() - initialTime) / 1000) - offset;
+    self.playheadPosition = self.updatedPlayheadPosition + ((CFAbsoluteTimeGetCurrent() - self.initialTime) / 1000) - self.offset;
 }
 
 /**
@@ -85,9 +64,9 @@ BOOL isPaused = false;
 
 - (void)pausePlayhead
 {
-    pausedPlayheadPosition = playheadPosition;
-    pausedStartedTime = CFAbsoluteTimeGetCurrent();
-    isPaused = true;
+    self.pausedPlayheadPosition = self.playheadPosition;
+    self.pausedStartedTime = CFAbsoluteTimeGetCurrent();
+    self.isPaused = true;
 }
 
 /**
@@ -105,12 +84,12 @@ BOOL isPaused = false;
 
 - (void)unPausePlayhead
 {
-    if (offset == 0) {
-        offset = (CFAbsoluteTimeGetCurrent() - pausedStartedTime) / 1000;
+    if (self.offset == 0) {
+        self.offset = (CFAbsoluteTimeGetCurrent() - self.pausedStartedTime) / 1000;
     } else {
-        offset += (CFAbsoluteTimeGetCurrent() - pausedStartedTime) / 1000;
+        self.offset += (CFAbsoluteTimeGetCurrent() - self.pausedStartedTime) / 1000;
     }
-    isPaused = false;
+    self.isPaused = false;
 }
 
 /**
@@ -120,7 +99,7 @@ BOOL isPaused = false;
 
 - (void)resumePlayheadAfterSeeking
 {
-    isPaused = false;
+    self.isPaused = false;
 }
 
 /**
@@ -135,8 +114,8 @@ BOOL isPaused = false;
  */
 - (void)updatePlayheadPosition:(long)playheadPosition
 {
-    initialTime = CFAbsoluteTimeGetCurrent();
-    updatedPlayheadPosition = playheadPosition;
+    self.initialTime = CFAbsoluteTimeGetCurrent();
+    self.updatedPlayheadPosition = playheadPosition;
 }
 
 @end
@@ -145,7 +124,7 @@ BOOL isPaused = false;
 @implementation SEGRealPlaybackDelegateFactory
 - (SEGPlaybackDelegate *)createPlaybackDelegate
 {
-    return [[SEGPlaybackDelegate alloc] init];
+    return [[SEGPlaybackDelegate alloc] initWithDelegate:self.playbackDelegate];
 }
 @end
 

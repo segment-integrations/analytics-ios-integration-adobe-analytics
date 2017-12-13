@@ -468,6 +468,8 @@ describe(@"SEGAdobeIntegration", ^{
         });
 
         describe(@"initialization", ^{
+            SEGMockPlaybackDelegateFactory *mockPlaybackDelegateFactory = [[SEGMockPlaybackDelegateFactory alloc] init];
+            mockPlaybackDelegateFactory.playbackDelegate = mockPlaybackDelegate;
 
             it(@"Video Playback Started initializes ADBMediaHeartbeat object", ^{
                 SEGTrackPayload *payload = [[SEGTrackPayload alloc] initWithEvent:@"Video Playback Started" properties:@{
@@ -485,6 +487,7 @@ describe(@"SEGAdobeIntegration", ^{
                     @"video_player" : @"Netflix",
                     @"channel" : @"Cartoon Network"
                 }];
+
                 assertThat(config.trackingServer, is(@"example"));
                 assertThat(config.channel, is(@"Cartoon Network"));
                 assertThat(config.playerName, is(@"Netflix"));
@@ -978,8 +981,93 @@ describe(@"SEGAdobeIntegration", ^{
             });
 
         });
+    });
+});
+
+describe(@"SEGPlaybackDelegate", ^{
+    __block SEGPlaybackDelegate *playbackDelegate;
+    __block SEGPlaybackDelegate *mockDelegate;
+    __block SEGMockPlaybackDelegateFactory *mockPlaybackDelegateFactory = [[SEGMockPlaybackDelegateFactory alloc] init];
+
+    beforeEach(^{
+        mockPlaybackDelegateFactory.playbackDelegate = mockDelegate;
+        mockDelegate = mock([SEGPlaybackDelegate class]);
+
+        playbackDelegate = [[SEGPlaybackDelegate alloc] initWithDelegate:mockDelegate];
+    });
+
+    describe(@"SEGPlaybackDelegate", ^{
+        it(@"sets initialTime on initialization", ^{
+            long currentTime = CFAbsoluteTimeGetCurrent();
+            assertThatLong(playbackDelegate.initialTime, equalToLong(currentTime));
+        });
+
+        it(@"gets incrementPlayheadPosition if not paused", ^{
+            playbackDelegate.isPaused = false;
+            [playbackDelegate getCurrentPlaybackTime];
+            [verify(mockDelegate) incrementPlayheadPosition];
+        });
+
+        it(@"pauses playhead position if paused", ^{
+            playbackDelegate.isPaused = true;
+            [playbackDelegate getCurrentPlaybackTime];
+            assertThatLong(playbackDelegate.pausedPlayheadPosition, equalToLong(0));
+        });
+
+        it(@"increments playheadPosition", ^{
+            playbackDelegate.updatedPlayheadPosition = 0;
+            playbackDelegate.initialTime = 0;
+            playbackDelegate.offset = 0;
+            long currentTime = CFAbsoluteTimeGetCurrent();
+            [playbackDelegate incrementPlayheadPosition];
+            assertThatLong(playbackDelegate.playheadPosition, equalToLong(currentTime / 1000));
+        });
+
+        it(@"increments playheadPosition", ^{
+            [playbackDelegate incrementPlayheadPosition];
+            assertThatLong(playbackDelegate.playheadPosition, equalToLong(0));
+        });
+
+        it(@"pausePlayhead", ^{
+            [playbackDelegate pausePlayhead];
+            long currentTime = CFAbsoluteTimeGetCurrent();
+            assertThatLong(playbackDelegate.pausedPlayheadPosition, equalToLong(playbackDelegate.playheadPosition));
+            assertThatLong(playbackDelegate.pausedStartedTime, equalToLong(currentTime));
+            assertThatBool(playbackDelegate.isPaused, isTrue());
+        });
+
+        it(@"unPausePlayhead with no offset", ^{
+            playbackDelegate.offset = 0;
+            [playbackDelegate unPausePlayhead];
+            long currentTime = CFAbsoluteTimeGetCurrent();
+            playbackDelegate.pausedStartedTime = 0;
+            assertThatLong(playbackDelegate.offset, equalToLong(currentTime / 1000));
+            assertThatBool(playbackDelegate.isPaused, isFalse());
+        });
+
+        it(@"unPausePlayhead with offset", ^{
+            playbackDelegate.offset = 5;
+            [playbackDelegate unPausePlayhead];
+            long currentTime = CFAbsoluteTimeGetCurrent();
+            playbackDelegate.pausedStartedTime = 0;
+            assertThatLong(playbackDelegate.offset, equalToLong(5 + (currentTime / 1000)));
+            assertThatBool(playbackDelegate.isPaused, isFalse());
+        });
+
+        it(@"resumePlayheadAfterSeeking", ^{
+            [playbackDelegate resumePlayheadAfterSeeking];
+            assertThatBool(playbackDelegate.isPaused, isFalse());
+        });
+
+        it(@"updatePlayheadPosition", ^{
+            [playbackDelegate updatePlayheadPosition:5];
+            assertThatLong(playbackDelegate.initialTime, equalToLong(CFAbsoluteTimeGetCurrent()));
+            assertThatLong(playbackDelegate.updatedPlayheadPosition, equalToLong(5));
+        });
 
     });
 
+
 });
+
 SpecEnd
