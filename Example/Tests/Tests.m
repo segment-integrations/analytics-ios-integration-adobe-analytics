@@ -42,7 +42,7 @@
 
 
 @implementation SEGMockPlaybackDelegateFactory
-- (SEGPlaybackDelegate *_Nullable)createPlaybackDelegate
+- (SEGPlaybackDelegate *_Nullable)createPlaybackDelegateWithPosition:(long)playheadPosition
 {
     return self.playbackDelegate;
 }
@@ -487,7 +487,6 @@ describe(@"SEGAdobeIntegration", ^{
                     @"video_player" : @"Netflix",
                     @"channel" : @"Cartoon Network"
                 }];
-
                 assertThat(config.trackingServer, is(@"example"));
                 assertThat(config.channel, is(@"Cartoon Network"));
                 assertThat(config.playerName, is(@"Netflix"));
@@ -646,6 +645,7 @@ describe(@"SEGAdobeIntegration", ^{
 
                 [integration track:payload];
                 [verify(mockPlaybackDelegate) unPausePlayhead];
+                [verify(mockPlaybackDelegate) updatePlayheadPosition:90];
                 [verify(mockADBMediaHeartbeat) trackEvent:ADBMediaHeartbeatEventBufferComplete mediaObject:mockADBMediaObject data:@{
                     @"content_asset_id" : @"1230",
                     @"ad_type" : @"mid-roll",
@@ -702,6 +702,7 @@ describe(@"SEGAdobeIntegration", ^{
                     @"ad_type" : @"pre-roll",
                     @"video_player" : @"vimeo",
                     @"seek_position" : @20,
+                    @"position" : @20,
                     @"sound" : @100,
                     @"full_screen" : @YES,
                     @"bitrate" : @50
@@ -710,13 +711,14 @@ describe(@"SEGAdobeIntegration", ^{
                     integrations:@{}];
 
                 [integration track:payload];
+                [verify(mockPlaybackDelegate) unPausePlayhead];
                 [verify(mockPlaybackDelegate) updatePlayheadPosition:20];
-                [verify(mockPlaybackDelegate) resumePlayheadAfterSeeking];
                 [verify(mockADBMediaHeartbeat) trackEvent:ADBMediaHeartbeatEventSeekComplete mediaObject:mockADBMediaObject data:@{
                     @"content_asset_id" : @"6352",
                     @"ad_type" : @"pre-roll",
                     @"video_player" : @"vimeo",
                     @"seek_position" : @20,
+                    @"position" : @20,
                     @"sound" : @100,
                     @"full_screen" : @YES,
                     @"bitrate" : @50
@@ -768,6 +770,7 @@ describe(@"SEGAdobeIntegration", ^{
                     integrations:@{}];
 
                 [integration track:payload];
+                [verify(mockPlaybackDelegate) pausePlayhead];
                 [verify(mockADBMediaHeartbeat) trackSessionEnd];
             });
 
@@ -805,7 +808,6 @@ describe(@"SEGAdobeIntegration", ^{
                 } context:@{}
                     integrations:@{}];
                 [integration track:payload];
-                [verify(mockPlaybackDelegate) updatePlayheadPosition:22];
                 [verify(mockADBMediaHeartbeat) trackPlay];
                 [verify(mockADBMediaHeartbeat) trackEvent:ADBMediaHeartbeatEventChapterStart mediaObject:mockADBMediaObject data:@{
                     @"asset_id" : @"3543",
@@ -985,133 +987,98 @@ describe(@"SEGAdobeIntegration", ^{
             beforeEach(^{
                 // Video Playback Started initializes an instance of ADBMediaHeartbeat, which we need for testing subsequent Video Events
                 SEGTrackPayload *payload = [[SEGTrackPayload alloc] initWithEvent:@"Video Playback Started" properties:@{} context:@{}
-                                                                     integrations:@{}];
+                    integrations:@{}];
                 [integration track:payload];
             });
-            
+
             it(@"tracks Quality of Service event", ^{
                 SEGMockADBMediaHeartbeatFactory *mockADBMediaHeartbeatFactory = [[SEGMockADBMediaHeartbeatFactory alloc] init];
                 mockADBMediaHeartbeatFactory.ADBMediaHeartbeat = mockADBMediaHeartbeat;
-                
+
                 SEGMockPlaybackDelegateFactory *mockPlaybackDelegateFactory = [[SEGMockPlaybackDelegateFactory alloc] init];
                 mockPlaybackDelegateFactory.playbackDelegate = mockPlaybackDelegate;
-                
+
                 SEGTrackPayload *payload = [[SEGTrackPayload alloc] initWithEvent:@"Video Quality Updated" properties:@{
-                                                                                                                        @"bitrate" : @500000,
-                                                                                                                        @"startup_time" : @2,
-                                                                                                                        @"fps" : @24,
-                                                                                                                        @"dropped_frames" : @10
-                                                                                                                        } context:@{}
-                                                                     integrations:@{}];
-                
+                    @"bitrate" : @500000,
+                    @"startup_time" : @2,
+                    @"fps" : @24,
+                    @"dropped_frames" : @10
+                } context:@{}
+                    integrations:@{}];
+
                 [integration track:payload];
                 [verify(mockPlaybackDelegate) createAndUpdateQOSObject:@{
-                                                                 @"bitrate" : @500000,
-                                                                 @"startup_time" : @2,
-                                                                 @"fps" : @24,
-                                                                 @"dropped_frames" : @10
-                                                                 }];
+                    @"bitrate" : @500000,
+                    @"startup_time" : @2,
+                    @"fps" : @24,
+                    @"dropped_frames" : @10
+                }];
             });
-            
+
             it(@"tracks Quality of Service event without properties", ^{
                 SEGMockADBMediaHeartbeatFactory *mockADBMediaHeartbeatFactory = [[SEGMockADBMediaHeartbeatFactory alloc] init];
                 mockADBMediaHeartbeatFactory.ADBMediaHeartbeat = mockADBMediaHeartbeat;
-                
+
                 SEGMockPlaybackDelegateFactory *mockPlaybackDelegateFactory = [[SEGMockPlaybackDelegateFactory alloc] init];
                 mockPlaybackDelegateFactory.playbackDelegate = mockPlaybackDelegate;
-                
+
                 SEGTrackPayload *payload = [[SEGTrackPayload alloc] initWithEvent:@"Video Quality Updated" properties:@{} context:@{}
-                                                                     integrations:@{}];
-                
+                    integrations:@{}];
+
                 [integration track:payload];
                 [verify(mockPlaybackDelegate) createAndUpdateQOSObject:@{}];
             });
-            
         });
-
     });
 });
-
 describe(@"SEGPlaybackDelegate", ^{
     __block SEGPlaybackDelegate *playbackDelegate;
-    __block SEGPlaybackDelegate *mockDelegate;
-    __block SEGMockPlaybackDelegateFactory *mockPlaybackDelegateFactory = [[SEGMockPlaybackDelegateFactory alloc] init];
-
     beforeEach(^{
-        mockPlaybackDelegateFactory.playbackDelegate = mockDelegate;
-        mockDelegate = mock([SEGPlaybackDelegate class]);
-
-        playbackDelegate = [[SEGPlaybackDelegate alloc] initWithDelegate:mockDelegate];
+        playbackDelegate = [[SEGPlaybackDelegate alloc] initWithPlayheadPosition:0];
     });
 
-    describe(@"SEGPlaybackDelegate", ^{
-        it(@"sets initialTime on initialization", ^{
-            long currentTime = CFAbsoluteTimeGetCurrent();
-            assertThatLong(playbackDelegate.initialTime, equalToLong(currentTime));
-        });
+    it(@"sets playheadPosition with value passed in on initialization", ^{
+        playbackDelegate = [[SEGPlaybackDelegate alloc] initWithPlayheadPosition:17];
+        assertThatLong(playbackDelegate.playheadPosition, equalToLong(17));
+    });
 
-        it(@"gets incrementPlayheadPosition if not paused", ^{
-            playbackDelegate.isPaused = false;
-            [playbackDelegate getCurrentPlaybackTime];
-            [verify(mockDelegate) incrementPlayheadPosition];
-        });
+    it(@"sets playheadPositionTime on initialization", ^{
+        long currentTime = CFAbsoluteTimeGetCurrent();
+        assertThatLong(playbackDelegate.playheadPositionTime, equalToLong(currentTime));
+    });
 
-        it(@"pauses playhead position if paused", ^{
-            playbackDelegate.isPaused = true;
-            [playbackDelegate getCurrentPlaybackTime];
-            assertThatLong(playbackDelegate.pausedPlayheadPosition, equalToLong(0));
-        });
+    it(@"getCurrentPlaybackTime increments if not paused", ^{
+        playbackDelegate.isPaused = false;
+        long initialTime = [playbackDelegate getCurrentPlaybackTime];
+        [NSThread sleepForTimeInterval:2];
+        assertThatLong(([playbackDelegate getCurrentPlaybackTime]), equalToLong(initialTime + 2));
+    });
 
-        it(@"increments playheadPosition", ^{
-            playbackDelegate.updatedPlayheadPosition = 0;
-            playbackDelegate.initialTime = 0;
-            playbackDelegate.offset = 0;
-            long currentTime = CFAbsoluteTimeGetCurrent();
-            [playbackDelegate incrementPlayheadPosition];
-            assertThatLong(playbackDelegate.playheadPosition, equalToLong(currentTime / 1000));
-        });
+    it(@"pauses playhead position if paused", ^{
+        playbackDelegate = [[SEGPlaybackDelegate alloc] initWithPlayheadPosition:6];
+        playbackDelegate.isPaused = true;
+        [playbackDelegate getCurrentPlaybackTime];
+        assertThatLong(playbackDelegate.playheadPosition, equalToLong(6));
+    });
 
-        it(@"increments playheadPosition", ^{
-            [playbackDelegate incrementPlayheadPosition];
-            assertThatLong(playbackDelegate.playheadPosition, equalToLong(0));
-        });
+    it(@"pausesPlayhead", ^{
+        [playbackDelegate pausePlayhead];
+        long currentTime = CFAbsoluteTimeGetCurrent();
+        // since we initialized playheadPosition with 0, we don't need to expect an addition value here and can simply assume the delta is returned
+        assertThatLong(playbackDelegate.playheadPosition, equalToLong(currentTime - playbackDelegate.playheadPositionTime));
+        assertThatLong(playbackDelegate.playheadPositionTime, equalToLong(currentTime));
+        assertThatBool(playbackDelegate.isPaused, isTrue());
+    });
 
-        it(@"pausePlayhead", ^{
-            [playbackDelegate pausePlayhead];
-            long currentTime = CFAbsoluteTimeGetCurrent();
-            assertThatLong(playbackDelegate.pausedPlayheadPosition, equalToLong(playbackDelegate.playheadPosition));
-            assertThatLong(playbackDelegate.pausedStartedTime, equalToLong(currentTime));
-            assertThatBool(playbackDelegate.isPaused, isTrue());
-        });
+    it(@"unPausePlayhead", ^{
+        [playbackDelegate unPausePlayhead];
+        assertThatBool(playbackDelegate.isPaused, isFalse());
+    });
 
-        it(@"unPausePlayhead with no offset", ^{
-            playbackDelegate.offset = 0;
-            [playbackDelegate unPausePlayhead];
-            long currentTime = CFAbsoluteTimeGetCurrent();
-            playbackDelegate.pausedStartedTime = 0;
-            assertThatLong(playbackDelegate.offset, equalToLong(currentTime / 1000));
-            assertThatBool(playbackDelegate.isPaused, isFalse());
-        });
-
-        it(@"unPausePlayhead with offset", ^{
-            playbackDelegate.offset = 5;
-            [playbackDelegate unPausePlayhead];
-            long currentTime = CFAbsoluteTimeGetCurrent();
-            playbackDelegate.pausedStartedTime = 0;
-            assertThatLong(playbackDelegate.offset, equalToLong(5 + (currentTime / 1000)));
-            assertThatBool(playbackDelegate.isPaused, isFalse());
-        });
-
-        it(@"resumePlayheadAfterSeeking", ^{
-            [playbackDelegate resumePlayheadAfterSeeking];
-            assertThatBool(playbackDelegate.isPaused, isFalse());
-        });
-
-        it(@"updatePlayheadPosition", ^{
-            [playbackDelegate updatePlayheadPosition:5];
-            assertThatLong(playbackDelegate.initialTime, equalToLong(CFAbsoluteTimeGetCurrent()));
-            assertThatLong(playbackDelegate.updatedPlayheadPosition, equalToLong(5));
-        });
+    it(@"updatePlayheadPosition", ^{
+        [playbackDelegate updatePlayheadPosition:5];
+        assertThatLong(playbackDelegate.playheadPositionTime, equalToLong(CFAbsoluteTimeGetCurrent()));
+        assertThatLong(playbackDelegate.playheadPosition, equalToLong(5));
     });
 });
 

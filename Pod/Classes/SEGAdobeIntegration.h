@@ -30,47 +30,30 @@
 
 
 @interface SEGPlaybackDelegate : NSObject <ADBMediaHeartbeatDelegate>
-@property (nonatomic, strong, nullable) SEGPlaybackDelegate *playbackDelegate;
 /**
  * Quality of service object. This is created and updated upon receipt of a "Video Quality
  * Updated" event, which triggers createAndUpdateQosObject(Properties).
  */
 @property (nonatomic, strong, nullable) ADBMediaObject *qosObject;
 /**
- * The system time in millis at which the playhead is first set or updated. The playhead is
- * first set upon instantiation of the PlaybackDelegate. The value is updated whenever
- * updatePlayheadPosition is invoked.
+ * The system time in seconds at which the playheadPosition has been recorded.
  */
-@property (nonatomic) long initialTime;
+@property (nonatomic) long playheadPositionTime;
 /** The current playhead position in seconds. */
 @property (nonatomic) long playheadPosition;
-/** The position of the playhead in seconds when the video was paused. */
-@property (nonatomic) long pausedPlayheadPosition;
-/** The system time in millis at which {@link #pausePlayhead} was invoked. */
-@property (nonatomic) long pausedStartedTime;
-/**
- * The updated playhead position - this variable is assigned to the value a customer passes as
- * properties.seekPosition in a "Video Playback Seek Completed" event or properties.position in
- * a "Video Content Started" event
- */
-@property (nonatomic) long updatedPlayheadPosition;
-/** The total time in seconds a video has been in a paused state during a video session. */
-@property (nonatomic) long offset;
 /** Whether the video playhead is in a paused state. */
 @property (nonatomic) BOOL isPaused;
 
+- (instancetype _Nullable)initWithPlayheadPosition:(long)playheadPosition;
 - (NSTimeInterval)getCurrentPlaybackTime;
-- (void)updatePlayheadPosition:(long)playheadPosition;
-- (void)resumePlayheadAfterSeeking;
-- (void)unPausePlayhead;
 - (void)pausePlayhead;
-- (void)incrementPlayheadPosition;
-- (instancetype _Nullable)initWithDelegate:(SEGPlaybackDelegate *_Nullable)playbackDelegate;
+- (void)unPausePlayhead;
+- (void)updatePlayheadPosition:(long)playheadPosition;
 - (void)createAndUpdateQOSObject:(NSDictionary *_Nullable)properties;
 @end
 
 @protocol SEGPlaybackDelegateFactory <NSObject>
-- (SEGPlaybackDelegate *_Nullable)createPlaybackDelegate;
+- (SEGPlaybackDelegate *_Nullable)createPlaybackDelegateWithPosition:(long)playheadPosition;
 @end
 
 
