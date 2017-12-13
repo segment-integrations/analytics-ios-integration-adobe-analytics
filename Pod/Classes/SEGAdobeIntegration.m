@@ -118,6 +118,34 @@
     self.updatedPlayheadPosition = playheadPosition;
 }
 
+/**
+ Creates and updates a quality of service object from a "Video Quality Updated" event.
+
+ @param properties Segment Properties sent on `track`
+ */
+- (void)createAndUpdateQOSObject:(NSDictionary *)properties
+{
+    long bitrate = [properties[@"bitrate"] longValue] ?: 0;
+    long startupTime = [properties[@"startup_time"] longValue] ?: 0;
+    long fps = [properties[@"fps"] longValue] ?: 0;
+    long droppedFrames = [properties[@"dropped_frames"] longValue] ?: 0;
+    self.qosObject = [ADBMediaHeartbeat createQoSObjectWithBitrate:bitrate
+                                                       startupTime:startupTime
+                                                               fps:fps
+                                                     droppedFrames:droppedFrames];
+}
+
+
+/**
+ Adobe invokes this method once every ten seconds to report quality of service data.
+ 
+ @return Quality of Service Object
+ */
+- (ADBMediaObject *)getQoSObject
+{
+    return self.qosObject;
+}
+
 @end
 
 
@@ -278,7 +306,8 @@
         @"Video Ad Break Completed", // not spec'd
         @"Video Ad Started",
         @"Video Ad Skipped", // not spec'd
-        @"Video Ad Completed"
+        @"Video Ad Completed",
+        @"Video Quality Updated"
     ];
     for (NSString *videoEvent in adobeVideoEvents) {
         if ([videoEvent isEqualToString:event]) {
@@ -643,6 +672,11 @@
     if ([payload.event isEqualToString:@"Video Ad Completed"]) {
         [self.mediaHeartbeat trackEvent:ADBMediaHeartbeatEventAdComplete mediaObject:nil data:nil];
         SEGLog(@"[self.ADBMediaHeartbeat trackEvent:ADBMediaHeartbeatEventAdComplete mediaObject:nil data:nil];");
+        return;
+    }
+
+    if ([payload.event isEqualToString:@"Video Quality Updated"]) {
+        [self.playbackDelegate createAndUpdateQOSObject:payload.properties];
         return;
     }
 }
