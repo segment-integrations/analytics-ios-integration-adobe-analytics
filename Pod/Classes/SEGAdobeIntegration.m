@@ -13,6 +13,120 @@
 #import "ADBMediaHeartbeat.h"
 
 
+@implementation SEGPlaybackDelegate
+
+- (instancetype)initWithPlayheadPosition:(long)playheadPosition
+{
+    if (self = [super init]) {
+        self.playheadPositionTime = CFAbsoluteTimeGetCurrent();
+        self.playheadPosition = playheadPosition;
+    }
+    return self;
+}
+
+/**
+ Adobe invokes this method once per second to resolve the current position of the videoplayhead. Unless paused, this method increments the value of playheadPosition by one every second by calling incrementPlayheadPosition
+ 
+ @return playheadPosition
+ */
+- (NSTimeInterval)getCurrentPlaybackTime
+{
+    if (self.isPaused) {
+        return self.playheadPosition;
+    }
+    return [self calculateCurrentPlayheadPosition];
+}
+
+/**
+ Called to stop the playheadPosition from incrementing.
+ Captures playheadPosition and playheadPositionTime so when
+ the playback resumes, the increment can continue from where the
+ player left off.
+ */
+- (void)pausePlayhead
+{
+    self.isPaused = true;
+    self.playheadPosition = [self calculateCurrentPlayheadPosition];
+    self.playheadPositionTime = CFAbsoluteTimeGetCurrent();
+}
+
+/**
+ Captures the playhead and current time when the video resumes.
+ */
+- (void)unPausePlayhead
+{
+    self.isPaused = false;
+    self.playheadPositionTime = CFAbsoluteTimeGetCurrent();
+}
+
+/**
+ Triggered when the position changes when seeking or buffering completes.
+
+ @param playheadPosition Position passed in as a Segment property.
+ */
+- (void)updatePlayheadPosition:(long)playheadPosition
+{
+    self.playheadPositionTime = CFAbsoluteTimeGetCurrent();
+    self.playheadPosition = playheadPosition;
+}
+
+/**
+ Internal helper function used to calculate the playheadPosition.
+ 
+ CFAbsoluteTimeGetCurrent retrieves the current time in seconds,
+ then we calculate the delta between the CFAbsoluteTimeGetCurrent time
+ and the playheadPositionTime, which is the CFAbsoluteTimeGetCurrent
+ at the time a Segment Spec'd Video event is triggered.
+ 
+ @return Updated playheadPosition
+ */
+- (long)calculateCurrentPlayheadPosition
+{
+    long currentTime = CFAbsoluteTimeGetCurrent();
+    long delta = (currentTime - self.playheadPositionTime);
+    return self.playheadPosition + delta;
+}
+
+
+/**
+ Creates and updates a quality of service object from a "Video Quality Updated" event.
+
+ @param properties Segment Properties sent on `track`
+ */
+- (void)createAndUpdateQOSObject:(NSDictionary *)properties
+{
+    long bitrate = [properties[@"bitrate"] longValue] ?: 0;
+    long startupTime = [properties[@"startup_time"] longValue] ?: 0;
+    long fps = [properties[@"fps"] longValue] ?: 0;
+    long droppedFrames = [properties[@"dropped_frames"] longValue] ?: 0;
+    self.qosObject = [ADBMediaHeartbeat createQoSObjectWithBitrate:bitrate
+                                                       startupTime:startupTime
+                                                               fps:fps
+                                                     droppedFrames:droppedFrames];
+}
+
+
+/**
+ Adobe invokes this method once every ten seconds to report quality of service data.
+
+ @return Quality of Service Object
+ */
+- (ADBMediaObject *)getQoSObject
+{
+    return self.qosObject;
+}
+
+@end
+
+
+@implementation SEGRealPlaybackDelegateFactory
+- (SEGPlaybackDelegate *)createPlaybackDelegateWithPosition:(long)playheadPosition
+{
+    return [[SEGPlaybackDelegate alloc] initWithPlayheadPosition:playheadPosition];
+}
+@end
+
+
 @implementation SEGRealADBMediaHeartbeatFactory
 
 - (ADBMediaHeartbeat *)createWithDelegate:(id)delegate andConfig:(ADBMediaHeartbeatConfig *)config;
@@ -33,7 +147,7 @@
  Passing in a value for event type as Playback, Content, Ad Break
  or Ad will build the relevant instance of ADBMediaObject,
  respectively.
- 
+
  @param properties Properties sent on Segment `track` call
  @param eventType Denotes whether the event is a Playback, Content, or Ad event
  @return An instance of ADBMediaObject
@@ -87,7 +201,7 @@
 
 #pragma mark - Initialization
 
-- (instancetype)initWithSettings:(NSDictionary *)settings adobe:(id _Nullable)ADBMobileClass andMediaHeartbeatFactory:(id<SEGADBMediaHeartbeatFactory>)ADBMediaHeartbeatFactory andMediaHeartbeatConfig:(ADBMediaHeartbeatConfig *)config andMediaObjectFactory:(id<SEGADBMediaObjectFactory> _Nullable)ADBMediaObjectFactory
+- (instancetype)initWithSettings:(NSDictionary *)settings adobe:(id _Nullable)ADBMobileClass andMediaHeartbeatFactory:(id<SEGADBMediaHeartbeatFactory>)ADBMediaHeartbeatFactory andMediaHeartbeatConfig:(ADBMediaHeartbeatConfig *)config andMediaObjectFactory:(id<SEGADBMediaObjectFactory> _Nullable)ADBMediaObjectFactory andPlaybackDelegateFactory:(id<SEGPlaybackDelegateFactory>)delegateFactory
 {
     if (self = [super init]) {
         self.settings = settings;
@@ -95,6 +209,7 @@
         self.heartbeatFactory = ADBMediaHeartbeatFactory;
         self.objectFactory = ADBMediaObjectFactory;
         self.config = config;
+        self.delegateFactory = delegateFactory;
     }
 
     [self.adobeMobile collectLifecycleData];
@@ -161,7 +276,8 @@
         @"Video Ad Break Completed", // not spec'd
         @"Video Ad Started",
         @"Video Ad Skipped", // not spec'd
-        @"Video Ad Completed"
+        @"Video Ad Completed",
+        @"Video Quality Updated"
     ];
     for (NSString *videoEvent in adobeVideoEvents) {
         if ([videoEvent isEqualToString:event]) {
@@ -400,7 +516,9 @@
         if (!self.config) {
             return;
         }
-        self.mediaHeartbeat = [self.heartbeatFactory createWithDelegate:nil andConfig:self.config];
+        long playheadPosition = [payload.properties[@"position"] longValue] ?: 0;
+        self.playbackDelegate = [self.delegateFactory createPlaybackDelegateWithPosition:playheadPosition];
+        self.mediaHeartbeat = [self.heartbeatFactory createWithDelegate:self.playbackDelegate andConfig:self.config];
         self.mediaObject = [self createMediaObject:payload.properties andEventType:@"Playback"];
         //TODO: check to see if we need to handle custom metadata (second argument) like with
         // contextDataVariables
@@ -410,18 +528,21 @@
     }
 
     if ([payload.event isEqualToString:@"Video Playback Paused"]) {
+        [self.playbackDelegate pausePlayhead];
         [self.mediaHeartbeat trackPause];
         SEGLog(@"[ADBMediaHeartbeat trackPause]");
         return;
     }
 
     if ([payload.event isEqualToString:@"Video Playback Resumed"]) {
+        [self.playbackDelegate unPausePlayhead];
         [self.mediaHeartbeat trackPlay];
         SEGLog(@"[ADBMediaHeartbeat trackPlay]");
         return;
     }
 
     if ([payload.event isEqualToString:@"Video Playback Completed"]) {
+        [self.playbackDelegate pausePlayhead];
         [self.mediaHeartbeat trackSessionEnd];
         SEGLog(@"[ADBMediaHeartbeat trackSessionEnd]");
         return;
@@ -430,7 +551,6 @@
     if ([payload.event isEqualToString:@"Video Content Started"]) {
         [self.mediaHeartbeat trackPlay];
         SEGLog(@"[ADBMediaHeartbeat trackPlay]");
-
         self.mediaObject = [self createMediaObject:payload.properties andEventType:@"Content"];
         [self.mediaHeartbeat trackEvent:ADBMediaHeartbeatEventChapterStart mediaObject:self.mediaObject data:payload.properties];
         SEGLog(@"[ADBMediaHeartbeat trackEvent:ADBMediaHeartbeatEventChapterStart mediaObject:%@ data:%@]", self.mediaObject, payload.properties);
@@ -458,10 +578,31 @@
     };
 
     enum ADBMediaHeartbeatEvent videoEvent = [videoTrackEvents[payload.event] intValue];
+    long position = [payload.properties[@"position"] longValue] ?: 0;
+    switch (videoEvent) {
+        case ADBMediaHeartbeatEventBufferStart:
+        case ADBMediaHeartbeatEventSeekStart:
+            [self.playbackDelegate pausePlayhead];
+            break;
+        case ADBMediaHeartbeatEventBufferComplete:
+        case ADBMediaHeartbeatEventSeekComplete:
+            [self.playbackDelegate unPausePlayhead];
+            // While there is seek_position in addition to position spec'd on Seek events, when seek completes, the idea is that the position a user is seeking to has been reached and is now the position.
+            [self.playbackDelegate updatePlayheadPosition:position];
+            break;
+        default:
+            break;
+    }
+
     if (videoEvent) {
         self.mediaObject = [self createMediaObject:payload.properties andEventType:@"Video"];
         [self.mediaHeartbeat trackEvent:videoEvent mediaObject:self.mediaObject data:payload.properties];
         SEGLog(@"[ADBMediaHeartbeat trackEvent:ADBMediaHeartbeatEventBufferStart mediaObject:%@ data:%@]", self.mediaObject, payload.properties);
+        return;
+    }
+
+    if ([payload.event isEqualToString:@"Video Playback Interrupted"]) {
+        [self.playbackDelegate pausePlayhead];
         return;
     }
 
@@ -497,6 +638,11 @@
     if ([payload.event isEqualToString:@"Video Ad Completed"]) {
         [self.mediaHeartbeat trackEvent:ADBMediaHeartbeatEventAdComplete mediaObject:nil data:nil];
         SEGLog(@"[self.ADBMediaHeartbeat trackEvent:ADBMediaHeartbeatEventAdComplete mediaObject:nil data:nil];");
+        return;
+    }
+
+    if ([payload.event isEqualToString:@"Video Quality Updated"]) {
+        [self.playbackDelegate createAndUpdateQOSObject:payload.properties];
         return;
     }
 }
