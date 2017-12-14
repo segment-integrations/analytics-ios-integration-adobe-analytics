@@ -520,10 +520,9 @@
         self.playbackDelegate = [self.delegateFactory createPlaybackDelegateWithPosition:playheadPosition];
         self.mediaHeartbeat = [self.heartbeatFactory createWithDelegate:self.playbackDelegate andConfig:self.config];
         self.mediaObject = [self createMediaObject:payload.properties andEventType:@"Playback"];
-        //TODO: check to see if we need to handle custom metadata (second argument) like with
-        // contextDataVariables
-        [self.mediaHeartbeat trackSessionStart:self.mediaObject data:payload.properties];
-        SEGLog(@"[ADBMediaHeartbeat trackSessionStart:%@ data:@%]", self.mediaObject, payload.properties);
+        NSDictionary *contextData = [self mapContextValues:payload.properties];
+        [self.mediaHeartbeat trackSessionStart:self.mediaObject data:contextData];
+        SEGLog(@"[ADBMediaHeartbeat trackSessionStart:%@ data:@%]", self.mediaObject, contextData);
         return;
     }
 
@@ -552,8 +551,9 @@
         [self.mediaHeartbeat trackPlay];
         SEGLog(@"[ADBMediaHeartbeat trackPlay]");
         self.mediaObject = [self createMediaObject:payload.properties andEventType:@"Content"];
-        [self.mediaHeartbeat trackEvent:ADBMediaHeartbeatEventChapterStart mediaObject:self.mediaObject data:payload.properties];
-        SEGLog(@"[ADBMediaHeartbeat trackEvent:ADBMediaHeartbeatEventChapterStart mediaObject:%@ data:%@]", self.mediaObject, payload.properties);
+        NSDictionary *contextData = [self mapContextValues:payload.properties];
+        [self.mediaHeartbeat trackEvent:ADBMediaHeartbeatEventChapterStart mediaObject:self.mediaObject data:contextData];
+        SEGLog(@"[ADBMediaHeartbeat trackEvent:ADBMediaHeartbeatEventChapterStart mediaObject:%@ data:%@]", self.mediaObject, contextData);
         return;
     }
 
@@ -596,8 +596,9 @@
 
     if (videoEvent) {
         self.mediaObject = [self createMediaObject:payload.properties andEventType:@"Video"];
-        [self.mediaHeartbeat trackEvent:videoEvent mediaObject:self.mediaObject data:payload.properties];
-        SEGLog(@"[ADBMediaHeartbeat trackEvent:ADBMediaHeartbeatEventBufferStart mediaObject:%@ data:%@]", self.mediaObject, payload.properties);
+        NSDictionary *contextData = [self mapContextValues:payload.properties];
+        [self.mediaHeartbeat trackEvent:videoEvent mediaObject:self.mediaObject data:contextData];
+        SEGLog(@"[ADBMediaHeartbeat trackEvent:ADBMediaHeartbeatEventBufferStart mediaObject:%@ data:%@]", self.mediaObject, contextData);
         return;
     }
 
@@ -623,8 +624,9 @@
 
     if ([payload.event isEqualToString:@"Video Ad Started"]) {
         self.mediaObject = [self createMediaObject:payload.properties andEventType:@"Ad"];
-        [self.mediaHeartbeat trackEvent:ADBMediaHeartbeatEventAdStart mediaObject:self.mediaObject data:payload.properties];
-        SEGLog(@"[ADBMediaHeartbeat trackEvent:ADBMediaHeartbeatEventAdStart mediaObject:%@ data:%@]", self.mediaObject, payload.properties);
+        NSDictionary *contextData = [self mapContextValues:payload.properties];
+        [self.mediaHeartbeat trackEvent:ADBMediaHeartbeatEventAdStart mediaObject:self.mediaObject data:contextData];
+        SEGLog(@"[ADBMediaHeartbeat trackEvent:ADBMediaHeartbeatEventAdStart mediaObject:%@ data:%@]", self.mediaObject, contextData);
         return;
     }
 
@@ -642,7 +644,8 @@
     }
 
     if ([payload.event isEqualToString:@"Video Quality Updated"]) {
-        [self.playbackDelegate createAndUpdateQOSObject:payload.properties];
+        NSDictionary *contextData = [self mapContextValues:payload.properties];
+        [self.playbackDelegate createAndUpdateQOSObject:contextData];
         return;
     }
 }

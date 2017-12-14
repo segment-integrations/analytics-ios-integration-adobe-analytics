@@ -481,12 +481,7 @@ describe(@"SEGAdobeIntegration", ^{
                                                                      integrations:@{ @"Adobe Analytics" : @{@"ovp_name" : @"Netflix", @"debug" : @YES} }];
 
                 [integration track:payload];
-                [verify(mockADBMediaHeartbeat) trackSessionStart:mockADBMediaObject data:@{
-                    @"content_asset_id" : @"1234",
-                    @"ad_type" : @"pre-roll",
-                    @"video_player" : @"Netflix",
-                    @"channel" : @"Cartoon Network"
-                }];
+                [verify(mockADBMediaHeartbeat) trackSessionStart:mockADBMediaObject data:nil];
                 assertThat(config.trackingServer, is(@"example"));
                 assertThat(config.channel, is(@"Cartoon Network"));
                 assertThat(config.playerName, is(@"Netflix"));
@@ -519,10 +514,7 @@ describe(@"SEGAdobeIntegration", ^{
                     integrations:@{}];
 
                 [integration track:payload];
-                [verify(mockADBMediaHeartbeat) trackSessionStart:mockADBMediaObject data:@{
-                    @"content_asset_id" : @"1234",
-                    @"ad_type" : @"pre-roll"
-                }];
+                [verify(mockADBMediaHeartbeat) trackSessionStart:mockADBMediaObject data:nil];
                 assertThat(config.trackingServer, is(@"example"));
                 assertThat(config.channel, is(@""));
                 assertThat(config.playerName, is(@""));
@@ -613,15 +605,7 @@ describe(@"SEGAdobeIntegration", ^{
 
                 [integration track:payload];
                 [verify(mockPlaybackDelegate) pausePlayhead];
-                [verify(mockADBMediaHeartbeat) trackEvent:ADBMediaHeartbeatEventBufferStart mediaObject:mockADBMediaObject data:@{
-                    @"content_asset_id" : @"2340",
-                    @"ad_type" : @"post-roll",
-                    @"video_player" : @"youtube",
-                    @"position" : @190,
-                    @"sound" : @100,
-                    @"full_screen" : @NO,
-                    @"bitrate" : @50
-                }];
+                [verify(mockADBMediaHeartbeat) trackEvent:ADBMediaHeartbeatEventBufferStart mediaObject:mockADBMediaObject data:nil];
             });
 
             it(@"track Video Playback Buffer Completed", ^{
@@ -646,15 +630,7 @@ describe(@"SEGAdobeIntegration", ^{
                 [integration track:payload];
                 [verify(mockPlaybackDelegate) unPausePlayhead];
                 [verify(mockPlaybackDelegate) updatePlayheadPosition:90];
-                [verify(mockADBMediaHeartbeat) trackEvent:ADBMediaHeartbeatEventBufferComplete mediaObject:mockADBMediaObject data:@{
-                    @"content_asset_id" : @"1230",
-                    @"ad_type" : @"mid-roll",
-                    @"video_player" : @"youtube",
-                    @"position" : @90,
-                    @"sound" : @100,
-                    @"full_screen" : @NO,
-                    @"bitrate" : @50
-                }];
+                [verify(mockADBMediaHeartbeat) trackEvent:ADBMediaHeartbeatEventBufferComplete mediaObject:mockADBMediaObject data:nil];
             });
 
             it(@"track Video Playback Seek Started", ^{
@@ -678,16 +654,7 @@ describe(@"SEGAdobeIntegration", ^{
 
                 [integration track:payload];
                 [verify(mockPlaybackDelegate) pausePlayhead];
-                [verify(mockADBMediaHeartbeat) trackEvent:ADBMediaHeartbeatEventSeekStart mediaObject:mockADBMediaObject data:@{
-                    @"content_asset_id" : @"6352",
-                    @"ad_type" : @"pre-roll",
-                    @"video_player" : @"vimeo",
-                    @"seek_position" : @20,
-                    @"sound" : @100,
-                    @"full_screen" : @YES,
-                    @"bitrate" : @50
-
-                }];
+                [verify(mockADBMediaHeartbeat) trackEvent:ADBMediaHeartbeatEventSeekStart mediaObject:mockADBMediaObject data:nil];
             });
 
             it(@"track Video Playback Seek Completed", ^{
@@ -713,17 +680,7 @@ describe(@"SEGAdobeIntegration", ^{
                 [integration track:payload];
                 [verify(mockPlaybackDelegate) unPausePlayhead];
                 [verify(mockPlaybackDelegate) updatePlayheadPosition:20];
-                [verify(mockADBMediaHeartbeat) trackEvent:ADBMediaHeartbeatEventSeekComplete mediaObject:mockADBMediaObject data:@{
-                    @"content_asset_id" : @"6352",
-                    @"ad_type" : @"pre-roll",
-                    @"video_player" : @"vimeo",
-                    @"seek_position" : @20,
-                    @"position" : @20,
-                    @"sound" : @100,
-                    @"full_screen" : @YES,
-                    @"bitrate" : @50
-
-                }];
+                [verify(mockADBMediaHeartbeat) trackEvent:ADBMediaHeartbeatEventSeekComplete mediaObject:mockADBMediaObject data:nil];
             });
 
             it(@"track Video Playback Resumed", ^{
@@ -809,22 +766,7 @@ describe(@"SEGAdobeIntegration", ^{
                     integrations:@{}];
                 [integration track:payload];
                 [verify(mockADBMediaHeartbeat) trackPlay];
-                [verify(mockADBMediaHeartbeat) trackEvent:ADBMediaHeartbeatEventChapterStart mediaObject:mockADBMediaObject data:@{
-                    @"asset_id" : @"3543",
-                    @"pod_id" : @"65462",
-                    @"title" : @"Big Trouble in Little Sanchez",
-                    @"season" : @"2",
-                    @"episode" : @"7",
-                    @"genre" : @"cartoon",
-                    @"program" : @"Rick and Morty",
-                    @"total_length" : @400,
-                    @"full_episode" : @YES,
-                    @"publisher" : @"Turner Broadcasting Network",
-                    @"position" : @22,
-                    @"channel" : @"Cartoon Network",
-                    @"start_time" : @140,
-                    @"position" : @5
-                }];
+                [verify(mockADBMediaHeartbeat) trackEvent:ADBMediaHeartbeatEventChapterStart mediaObject:mockADBMediaObject data:nil];
             });
 
             it(@"track Video Content Completed", ^{
@@ -933,17 +875,7 @@ describe(@"SEGAdobeIntegration", ^{
                     integrations:@{}];
 
                 [integration track:payload];
-                [verify(mockADBMediaHeartbeat) trackEvent:ADBMediaHeartbeatEventAdStart mediaObject:mockADBMediaObject data:@{
-                    @"asset_id" : @"1231312",
-                    @"pod_id" : @"43434234534",
-                    @"type" : @"mid-roll",
-                    @"total_length" : @110,
-                    @"position" : @43,
-                    @"publisher" : @"Adult Swim",
-                    @"title" : @"Rick and Morty Ad"
-                }];
-
-
+                [verify(mockADBMediaHeartbeat) trackEvent:ADBMediaHeartbeatEventAdStart mediaObject:mockADBMediaObject data:nil];
             });
 
             it(@"tracks Video Ad Skipped", ^{
@@ -1007,12 +939,7 @@ describe(@"SEGAdobeIntegration", ^{
                     integrations:@{}];
 
                 [integration track:payload];
-                [verify(mockPlaybackDelegate) createAndUpdateQOSObject:@{
-                    @"bitrate" : @500000,
-                    @"startup_time" : @2,
-                    @"fps" : @24,
-                    @"dropped_frames" : @10
-                }];
+                [verify(mockPlaybackDelegate) createAndUpdateQOSObject:nil];
             });
 
             it(@"tracks Quality of Service event without properties", ^{
@@ -1026,7 +953,7 @@ describe(@"SEGAdobeIntegration", ^{
                     integrations:@{}];
 
                 [integration track:payload];
-                [verify(mockPlaybackDelegate) createAndUpdateQOSObject:@{}];
+                [verify(mockPlaybackDelegate) createAndUpdateQOSObject:nil];
             });
         });
     });
