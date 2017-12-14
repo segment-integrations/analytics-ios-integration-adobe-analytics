@@ -56,7 +56,6 @@
 - (void)unPausePlayhead
 {
     self.isPaused = false;
-    self.playheadPosition = [self calculateCurrentPlayheadPosition];
     self.playheadPositionTime = CFAbsoluteTimeGetCurrent();
 }
 
