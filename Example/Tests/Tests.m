@@ -10,7 +10,7 @@
 
 
 @interface SEGMockADBMediaHeartbeatFactory : NSObject <SEGADBMediaHeartbeatFactory>
-@property (nonatomic, strong) ADBMediaHeartbeat *ADBMediaHeartbeat;
+@property (nonatomic, strong) ADBMediaHeartbeat *mediaHeartbeat;
 @property (nonatomic, strong) ADBMediaHeartbeatConfig *config;
 @end
 
@@ -18,20 +18,20 @@
 @implementation SEGMockADBMediaHeartbeatFactory
 - (ADBMediaHeartbeat *)createWithDelegate:(id)delegate andConfig:(ADBMediaHeartbeatConfig *)config
 {
-    return self.ADBMediaHeartbeat;
+    return self.mediaHeartbeat;
 }
 @end
 
 
 @interface SEGMockADBMediaObjectFactory : NSObject <SEGADBMediaObjectFactory>
-@property (nonatomic, strong) ADBMediaObject *ADBMediaObject;
+@property (nonatomic, strong) ADBMediaObject *mediaObject;
 @end
 
 
 @implementation SEGMockADBMediaObjectFactory
 - (ADBMediaObject *)createWithProperties:(NSDictionary *)properties andEventType:(NSString *_Nullable)eventType
 {
-    return self.ADBMediaObject;
+    return self.mediaObject;
 }
 @end
 
@@ -450,10 +450,10 @@ describe(@"SEGAdobeIntegration", ^{
             mockPlaybackDelegate = mock([SEGPlaybackDelegate class]);
 
             SEGMockADBMediaHeartbeatFactory *mockADBMediaHeartbeatFactory = [[SEGMockADBMediaHeartbeatFactory alloc] init];
-            mockADBMediaHeartbeatFactory.ADBMediaHeartbeat = mockADBMediaHeartbeat;
+            mockADBMediaHeartbeatFactory.mediaHeartbeat = mockADBMediaHeartbeat;
 
             SEGMockADBMediaObjectFactory *mockADBMediaObjectFactory = [[SEGMockADBMediaObjectFactory alloc] init];
-            mockADBMediaObjectFactory.ADBMediaObject = mockADBMediaObject;
+            mockADBMediaObjectFactory.mediaObject = mockADBMediaObject;
 
             SEGMockPlaybackDelegateFactory *mockPlaybackDelegateFactory = [[SEGMockPlaybackDelegateFactory alloc] init];
             mockPlaybackDelegateFactory.playbackDelegate = mockPlaybackDelegate;
@@ -493,10 +493,10 @@ describe(@"SEGAdobeIntegration", ^{
 
             it(@"Video Playback Started initializes ADBMediaHeartbeat object with default values", ^{
                 SEGMockADBMediaHeartbeatFactory *mockADBMediaHeartbeatFactory = [[SEGMockADBMediaHeartbeatFactory alloc] init];
-                mockADBMediaHeartbeatFactory.ADBMediaHeartbeat = mockADBMediaHeartbeat;
+                mockADBMediaHeartbeatFactory.mediaHeartbeat = mockADBMediaHeartbeat;
 
                 SEGMockADBMediaObjectFactory *mockADBMediaObjectFactory = [[SEGMockADBMediaObjectFactory alloc] init];
-                mockADBMediaObjectFactory.ADBMediaObject = mockADBMediaObject;
+                mockADBMediaObjectFactory.mediaObject = mockADBMediaObject;
 
                 SEGMockPlaybackDelegateFactory *mockPlaybackDelegateFactory = [[SEGMockPlaybackDelegateFactory alloc] init];
                 mockPlaybackDelegateFactory.playbackDelegate = mockPlaybackDelegate;
@@ -528,7 +528,7 @@ describe(@"SEGAdobeIntegration", ^{
                 SEGMockADBMediaHeartbeatFactory *mockADBMediaHeartbeatFactory = [[SEGMockADBMediaHeartbeatFactory alloc] init];
 
                 SEGMockADBMediaObjectFactory *mockADBMediaObjectFactory = [[SEGMockADBMediaObjectFactory alloc] init];
-                mockADBMediaObjectFactory.ADBMediaObject = mockADBMediaObject;
+                mockADBMediaObjectFactory.mediaObject = mockADBMediaObject;
 
                 SEGMockPlaybackDelegateFactory *mockPlaybackDelegateFactory = [[SEGMockPlaybackDelegateFactory alloc] init];
                 mockPlaybackDelegateFactory.playbackDelegate = mockPlaybackDelegate;
@@ -562,10 +562,10 @@ describe(@"SEGAdobeIntegration", ^{
 
             it(@"track Video Playback Paused", ^{
                 SEGMockADBMediaHeartbeatFactory *mockADBMediaHeartbeatFactory = [[SEGMockADBMediaHeartbeatFactory alloc] init];
-                mockADBMediaHeartbeatFactory.ADBMediaHeartbeat = mockADBMediaHeartbeat;
+                mockADBMediaHeartbeatFactory.mediaHeartbeat = mockADBMediaHeartbeat;
 
                 SEGMockADBMediaObjectFactory *mockADBMediaObjectFactory = [[SEGMockADBMediaObjectFactory alloc] init];
-                mockADBMediaObjectFactory.ADBMediaObject = mockADBMediaObject;
+                mockADBMediaObjectFactory.mediaObject = mockADBMediaObject;
 
                 SEGTrackPayload *payload = [[SEGTrackPayload alloc] initWithEvent:@"Video Playback Paused" properties:@{
                     @"content_asset_id" : @"7890",
@@ -585,10 +585,10 @@ describe(@"SEGAdobeIntegration", ^{
 
             it(@"track Video Playback Buffer Started", ^{
                 SEGMockADBMediaHeartbeatFactory *mockADBMediaHeartbeatFactory = [[SEGMockADBMediaHeartbeatFactory alloc] init];
-                mockADBMediaHeartbeatFactory.ADBMediaHeartbeat = mockADBMediaHeartbeat;
+                mockADBMediaHeartbeatFactory.mediaHeartbeat = mockADBMediaHeartbeat;
 
                 SEGMockADBMediaObjectFactory *mockADBMediaObjectFactory = [[SEGMockADBMediaObjectFactory alloc] init];
-                mockADBMediaObjectFactory.ADBMediaObject = mockADBMediaObject;
+                mockADBMediaObjectFactory.mediaObject = mockADBMediaObject;
 
 
                 SEGTrackPayload *payload = [[SEGTrackPayload alloc] initWithEvent:@"Video Playback Buffer Started" properties:@{
@@ -610,10 +610,10 @@ describe(@"SEGAdobeIntegration", ^{
 
             it(@"track Video Playback Buffer Completed", ^{
                 SEGMockADBMediaHeartbeatFactory *mockADBMediaHeartbeatFactory = [[SEGMockADBMediaHeartbeatFactory alloc] init];
-                mockADBMediaHeartbeatFactory.ADBMediaHeartbeat = mockADBMediaHeartbeat;
+                mockADBMediaHeartbeatFactory.mediaHeartbeat = mockADBMediaHeartbeat;
 
                 SEGMockADBMediaObjectFactory *mockADBMediaObjectFactory = [[SEGMockADBMediaObjectFactory alloc] init];
-                mockADBMediaObjectFactory.ADBMediaObject = mockADBMediaObject;
+                mockADBMediaObjectFactory.mediaObject = mockADBMediaObject;
 
                 SEGTrackPayload *payload = [[SEGTrackPayload alloc] initWithEvent:@"Video Playback Buffer Completed" properties:@{
                     @"content_asset_id" : @"1230",
@@ -635,10 +635,10 @@ describe(@"SEGAdobeIntegration", ^{
 
             it(@"track Video Playback Seek Started", ^{
                 SEGMockADBMediaHeartbeatFactory *mockADBMediaHeartbeatFactory = [[SEGMockADBMediaHeartbeatFactory alloc] init];
-                mockADBMediaHeartbeatFactory.ADBMediaHeartbeat = mockADBMediaHeartbeat;
+                mockADBMediaHeartbeatFactory.mediaHeartbeat = mockADBMediaHeartbeat;
 
                 SEGMockADBMediaObjectFactory *mockADBMediaObjectFactory = [[SEGMockADBMediaObjectFactory alloc] init];
-                mockADBMediaObjectFactory.ADBMediaObject = mockADBMediaObject;
+                mockADBMediaObjectFactory.mediaObject = mockADBMediaObject;
 
                 SEGTrackPayload *payload = [[SEGTrackPayload alloc] initWithEvent:@"Video Playback Seek Started" properties:@{
                     @"content_asset_id" : @"6352",
@@ -659,10 +659,10 @@ describe(@"SEGAdobeIntegration", ^{
 
             it(@"track Video Playback Seek Completed", ^{
                 SEGMockADBMediaHeartbeatFactory *mockADBMediaHeartbeatFactory = [[SEGMockADBMediaHeartbeatFactory alloc] init];
-                mockADBMediaHeartbeatFactory.ADBMediaHeartbeat = mockADBMediaHeartbeat;
+                mockADBMediaHeartbeatFactory.mediaHeartbeat = mockADBMediaHeartbeat;
 
                 SEGMockADBMediaObjectFactory *mockADBMediaObjectFactory = [[SEGMockADBMediaObjectFactory alloc] init];
-                mockADBMediaObjectFactory.ADBMediaObject = mockADBMediaObject;
+                mockADBMediaObjectFactory.mediaObject = mockADBMediaObject;
 
                 SEGTrackPayload *payload = [[SEGTrackPayload alloc] initWithEvent:@"Video Playback Seek Completed" properties:@{
                     @"content_asset_id" : @"6352",
@@ -685,10 +685,10 @@ describe(@"SEGAdobeIntegration", ^{
 
             it(@"track Video Playback Resumed", ^{
                 SEGMockADBMediaHeartbeatFactory *mockADBMediaHeartbeatFactory = [[SEGMockADBMediaHeartbeatFactory alloc] init];
-                mockADBMediaHeartbeatFactory.ADBMediaHeartbeat = mockADBMediaHeartbeat;
+                mockADBMediaHeartbeatFactory.mediaHeartbeat = mockADBMediaHeartbeat;
 
                 SEGMockADBMediaObjectFactory *mockADBMediaObjectFactory = [[SEGMockADBMediaObjectFactory alloc] init];
-                mockADBMediaObjectFactory.ADBMediaObject = mockADBMediaObject;
+                mockADBMediaObjectFactory.mediaObject = mockADBMediaObject;
 
                 SEGTrackPayload *payload = [[SEGTrackPayload alloc] initWithEvent:@"Video Playback Resumed" properties:@{
                     @"content_asset_id" : @"2141",
@@ -709,10 +709,10 @@ describe(@"SEGAdobeIntegration", ^{
 
             it(@"track Video Playback Completed", ^{
                 SEGMockADBMediaHeartbeatFactory *mockADBMediaHeartbeatFactory = [[SEGMockADBMediaHeartbeatFactory alloc] init];
-                mockADBMediaHeartbeatFactory.ADBMediaHeartbeat = mockADBMediaHeartbeat;
+                mockADBMediaHeartbeatFactory.mediaHeartbeat = mockADBMediaHeartbeat;
 
                 SEGMockADBMediaObjectFactory *mockADBMediaObjectFactory = [[SEGMockADBMediaObjectFactory alloc] init];
-                mockADBMediaObjectFactory.ADBMediaObject = mockADBMediaObject;
+                mockADBMediaObjectFactory.mediaObject = mockADBMediaObject;
 
                 SEGTrackPayload *payload = [[SEGTrackPayload alloc] initWithEvent:@"Video Playback Completed" properties:@{
                     @"content_asset_id" : @"7890",
@@ -742,10 +742,10 @@ describe(@"SEGAdobeIntegration", ^{
             });
             it(@"track Video Content Started", ^{
                 SEGMockADBMediaHeartbeatFactory *mockADBMediaHeartbeatFactory = [[SEGMockADBMediaHeartbeatFactory alloc] init];
-                mockADBMediaHeartbeatFactory.ADBMediaHeartbeat = mockADBMediaHeartbeat;
+                mockADBMediaHeartbeatFactory.mediaHeartbeat = mockADBMediaHeartbeat;
 
                 SEGMockADBMediaObjectFactory *mockADBMediaObjectFactory = [[SEGMockADBMediaObjectFactory alloc] init];
-                mockADBMediaObjectFactory.ADBMediaObject = mockADBMediaObject;
+                mockADBMediaObjectFactory.mediaObject = mockADBMediaObject;
 
                 SEGTrackPayload *payload = [[SEGTrackPayload alloc] initWithEvent:@"Video Content Started" properties:@{
                     @"asset_id" : @"3543",
@@ -771,10 +771,10 @@ describe(@"SEGAdobeIntegration", ^{
 
             it(@"track Video Content Completed", ^{
                 SEGMockADBMediaHeartbeatFactory *mockADBMediaHeartbeatFactory = [[SEGMockADBMediaHeartbeatFactory alloc] init];
-                mockADBMediaHeartbeatFactory.ADBMediaHeartbeat = mockADBMediaHeartbeat;
+                mockADBMediaHeartbeatFactory.mediaHeartbeat = mockADBMediaHeartbeat;
 
                 SEGMockADBMediaObjectFactory *mockADBMediaObjectFactory = [[SEGMockADBMediaObjectFactory alloc] init];
-                mockADBMediaObjectFactory.ADBMediaObject = mockADBMediaObject;
+                mockADBMediaObjectFactory.mediaObject = mockADBMediaObject;
 
                 SEGTrackPayload *payload = [[SEGTrackPayload alloc] initWithEvent:@"Video Content Completed" properties:@{
                     @"asset_id" : @"3543",
@@ -806,10 +806,10 @@ describe(@"SEGAdobeIntegration", ^{
             });
             it(@"tracks Video Ad Break Started", ^{
                 SEGMockADBMediaHeartbeatFactory *mockADBMediaHeartbeatFactory = [[SEGMockADBMediaHeartbeatFactory alloc] init];
-                mockADBMediaHeartbeatFactory.ADBMediaHeartbeat = mockADBMediaHeartbeat;
+                mockADBMediaHeartbeatFactory.mediaHeartbeat = mockADBMediaHeartbeat;
 
                 SEGMockADBMediaObjectFactory *mockADBMediaObjectFactory = [[SEGMockADBMediaObjectFactory alloc] init];
-                mockADBMediaObjectFactory.ADBMediaObject = mockADBMediaObject;
+                mockADBMediaObjectFactory.mediaObject = mockADBMediaObject;
 
                 SEGTrackPayload *payload = [[SEGTrackPayload alloc] initWithEvent:@"Video Ad Break Started"
                     properties:@{
@@ -831,10 +831,10 @@ describe(@"SEGAdobeIntegration", ^{
 
             it(@"tracks Video Ad Break Completed", ^{
                 SEGMockADBMediaHeartbeatFactory *mockADBMediaHeartbeatFactory = [[SEGMockADBMediaHeartbeatFactory alloc] init];
-                mockADBMediaHeartbeatFactory.ADBMediaHeartbeat = mockADBMediaHeartbeat;
+                mockADBMediaHeartbeatFactory.mediaHeartbeat = mockADBMediaHeartbeat;
 
                 SEGMockADBMediaObjectFactory *mockADBMediaObjectFactory = [[SEGMockADBMediaObjectFactory alloc] init];
-                mockADBMediaObjectFactory.ADBMediaObject = mockADBMediaObject;
+                mockADBMediaObjectFactory.mediaObject = mockADBMediaObject;
 
                 SEGTrackPayload *payload = [[SEGTrackPayload alloc] initWithEvent:@"Video Ad Break Completed"
                     properties:@{
@@ -856,10 +856,10 @@ describe(@"SEGAdobeIntegration", ^{
 
             it(@"tracks Video Ad Started", ^{
                 SEGMockADBMediaHeartbeatFactory *mockADBMediaHeartbeatFactory = [[SEGMockADBMediaHeartbeatFactory alloc] init];
-                mockADBMediaHeartbeatFactory.ADBMediaHeartbeat = mockADBMediaHeartbeat;
+                mockADBMediaHeartbeatFactory.mediaHeartbeat = mockADBMediaHeartbeat;
 
                 SEGMockADBMediaObjectFactory *mockADBMediaObjectFactory = [[SEGMockADBMediaObjectFactory alloc] init];
-                mockADBMediaObjectFactory.ADBMediaObject = mockADBMediaObject;
+                mockADBMediaObjectFactory.mediaObject = mockADBMediaObject;
 
                 SEGTrackPayload *payload = [[SEGTrackPayload alloc] initWithEvent:@"Video Ad Started"
                     properties:@{
@@ -880,7 +880,7 @@ describe(@"SEGAdobeIntegration", ^{
 
             it(@"tracks Video Ad Skipped", ^{
                 SEGMockADBMediaHeartbeatFactory *mockADBMediaHeartbeatFactory = [[SEGMockADBMediaHeartbeatFactory alloc] init];
-                mockADBMediaHeartbeatFactory.ADBMediaHeartbeat = mockADBMediaHeartbeat;
+                mockADBMediaHeartbeatFactory.mediaHeartbeat = mockADBMediaHeartbeat;
 
                 SEGTrackPayload *payload = [[SEGTrackPayload alloc] initWithEvent:@"Video Ad Skipped" properties:@{
                     @"asset_id" : @"1231312",
@@ -898,7 +898,7 @@ describe(@"SEGAdobeIntegration", ^{
 
             it(@"tracks Video Ad Completed", ^{
                 SEGMockADBMediaHeartbeatFactory *mockADBMediaHeartbeatFactory = [[SEGMockADBMediaHeartbeatFactory alloc] init];
-                mockADBMediaHeartbeatFactory.ADBMediaHeartbeat = mockADBMediaHeartbeat;
+                mockADBMediaHeartbeatFactory.mediaHeartbeat = mockADBMediaHeartbeat;
 
                 SEGTrackPayload *payload = [[SEGTrackPayload alloc] initWithEvent:@"Video Ad Completed" properties:@{
                     @"asset_id" : @"1231312",
@@ -925,7 +925,7 @@ describe(@"SEGAdobeIntegration", ^{
 
             it(@"tracks Quality of Service event", ^{
                 SEGMockADBMediaHeartbeatFactory *mockADBMediaHeartbeatFactory = [[SEGMockADBMediaHeartbeatFactory alloc] init];
-                mockADBMediaHeartbeatFactory.ADBMediaHeartbeat = mockADBMediaHeartbeat;
+                mockADBMediaHeartbeatFactory.mediaHeartbeat = mockADBMediaHeartbeat;
 
                 SEGMockPlaybackDelegateFactory *mockPlaybackDelegateFactory = [[SEGMockPlaybackDelegateFactory alloc] init];
                 mockPlaybackDelegateFactory.playbackDelegate = mockPlaybackDelegate;
@@ -944,7 +944,7 @@ describe(@"SEGAdobeIntegration", ^{
 
             it(@"tracks Quality of Service event without properties", ^{
                 SEGMockADBMediaHeartbeatFactory *mockADBMediaHeartbeatFactory = [[SEGMockADBMediaHeartbeatFactory alloc] init];
-                mockADBMediaHeartbeatFactory.ADBMediaHeartbeat = mockADBMediaHeartbeat;
+                mockADBMediaHeartbeatFactory.mediaHeartbeat = mockADBMediaHeartbeat;
 
                 SEGMockPlaybackDelegateFactory *mockPlaybackDelegateFactory = [[SEGMockPlaybackDelegateFactory alloc] init];
                 mockPlaybackDelegateFactory.playbackDelegate = mockPlaybackDelegate;
