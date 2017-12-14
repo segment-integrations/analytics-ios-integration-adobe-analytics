@@ -522,7 +522,7 @@
         self.mediaObject = [self createMediaObject:payload.properties andEventType:@"Playback"];
         NSDictionary *contextData = [self mapContextValues:payload.properties];
         [self.mediaHeartbeat trackSessionStart:self.mediaObject data:contextData];
-        SEGLog(@"[ADBMediaHeartbeat trackSessionStart:%@ data:@%]", self.mediaObject, contextData);
+        SEGLog(@"[ADBMediaHeartbeat trackSessionStart:%@ data:%@]", self.mediaObject, contextData);
         return;
     }
 
@@ -731,7 +731,7 @@
 
     // Adobe also has a third type: linear, which we have chosen
     // to omit as it does not conform to Segment's Video spec
-    bool isLivestream = properties[@"livestream"];
+    bool isLivestream = [properties[@"livestream"] boolValue];
     if (isLivestream) {
         [standardVideoMetadata setObject:ADBMediaHeartbeatStreamTypeLIVE forKey:ADBVideoMetadataKeySTREAM_FORMAT];
     } else {
