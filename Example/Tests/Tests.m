@@ -458,7 +458,7 @@ describe(@"SEGAdobeIntegration", ^{
             SEGMockPlaybackDelegateFactory *mockPlaybackDelegateFactory = [[SEGMockPlaybackDelegateFactory alloc] init];
             mockPlaybackDelegateFactory.playbackDelegate = mockPlaybackDelegate;
 
-            integration = [[SEGAdobeIntegration alloc] initWithSettings:@{ @"heartbeatTrackingServer" : @"example",
+            integration = [[SEGAdobeIntegration alloc] initWithSettings:@{ @"heartbeatTrackingServerUrl" : @"urlexample.com",
                                                                            @"ssl" : @YES }
                                                                   adobe:mockADBMobile
                                                andMediaHeartbeatFactory:mockADBMediaHeartbeatFactory
@@ -482,7 +482,7 @@ describe(@"SEGAdobeIntegration", ^{
 
                 [integration track:payload];
                 [verify(mockADBMediaHeartbeat) trackSessionStart:mockADBMediaObject data:nil];
-                assertThat(config.trackingServer, is(@"example"));
+                assertThat(config.trackingServer, is(@"urlexample.com"));
                 assertThat(config.channel, is(@"Cartoon Network"));
                 assertThat(config.playerName, is(@"Netflix"));
                 assertThat(config.ovp, is(@"Netflix"));
@@ -501,7 +501,7 @@ describe(@"SEGAdobeIntegration", ^{
                 SEGMockPlaybackDelegateFactory *mockPlaybackDelegateFactory = [[SEGMockPlaybackDelegateFactory alloc] init];
                 mockPlaybackDelegateFactory.playbackDelegate = mockPlaybackDelegate;
 
-                integration = [[SEGAdobeIntegration alloc] initWithSettings:@{ @"heartbeatTrackingServer" : @"example" }
+                integration = [[SEGAdobeIntegration alloc] initWithSettings:@{ @"heartbeatTrackingServerUrl" : @"urlexample.com" }
                                                                       adobe:mockADBMobile
                                                    andMediaHeartbeatFactory:mockADBMediaHeartbeatFactory
                                                     andMediaHeartbeatConfig:config
@@ -515,7 +515,7 @@ describe(@"SEGAdobeIntegration", ^{
 
                 [integration track:payload];
                 [verify(mockADBMediaHeartbeat) trackSessionStart:mockADBMediaObject data:nil];
-                assertThat(config.trackingServer, is(@"example"));
+                assertThat(config.trackingServer, is(@"urlexample.com"));
                 assertThat(config.channel, is(@""));
                 assertThat(config.playerName, is(@""));
                 assertThat(config.ovp, is(@"unknown"));

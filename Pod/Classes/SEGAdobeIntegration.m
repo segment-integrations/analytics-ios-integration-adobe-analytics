@@ -680,11 +680,11 @@
     [infoDictionary addEntriesFromDictionary:[[NSBundle mainBundle] localizedInfoDictionary]];
     self.config.appVersion = infoDictionary[@"CFBundleShortVersionString"] ?: @"unknown";
 
-    if ([self.settings[@"heartbeatTrackingServer"] length] == 0) {
+    if ([self.settings[@"heartbeatTrackingServerUrl"] length] == 0) {
         SEGLog(@"Adobe requires a heartbeat tracking sever configured via Segment's UI in order to initialize and start tracking heartbeat events.");
         return nil;
     }
-    self.config.trackingServer = self.settings[@"heartbeatTrackingServer"];
+    self.config.trackingServer = self.settings[@"heartbeatTrackingServerUrl"];
     self.config.channel = properties[@"channel"] ?: @"";
     self.config.ovp = options[@"ovp_name"] ?: @"unknown";
     self.config.playerName = properties[@"video_player"] ?: @"";
