@@ -1,6 +1,11 @@
 Change Log
 ==========
 
+Version 1.2.0 *(4th October, 2019)*
+-------------------------------------------
+
+Bump Adobe Analytics dependency to 4.18.7.
+
 Version 1.1.1-beta *(21st December, 2017)*
 -------------------------------------------
 *(Supports analytics-ios 3.5.+)*
