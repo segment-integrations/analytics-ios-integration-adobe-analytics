@@ -10,6 +10,7 @@
 #import <Analytics/SEGIntegration.h>
 #import <Analytics/SEGAnalyticsUtils.h>
 #import <Analytics/SEGAnalytics.h>
+#import "ADBMediaHeartbeatConfig.h"
 #import "ADBMediaHeartbeat.h"
 
 
@@ -26,7 +27,7 @@
 
 /**
  Adobe invokes this method once per second to resolve the current position of the videoplayhead. Unless paused, this method increments the value of playheadPosition by one every second by calling incrementPlayheadPosition
- 
+
  @return playheadPosition
  */
 - (NSTimeInterval)getCurrentPlaybackTime
@@ -72,12 +73,12 @@
 
 /**
  Internal helper function used to calculate the playheadPosition.
- 
+
  CFAbsoluteTimeGetCurrent retrieves the current time in seconds,
  then we calculate the delta between the CFAbsoluteTimeGetCurrent time
  and the playheadPositionTime, which is the CFAbsoluteTimeGetCurrent
  at the time a Segment Spec'd Video event is triggered.
- 
+
  @return Updated playheadPosition
  */
 - (long)calculateCurrentPlayheadPosition

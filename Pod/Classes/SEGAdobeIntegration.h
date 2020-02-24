@@ -9,8 +9,11 @@
 #import <Foundation/Foundation.h>
 #import <Analytics/SEGIntegration.h>
 #import <AdobeMobileSDK/ADBMobile.h>
-#import "ADBMediaHeartbeat.h"
-#import "ADBMediaHeartbeatConfig.h"
+//#import "ADBMediaHeartbeat.h"
+//#import "ADBMediaHeartbeatConfig.h"
+
+@class ADBMediaHeartbeat;
+@class ADBMediaHeartbeatConfig;
 
 @protocol SEGADBMediaHeartbeatFactory <NSObject>
 - (ADBMediaHeartbeat *_Nullable)createWithDelegate:(id _Nullable)delegate andConfig:(ADBMediaHeartbeatConfig *_Nonnull)config;
