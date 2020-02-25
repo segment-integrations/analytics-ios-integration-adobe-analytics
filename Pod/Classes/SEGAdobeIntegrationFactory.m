@@ -2,8 +2,6 @@
 #import "SEGAdobeIntegration.h"
 #import "ADBMediaHeartbeatConfig.h"
 
-
-
 @implementation SEGAdobeIntegrationFactory
 
 + (instancetype)instance

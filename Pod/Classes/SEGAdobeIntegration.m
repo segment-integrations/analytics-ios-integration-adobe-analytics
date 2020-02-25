@@ -14,6 +14,9 @@
 #import "ADBMediaHeartbeat.h"
 
 
+@interface SEGPlaybackDelegate(Private)<ADBMediaHeartbeatDelegate>
+@end
+
 @implementation SEGPlaybackDelegate
 
 - (instancetype)initWithPlayheadPosition:(long)playheadPosition
