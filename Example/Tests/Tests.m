@@ -7,12 +7,15 @@
 //
 
 // https://github.com/Specta/Specta
-
+#import "ADBMediaHeartbeatConfig.h"
+#import "ADBMediaHeartbeat.h"
 
 @interface SEGMockADBMediaHeartbeatFactory : NSObject <SEGADBMediaHeartbeatFactory>
 @property (nonatomic, strong) ADBMediaHeartbeat *mediaHeartbeat;
 @property (nonatomic, strong) ADBMediaHeartbeatConfig *config;
 @end
+
+//@class ADBMediaHeartbeatConfig;
 
 
 @implementation SEGMockADBMediaHeartbeatFactory
