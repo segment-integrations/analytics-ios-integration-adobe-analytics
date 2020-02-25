@@ -6,7 +6,7 @@ PODS:
     - AdobeVideoHeartbeatSDK/iOS (= 2.1)
   - AdobeVideoHeartbeatSDK/iOS (2.1):
     - AdobeMobileSDK
-  - Analytics (3.7.0)
+  - Analytics (3.7.1)
   - Expecta (1.0.6)
   - OCHamcrest (7.1.2)
   - OCMockito (5.1.3):
@@ -40,7 +40,7 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   AdobeMobileSDK: 5bd937b6baadb8c4cb095f4633062220f8f4a4d9
   AdobeVideoHeartbeatSDK: e18cf047ae5d995f1762514a66c963dfff60cebf
-  Analytics: 77fd5fb102a4a5eedafa2c2b0245ceb7b7c15e45
+  Analytics: f82f3cd6d3c8fbfd76ce25773199576656981a4a
   Expecta: 3b6bd90a64b9a1dcb0b70aa0e10a7f8f631667d5
   OCHamcrest: b284c9592c28c1e4025a8542e67ea41a635d0d73
   OCMockito: 677cbb4a18fd492b5a4fb10144dada4de5ddb877
