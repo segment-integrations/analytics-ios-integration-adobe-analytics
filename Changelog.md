@@ -1,6 +1,10 @@
 Change Log
 ==========
 
+Version 1.3.0 *(28th February, 2020)*
+-------------------------------------------
+Fixes bundling issues with transitive dependency that have statically linked libraries.
+
 Version 1.2.0 *(4th October, 2019)*
 -------------------------------------------
 
@@ -10,7 +14,7 @@ Version 1.1.1-beta *(21st December, 2017)*
 -------------------------------------------
 *(Supports analytics-ios 3.5.+)*
 
-[Bug](https://github.com/segment-integrations/analytics-ios-integration-adobe-analytics/pull/32): Fix to check for heartbeatTrackingServerUrl. 
+[Bug](https://github.com/segment-integrations/analytics-ios-integration-adobe-analytics/pull/32): Fix to check for heartbeatTrackingServerUrl.
 
 Version 1.1.0-beta *(14th December, 2017)*
 -------------------------------------------
