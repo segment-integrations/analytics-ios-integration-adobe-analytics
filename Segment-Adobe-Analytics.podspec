@@ -21,4 +21,7 @@ Pod::Spec.new do |s|
   s.dependency 'Analytics', '~> 3.5'
   s.dependency 'AdobeMobileSDK'
   s.dependency 'AdobeVideoHeartbeatSDK'
+
+  s.static_framework = true
+  s.module_name      = 'Segment_Adobe_Analytics'
 end

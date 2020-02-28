@@ -9,8 +9,10 @@
 #import <Foundation/Foundation.h>
 #import <Analytics/SEGIntegration.h>
 #import <AdobeMobileSDK/ADBMobile.h>
-#import "ADBMediaHeartbeat.h"
-#import "ADBMediaHeartbeatConfig.h"
+
+@class ADBMediaHeartbeat;
+@class ADBMediaObject;
+@class ADBMediaHeartbeatConfig;
 
 @protocol SEGADBMediaHeartbeatFactory <NSObject>
 - (ADBMediaHeartbeat *_Nullable)createWithDelegate:(id _Nullable)delegate andConfig:(ADBMediaHeartbeatConfig *_Nonnull)config;
@@ -29,7 +31,7 @@
 @end
 
 
-@interface SEGPlaybackDelegate : NSObject <ADBMediaHeartbeatDelegate>
+@interface SEGPlaybackDelegate : NSObject
 /**
  * Quality of service object. This is created and updated upon receipt of a "Video Quality
  * Updated" event, which triggers createAndUpdateQosObject(Properties).

@@ -11,7 +11,7 @@ PODS:
   - OCHamcrest (7.0.2)
   - OCMockito (5.0.1):
     - OCHamcrest (~> 7.0)
-  - Segment-Adobe-Analytics (1.1.1-beta):
+  - Segment-Adobe-Analytics (1.2.0):
     - AdobeMobileSDK
     - AdobeVideoHeartbeatSDK
     - Analytics (~> 3.5)
@@ -24,7 +24,7 @@ DEPENDENCIES:
   - Specta
 
 SPEC REPOS:
-  https://github.com/cocoapods/specs.git:
+  https://github.com/CocoaPods/Specs.git:
     - AdobeMobileSDK
     - AdobeVideoHeartbeatSDK
     - Analytics
@@ -44,9 +44,9 @@ SPEC CHECKSUMS:
   Expecta: 3b6bd90a64b9a1dcb0b70aa0e10a7f8f631667d5
   OCHamcrest: 706bfbf69a3df55a873bad096014e80e2e8ca93c
   OCMockito: 063837a086c058e764fcd23e771089c1759e7197
-  Segment-Adobe-Analytics: ab208b11a989fe3ac29d0da3a2a801e75c6ac3ce
+  Segment-Adobe-Analytics: c937639a0fc97cf5d4d12c357268c2560b39bb38
   Specta: 3e1bd89c3517421982dc4d1c992503e48bd5fe66
 
 PODFILE CHECKSUM: 7a306446e2a5328d23dcbfe74027397be19f3633
 
-COCOAPODS: 1.7.5
+COCOAPODS: 1.8.4
