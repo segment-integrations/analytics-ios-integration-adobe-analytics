@@ -770,6 +770,34 @@ describe(@"SEGAdobeIntegration", ^{
                 [verify(mockADBMediaHeartbeat) trackEvent:ADBMediaHeartbeatEventChapterStart mediaObject:mockADBMediaObject data:nil];
             });
 
+            it(@"track Video Content Started without Publisher", ^{
+                SEGMockADBMediaHeartbeatFactory *mockADBMediaHeartbeatFactory = [[SEGMockADBMediaHeartbeatFactory alloc] init];
+                mockADBMediaHeartbeatFactory.mediaHeartbeat = mockADBMediaHeartbeat;
+
+                SEGMockADBMediaObjectFactory *mockADBMediaObjectFactory = [[SEGMockADBMediaObjectFactory alloc] init];
+                mockADBMediaObjectFactory.mediaObject = mockADBMediaObject;
+
+                SEGTrackPayload *payload = [[SEGTrackPayload alloc] initWithEvent:@"Video Content Started" properties:@{
+                    @"asset_id" : @"3543",
+                    @"pod_id" : @"65462",
+                    @"title" : @"Big Trouble in Little Sanchez",
+                    @"season" : @"2",
+                    @"episode" : @"7",
+                    @"genre" : @"cartoon",
+                    @"program" : @"Rick and Morty",
+                    @"total_length" : @400,
+                    @"full_episode" : @YES,
+                    @"position" : @22,
+                    @"channel" : @"Cartoon Network",
+                    @"start_time" : @140,
+                    @"position" : @5
+                } context:@{}
+                    integrations:@{}];
+                [integration track:payload];
+                [verify(mockADBMediaHeartbeat) trackPlay];
+                [verify(mockADBMediaHeartbeat) trackEvent:ADBMediaHeartbeatEventChapterStart mediaObject:mockADBMediaObject data:nil];
+            });
+
             it(@"track Video Content Completed", ^{
                 SEGMockADBMediaHeartbeatFactory *mockADBMediaHeartbeatFactory = [[SEGMockADBMediaHeartbeatFactory alloc] init];
                 mockADBMediaHeartbeatFactory.mediaHeartbeat = mockADBMediaHeartbeat;
@@ -870,6 +898,29 @@ describe(@"SEGAdobeIntegration", ^{
                         @"total_length" : @110,
                         @"position" : @43,
                         @"publisher" : @"Adult Swim",
+                        @"title" : @"Rick and Morty Ad"
+                    }
+                    context:@{}
+                    integrations:@{}];
+
+                [integration track:payload];
+                [verify(mockADBMediaHeartbeat) trackEvent:ADBMediaHeartbeatEventAdStart mediaObject:mockADBMediaObject data:nil];
+            });
+
+            it(@"tracks Video Ad Started without Publisher", ^{
+                SEGMockADBMediaHeartbeatFactory *mockADBMediaHeartbeatFactory = [[SEGMockADBMediaHeartbeatFactory alloc] init];
+                mockADBMediaHeartbeatFactory.mediaHeartbeat = mockADBMediaHeartbeat;
+
+                SEGMockADBMediaObjectFactory *mockADBMediaObjectFactory = [[SEGMockADBMediaObjectFactory alloc] init];
+                mockADBMediaObjectFactory.mediaObject = mockADBMediaObject;
+
+                SEGTrackPayload *payload = [[SEGTrackPayload alloc] initWithEvent:@"Video Ad Started"
+                    properties:@{
+                        @"asset_id" : @"1231312",
+                        @"pod_id" : @"43434234534",
+                        @"type" : @"mid-roll",
+                        @"total_length" : @110,
+                        @"position" : @43,
                         @"title" : @"Rick and Morty Ad"
                     }
                     context:@{}

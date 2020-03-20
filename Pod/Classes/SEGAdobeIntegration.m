@@ -726,9 +726,10 @@
 
     // Segment's paublisher property exists on the content and ad level. Adobe
     // needs to interpret this either as and Advertiser (ad events) or Originator (content events)
-    if ([eventType isEqualToString:@"Ad"] || [eventType isEqualToString:@"Ad Break"]) {
+    NSString *publisher = [properties valueForKey:@"publisher"];
+    if (([eventType isEqualToString:@"Ad"] || [eventType isEqualToString:@"Ad Break"]) && [publisher length]) {
         [standardVideoMetadata setObject:properties[@"publisher"] forKey:ADBAdMetadataKeyADVERTISER];
-    } else if ([eventType isEqualToString:@"Content"]) {
+    } else if ([eventType isEqualToString:@"Content"] && [publisher length]) {
         [standardVideoMetadata setObject:properties[@"publisher"] forKey:ADBVideoMetadataKeyORIGINATOR];
     }
 
