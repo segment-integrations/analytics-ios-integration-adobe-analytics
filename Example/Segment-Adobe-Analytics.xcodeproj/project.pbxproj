@@ -22,7 +22,6 @@
 		6003F5BC195388D20070C39A /* Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6003F5BB195388D20070C39A /* Tests.m */; };
 		71719F9F1E33DC2100824A3D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 71719F9D1E33DC2100824A3D /* LaunchScreen.storyboard */; };
 		873B8AEB1B1F5CCA007FD442 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 873B8AEA1B1F5CCA007FD442 /* Main.storyboard */; };
-		88994FDEA2698AEF3AF9F3C0 /* libPods-Segment-Adobe-Analytics_tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0903BDEA8F70AC3EA0B6EAE9 /* libPods-Segment-Adobe-Analytics_tvOS.a */; };
 		956FC58E1FB4D502003028A2 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 956FC58D1FB4D502003028A2 /* SystemConfiguration.framework */; };
 		956FC5901FB4D50B003028A2 /* libsqlite3.0.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 956FC58F1FB4D50B003028A2 /* libsqlite3.0.tbd */; };
 		C3C5B8C3989494C1A00C3105 /* libPods-Segment-Adobe-Analytics_Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 22143B03DEE5F94751DE9A55 /* libPods-Segment-Adobe-Analytics_Tests.a */; };
@@ -63,7 +62,6 @@
 
 /* Begin PBXFileReference section */
 		05BB6C28666A3EF02996814F /* Pods-Segment-Adobe-Analytics_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Segment-Adobe-Analytics_Example.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Segment-Adobe-Analytics_Example/Pods-Segment-Adobe-Analytics_Example.debug.xcconfig"; sourceTree = "<group>"; };
-		0903BDEA8F70AC3EA0B6EAE9 /* libPods-Segment-Adobe-Analytics_tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Segment-Adobe-Analytics_tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0DFCA7C25AE551722E1AA9A0 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
 		22143B03DEE5F94751DE9A55 /* libPods-Segment-Adobe-Analytics_Tests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Segment-Adobe-Analytics_Tests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2ADE1871A491EA81C4693697 /* Pods-Segment-Adobe-Analytics_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Segment-Adobe-Analytics_Example.release.xcconfig"; path = "Pods/Target Support Files/Pods-Segment-Adobe-Analytics_Example/Pods-Segment-Adobe-Analytics_Example.release.xcconfig"; sourceTree = "<group>"; };
@@ -97,7 +95,6 @@
 		956FC58D1FB4D502003028A2 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		956FC58F1FB4D50B003028A2 /* libsqlite3.0.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.0.tbd; path = usr/lib/libsqlite3.0.tbd; sourceTree = SDKROOT; };
 		C912FA7F5F0523EBB5DB4C35 /* Pods-Segment-Adobe-Analytics_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Segment-Adobe-Analytics_Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-Segment-Adobe-Analytics_Tests/Pods-Segment-Adobe-Analytics_Tests.release.xcconfig"; sourceTree = "<group>"; };
-		E9392166BD101641632B33A4 /* Pods-Segment-Adobe-Analytics_tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Segment-Adobe-Analytics_tvOS.release.xcconfig"; path = "Pods/Target Support Files/Pods-Segment-Adobe-Analytics_tvOS/Pods-Segment-Adobe-Analytics_tvOS.release.xcconfig"; sourceTree = "<group>"; };
 		EAEE788E2426BC7A0071E702 /* Segment-Adobe-Analytics_tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Segment-Adobe-Analytics_tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		EAEE78902426BC7A0071E702 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		EAEE78912426BC7A0071E702 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -114,7 +111,6 @@
 		EAEE78B02426BC7B0071E702 /* Segment-Adobe-Analytics_tvOSUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Segment-Adobe-Analytics_tvOSUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		EAEE78B42426BC7B0071E702 /* Segment_Adobe_Analytics_tvOSUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Segment_Adobe_Analytics_tvOSUITests.m; sourceTree = "<group>"; };
 		EAEE78B62426BC7B0071E702 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		F80EFC3352F993F517255B3E /* Pods-Segment-Adobe-Analytics_tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Segment-Adobe-Analytics_tvOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Segment-Adobe-Analytics_tvOS/Pods-Segment-Adobe-Analytics_tvOS.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -146,7 +142,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				88994FDEA2698AEF3AF9F3C0 /* libPods-Segment-Adobe-Analytics_tvOS.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -170,8 +165,6 @@
 		310DB1579C6FE5D0544E1F94 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				F80EFC3352F993F517255B3E /* Pods-Segment-Adobe-Analytics_tvOS.debug.xcconfig */,
-				E9392166BD101641632B33A4 /* Pods-Segment-Adobe-Analytics_tvOS.release.xcconfig */,
 				05BB6C28666A3EF02996814F /* Pods-Segment-Adobe-Analytics_Example.debug.xcconfig */,
 				2ADE1871A491EA81C4693697 /* Pods-Segment-Adobe-Analytics_Example.release.xcconfig */,
 				384B0461D98CEBD21E7837FA /* Pods-Segment-Adobe-Analytics_Tests.debug.xcconfig */,
@@ -219,7 +212,6 @@
 				6003F58F195388D20070C39A /* CoreGraphics.framework */,
 				6003F591195388D20070C39A /* UIKit.framework */,
 				6003F5AF195388D20070C39A /* XCTest.framework */,
-				0903BDEA8F70AC3EA0B6EAE9 /* libPods-Segment-Adobe-Analytics_tvOS.a */,
 				7EE130949FFE64DFBE2009D8 /* libPods-Segment-Adobe-Analytics_Example.a */,
 				22143B03DEE5F94751DE9A55 /* libPods-Segment-Adobe-Analytics_Tests.a */,
 			);
@@ -377,7 +369,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = EAEE78B72426BC7B0071E702 /* Build configuration list for PBXNativeTarget "Segment-Adobe-Analytics_tvOS" */;
 			buildPhases = (
-				994A975566E2F047078BE1C9 /* [CP] Check Pods Manifest.lock */,
 				EAEE788A2426BC7A0071E702 /* Sources */,
 				EAEE788B2426BC7A0071E702 /* Frameworks */,
 				EAEE788C2426BC7A0071E702 /* Resources */,
@@ -564,28 +555,6 @@
 			);
 			outputPaths = (
 				"$(DERIVED_FILE_DIR)/Pods-Segment-Adobe-Analytics_Tests-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		994A975566E2F047078BE1C9 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-Segment-Adobe-Analytics_tvOS-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -867,7 +836,6 @@
 		};
 		EAEE78B82426BC7B0071E702 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = F80EFC3352F993F517255B3E /* Pods-Segment-Adobe-Analytics_tvOS.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
 				CLANG_ANALYZER_NONNULL = YES;
@@ -906,7 +874,6 @@
 		};
 		EAEE78B92426BC7B0071E702 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = E9392166BD101641632B33A4 /* Pods-Segment-Adobe-Analytics_tvOS.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
 				CLANG_ANALYZER_NONNULL = YES;

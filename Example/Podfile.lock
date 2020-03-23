@@ -2,13 +2,10 @@ PODS:
   - AdobeMobileSDK (4.19.1):
     - AdobeMobileSDK/iOS (= 4.19.1)
   - AdobeMobileSDK/iOS (4.19.1)
-  - AdobeMobileSDK/TVOS (4.19.1)
   - AdobeVideoHeartbeatSDK (2.1):
     - AdobeVideoHeartbeatSDK/iOS (= 2.1)
   - AdobeVideoHeartbeatSDK/iOS (2.1):
     - AdobeMobileSDK
-  - AdobeVideoHeartbeatSDK/TVOS (2.1):
-    - AdobeMobileSDK/TVOS
   - Analytics (3.7.1)
   - Expecta (1.0.6)
   - OCHamcrest (7.1.2)
@@ -52,6 +49,6 @@ SPEC CHECKSUMS:
   Segment-Adobe-Analytics: f334ef687d5abe68a340113b2117a7fd628d7fb4
   Specta: 3e1bd89c3517421982dc4d1c992503e48bd5fe66
 
-PODFILE CHECKSUM: 92b264a66a1cfa223bcee33ff2a77e56777180af
+PODFILE CHECKSUM: 7a306446e2a5328d23dcbfe74027397be19f3633
 
 COCOAPODS: 1.8.4
