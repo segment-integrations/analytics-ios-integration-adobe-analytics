@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = 'Segment-Adobe-Analytics'
-  s.version          = '1.3.1'
+  s.version          = '1.4.0'
   s.summary          = 'Adobe-Analytics Integration for Segment\'s analytics-ios library.'
   s.description      = <<-DESC
 

@@ -1,8 +1,14 @@
 Change Log
 ==========
-Version 1.3.1 *(28th February, 2020)*
+
+Version 1.4.0 *(23th March, 2020)*
 -------------------------------------------
-Fixes bug where app crashed when `properties.publisher` not sent for Video Heartbeat events. 
+*(Supports AdobeMobileSDK/TVOS & AdobeVideoHeartbeatSDK/TVOS)*
+Adds support for tvOS.
+
+Version 1.3.1 *(20th March, 2020)*
+-------------------------------------------
+Fixes bug where app crashed when `properties.publisher` not sent for Video Heartbeat events.
 
 Version 1.3.0 *(28th February, 2020)*
 -------------------------------------------
