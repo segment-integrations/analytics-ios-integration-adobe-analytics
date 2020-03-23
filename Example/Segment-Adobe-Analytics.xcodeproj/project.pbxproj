@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		1A558AFA1D02C9374645EF30 /* libPods-Segment-Adobe-Analytics_Example.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 43B578454AE72BAA6CB34FB6 /* libPods-Segment-Adobe-Analytics_Example.a */; };
 		6003F58E195388D20070C39A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58D195388D20070C39A /* Foundation.framework */; };
 		6003F590195388D20070C39A /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58F195388D20070C39A /* CoreGraphics.framework */; };
 		6003F592195388D20070C39A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F591195388D20070C39A /* UIKit.framework */; };
@@ -21,11 +20,21 @@
 		6003F5B2195388D20070C39A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F591195388D20070C39A /* UIKit.framework */; };
 		6003F5BA195388D20070C39A /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6003F5B8195388D20070C39A /* InfoPlist.strings */; };
 		6003F5BC195388D20070C39A /* Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6003F5BB195388D20070C39A /* Tests.m */; };
-		6B5278193005A8CBCF8B1BDF /* libPods-Segment-Adobe-Analytics_Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 03108D42F9B3F734F0E744D9 /* libPods-Segment-Adobe-Analytics_Tests.a */; };
 		71719F9F1E33DC2100824A3D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 71719F9D1E33DC2100824A3D /* LaunchScreen.storyboard */; };
 		873B8AEB1B1F5CCA007FD442 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 873B8AEA1B1F5CCA007FD442 /* Main.storyboard */; };
+		88994FDEA2698AEF3AF9F3C0 /* libPods-Segment-Adobe-Analytics_tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0903BDEA8F70AC3EA0B6EAE9 /* libPods-Segment-Adobe-Analytics_tvOS.a */; };
 		956FC58E1FB4D502003028A2 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 956FC58D1FB4D502003028A2 /* SystemConfiguration.framework */; };
 		956FC5901FB4D50B003028A2 /* libsqlite3.0.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 956FC58F1FB4D50B003028A2 /* libsqlite3.0.tbd */; };
+		C3C5B8C3989494C1A00C3105 /* libPods-Segment-Adobe-Analytics_Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 22143B03DEE5F94751DE9A55 /* libPods-Segment-Adobe-Analytics_Tests.a */; };
+		CB3078596A17E805DC3EFE95 /* libPods-Segment-Adobe-Analytics_Example.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7EE130949FFE64DFBE2009D8 /* libPods-Segment-Adobe-Analytics_Example.a */; };
+		EAEE78922426BC7A0071E702 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = EAEE78912426BC7A0071E702 /* AppDelegate.m */; };
+		EAEE78952426BC7A0071E702 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EAEE78942426BC7A0071E702 /* ViewController.m */; };
+		EAEE78982426BC7A0071E702 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EAEE78962426BC7A0071E702 /* Main.storyboard */; };
+		EAEE789A2426BC7B0071E702 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EAEE78992426BC7B0071E702 /* Assets.xcassets */; };
+		EAEE789D2426BC7B0071E702 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EAEE789B2426BC7B0071E702 /* LaunchScreen.storyboard */; };
+		EAEE78A02426BC7B0071E702 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = EAEE789F2426BC7B0071E702 /* main.m */; };
+		EAEE78AA2426BC7B0071E702 /* Segment_Adobe_Analytics_tvOSTests.m in Sources */ = {isa = PBXBuildFile; fileRef = EAEE78A92426BC7B0071E702 /* Segment_Adobe_Analytics_tvOSTests.m */; };
+		EAEE78B52426BC7B0071E702 /* Segment_Adobe_Analytics_tvOSUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = EAEE78B42426BC7B0071E702 /* Segment_Adobe_Analytics_tvOSUITests.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -36,15 +45,31 @@
 			remoteGlobalIDString = 6003F589195388D20070C39A;
 			remoteInfo = "Segment-Adobe-Analytics";
 		};
+		EAEE78A62426BC7B0071E702 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6003F582195388D10070C39A /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = EAEE788D2426BC7A0071E702;
+			remoteInfo = "Segment-Adobe-Analytics_tvOS";
+		};
+		EAEE78B12426BC7B0071E702 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6003F582195388D10070C39A /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = EAEE788D2426BC7A0071E702;
+			remoteInfo = "Segment-Adobe-Analytics_tvOS";
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		03108D42F9B3F734F0E744D9 /* libPods-Segment-Adobe-Analytics_Tests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Segment-Adobe-Analytics_Tests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		05BB6C28666A3EF02996814F /* Pods-Segment-Adobe-Analytics_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Segment-Adobe-Analytics_Example.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Segment-Adobe-Analytics_Example/Pods-Segment-Adobe-Analytics_Example.debug.xcconfig"; sourceTree = "<group>"; };
+		0903BDEA8F70AC3EA0B6EAE9 /* libPods-Segment-Adobe-Analytics_tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Segment-Adobe-Analytics_tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0DFCA7C25AE551722E1AA9A0 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
+		22143B03DEE5F94751DE9A55 /* libPods-Segment-Adobe-Analytics_Tests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Segment-Adobe-Analytics_Tests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		2ADE1871A491EA81C4693697 /* Pods-Segment-Adobe-Analytics_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Segment-Adobe-Analytics_Example.release.xcconfig"; path = "Pods/Target Support Files/Pods-Segment-Adobe-Analytics_Example/Pods-Segment-Adobe-Analytics_Example.release.xcconfig"; sourceTree = "<group>"; };
 		3339EE10D97DBF9AF8E1109F /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
-		43B578454AE72BAA6CB34FB6 /* libPods-Segment-Adobe-Analytics_Example.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Segment-Adobe-Analytics_Example.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		384B0461D98CEBD21E7837FA /* Pods-Segment-Adobe-Analytics_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Segment-Adobe-Analytics_Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Segment-Adobe-Analytics_Tests/Pods-Segment-Adobe-Analytics_Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		589428CB55A1F8A3818A9CF5 /* Segment-Adobe-Analytics.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = "Segment-Adobe-Analytics.podspec"; path = "../Segment-Adobe-Analytics.podspec"; sourceTree = "<group>"; };
-		5E5F710DF340B64E7CB3BB5D /* Pods-Segment-Adobe-Analytics_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Segment-Adobe-Analytics_Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Segment-Adobe-Analytics_Tests/Pods-Segment-Adobe-Analytics_Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		6003F58A195388D20070C39A /* Segment-Adobe-Analytics_Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Segment-Adobe-Analytics_Example.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		6003F58D195388D20070C39A /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		6003F58F195388D20070C39A /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -66,13 +91,30 @@
 		606FC2411953D9B200FFA9A0 /* Tests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Tests-Prefix.pch"; sourceTree = "<group>"; };
 		6E0E12A31FD67EB700279C0B /* libVideoHeartbeat.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libVideoHeartbeat.a; path = ../Pod/libs/libVideoHeartbeat.a; sourceTree = "<group>"; };
 		71719F9E1E33DC2100824A3D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		7EE130949FFE64DFBE2009D8 /* libPods-Segment-Adobe-Analytics_Example.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Segment-Adobe-Analytics_Example.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		873B8AEA1B1F5CCA007FD442 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Main.storyboard; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		956FC5871FB4D483003028A2 /* ADBMobileConfig.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = ADBMobileConfig.json; sourceTree = "<group>"; };
 		956FC58D1FB4D502003028A2 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		956FC58F1FB4D50B003028A2 /* libsqlite3.0.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.0.tbd; path = usr/lib/libsqlite3.0.tbd; sourceTree = SDKROOT; };
-		D7A0A51A9D07415B1B95EB09 /* Pods-Segment-Adobe-Analytics_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Segment-Adobe-Analytics_Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-Segment-Adobe-Analytics_Tests/Pods-Segment-Adobe-Analytics_Tests.release.xcconfig"; sourceTree = "<group>"; };
-		EBD044B3E28D5A164459D703 /* Pods-Segment-Adobe-Analytics_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Segment-Adobe-Analytics_Example.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Segment-Adobe-Analytics_Example/Pods-Segment-Adobe-Analytics_Example.debug.xcconfig"; sourceTree = "<group>"; };
-		F5AEDAB8513E5B93AFA4DBBB /* Pods-Segment-Adobe-Analytics_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Segment-Adobe-Analytics_Example.release.xcconfig"; path = "Pods/Target Support Files/Pods-Segment-Adobe-Analytics_Example/Pods-Segment-Adobe-Analytics_Example.release.xcconfig"; sourceTree = "<group>"; };
+		C912FA7F5F0523EBB5DB4C35 /* Pods-Segment-Adobe-Analytics_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Segment-Adobe-Analytics_Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-Segment-Adobe-Analytics_Tests/Pods-Segment-Adobe-Analytics_Tests.release.xcconfig"; sourceTree = "<group>"; };
+		E9392166BD101641632B33A4 /* Pods-Segment-Adobe-Analytics_tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Segment-Adobe-Analytics_tvOS.release.xcconfig"; path = "Pods/Target Support Files/Pods-Segment-Adobe-Analytics_tvOS/Pods-Segment-Adobe-Analytics_tvOS.release.xcconfig"; sourceTree = "<group>"; };
+		EAEE788E2426BC7A0071E702 /* Segment-Adobe-Analytics_tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Segment-Adobe-Analytics_tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		EAEE78902426BC7A0071E702 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		EAEE78912426BC7A0071E702 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		EAEE78932426BC7A0071E702 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		EAEE78942426BC7A0071E702 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		EAEE78972426BC7A0071E702 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		EAEE78992426BC7B0071E702 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		EAEE789C2426BC7B0071E702 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		EAEE789E2426BC7B0071E702 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		EAEE789F2426BC7B0071E702 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		EAEE78A52426BC7B0071E702 /* Segment-Adobe-Analytics_tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Segment-Adobe-Analytics_tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		EAEE78A92426BC7B0071E702 /* Segment_Adobe_Analytics_tvOSTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Segment_Adobe_Analytics_tvOSTests.m; sourceTree = "<group>"; };
+		EAEE78AB2426BC7B0071E702 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		EAEE78B02426BC7B0071E702 /* Segment-Adobe-Analytics_tvOSUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Segment-Adobe-Analytics_tvOSUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		EAEE78B42426BC7B0071E702 /* Segment_Adobe_Analytics_tvOSUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Segment_Adobe_Analytics_tvOSUITests.m; sourceTree = "<group>"; };
+		EAEE78B62426BC7B0071E702 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F80EFC3352F993F517255B3E /* Pods-Segment-Adobe-Analytics_tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Segment-Adobe-Analytics_tvOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Segment-Adobe-Analytics_tvOS/Pods-Segment-Adobe-Analytics_tvOS.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -85,7 +127,7 @@
 				6003F590195388D20070C39A /* CoreGraphics.framework in Frameworks */,
 				6003F592195388D20070C39A /* UIKit.framework in Frameworks */,
 				6003F58E195388D20070C39A /* Foundation.framework in Frameworks */,
-				1A558AFA1D02C9374645EF30 /* libPods-Segment-Adobe-Analytics_Example.a in Frameworks */,
+				CB3078596A17E805DC3EFE95 /* libPods-Segment-Adobe-Analytics_Example.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -96,7 +138,29 @@
 				6003F5B0195388D20070C39A /* XCTest.framework in Frameworks */,
 				6003F5B2195388D20070C39A /* UIKit.framework in Frameworks */,
 				6003F5B1195388D20070C39A /* Foundation.framework in Frameworks */,
-				6B5278193005A8CBCF8B1BDF /* libPods-Segment-Adobe-Analytics_Tests.a in Frameworks */,
+				C3C5B8C3989494C1A00C3105 /* libPods-Segment-Adobe-Analytics_Tests.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EAEE788B2426BC7A0071E702 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				88994FDEA2698AEF3AF9F3C0 /* libPods-Segment-Adobe-Analytics_tvOS.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EAEE78A22426BC7B0071E702 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EAEE78AD2426BC7B0071E702 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -106,10 +170,12 @@
 		310DB1579C6FE5D0544E1F94 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				EBD044B3E28D5A164459D703 /* Pods-Segment-Adobe-Analytics_Example.debug.xcconfig */,
-				F5AEDAB8513E5B93AFA4DBBB /* Pods-Segment-Adobe-Analytics_Example.release.xcconfig */,
-				5E5F710DF340B64E7CB3BB5D /* Pods-Segment-Adobe-Analytics_Tests.debug.xcconfig */,
-				D7A0A51A9D07415B1B95EB09 /* Pods-Segment-Adobe-Analytics_Tests.release.xcconfig */,
+				F80EFC3352F993F517255B3E /* Pods-Segment-Adobe-Analytics_tvOS.debug.xcconfig */,
+				E9392166BD101641632B33A4 /* Pods-Segment-Adobe-Analytics_tvOS.release.xcconfig */,
+				05BB6C28666A3EF02996814F /* Pods-Segment-Adobe-Analytics_Example.debug.xcconfig */,
+				2ADE1871A491EA81C4693697 /* Pods-Segment-Adobe-Analytics_Example.release.xcconfig */,
+				384B0461D98CEBD21E7837FA /* Pods-Segment-Adobe-Analytics_Tests.debug.xcconfig */,
+				C912FA7F5F0523EBB5DB4C35 /* Pods-Segment-Adobe-Analytics_Tests.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -121,6 +187,9 @@
 				60FF7A9C1954A5C5007DD14C /* Podspec Metadata */,
 				6003F593195388D20070C39A /* Example for Segment-Adobe-Analytics */,
 				6003F5B5195388D20070C39A /* Tests */,
+				EAEE788F2426BC7A0071E702 /* Segment-Adobe-Analytics_tvOS */,
+				EAEE78A82426BC7B0071E702 /* Segment-Adobe-Analytics_tvOSTests */,
+				EAEE78B32426BC7B0071E702 /* Segment-Adobe-Analytics_tvOSUITests */,
 				6003F58C195388D20070C39A /* Frameworks */,
 				6003F58B195388D20070C39A /* Products */,
 				310DB1579C6FE5D0544E1F94 /* Pods */,
@@ -132,6 +201,9 @@
 			children = (
 				6003F58A195388D20070C39A /* Segment-Adobe-Analytics_Example.app */,
 				6003F5AE195388D20070C39A /* Segment-Adobe-Analytics_Tests.xctest */,
+				EAEE788E2426BC7A0071E702 /* Segment-Adobe-Analytics_tvOS.app */,
+				EAEE78A52426BC7B0071E702 /* Segment-Adobe-Analytics_tvOSTests.xctest */,
+				EAEE78B02426BC7B0071E702 /* Segment-Adobe-Analytics_tvOSUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -147,8 +219,9 @@
 				6003F58F195388D20070C39A /* CoreGraphics.framework */,
 				6003F591195388D20070C39A /* UIKit.framework */,
 				6003F5AF195388D20070C39A /* XCTest.framework */,
-				43B578454AE72BAA6CB34FB6 /* libPods-Segment-Adobe-Analytics_Example.a */,
-				03108D42F9B3F734F0E744D9 /* libPods-Segment-Adobe-Analytics_Tests.a */,
+				0903BDEA8F70AC3EA0B6EAE9 /* libPods-Segment-Adobe-Analytics_tvOS.a */,
+				7EE130949FFE64DFBE2009D8 /* libPods-Segment-Adobe-Analytics_Example.a */,
+				22143B03DEE5F94751DE9A55 /* libPods-Segment-Adobe-Analytics_Tests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -226,6 +299,40 @@
 			path = "../../../../../../Downloads/iOS Test_iOS-4.14.1/AdobeMobileLibrary";
 			sourceTree = "<group>";
 		};
+		EAEE788F2426BC7A0071E702 /* Segment-Adobe-Analytics_tvOS */ = {
+			isa = PBXGroup;
+			children = (
+				EAEE78902426BC7A0071E702 /* AppDelegate.h */,
+				EAEE78912426BC7A0071E702 /* AppDelegate.m */,
+				EAEE78932426BC7A0071E702 /* ViewController.h */,
+				EAEE78942426BC7A0071E702 /* ViewController.m */,
+				EAEE78962426BC7A0071E702 /* Main.storyboard */,
+				EAEE78992426BC7B0071E702 /* Assets.xcassets */,
+				EAEE789B2426BC7B0071E702 /* LaunchScreen.storyboard */,
+				EAEE789E2426BC7B0071E702 /* Info.plist */,
+				EAEE789F2426BC7B0071E702 /* main.m */,
+			);
+			path = "Segment-Adobe-Analytics_tvOS";
+			sourceTree = "<group>";
+		};
+		EAEE78A82426BC7B0071E702 /* Segment-Adobe-Analytics_tvOSTests */ = {
+			isa = PBXGroup;
+			children = (
+				EAEE78A92426BC7B0071E702 /* Segment_Adobe_Analytics_tvOSTests.m */,
+				EAEE78AB2426BC7B0071E702 /* Info.plist */,
+			);
+			path = "Segment-Adobe-Analytics_tvOSTests";
+			sourceTree = "<group>";
+		};
+		EAEE78B32426BC7B0071E702 /* Segment-Adobe-Analytics_tvOSUITests */ = {
+			isa = PBXGroup;
+			children = (
+				EAEE78B42426BC7B0071E702 /* Segment_Adobe_Analytics_tvOSUITests.m */,
+				EAEE78B62426BC7B0071E702 /* Info.plist */,
+			);
+			path = "Segment-Adobe-Analytics_tvOSUITests";
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -233,7 +340,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 6003F5BF195388D20070C39A /* Build configuration list for PBXNativeTarget "Segment-Adobe-Analytics_Example" */;
 			buildPhases = (
-				CEFCC812E14BB1B7BF6045F4 /* [CP] Check Pods Manifest.lock */,
+				2D8AD6CCD4F88408A7652FA7 /* [CP] Check Pods Manifest.lock */,
 				6003F586195388D20070C39A /* Sources */,
 				6003F587195388D20070C39A /* Frameworks */,
 				6003F588195388D20070C39A /* Resources */,
@@ -251,7 +358,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 6003F5C2195388D20070C39A /* Build configuration list for PBXNativeTarget "Segment-Adobe-Analytics_Tests" */;
 			buildPhases = (
-				71B778036DFD9D9FF5E73827 /* [CP] Check Pods Manifest.lock */,
+				6B2AC0D8A215BA7BF8E18024 /* [CP] Check Pods Manifest.lock */,
 				6003F5AA195388D20070C39A /* Sources */,
 				6003F5AB195388D20070C39A /* Frameworks */,
 				6003F5AC195388D20070C39A /* Resources */,
@@ -266,6 +373,60 @@
 			productReference = 6003F5AE195388D20070C39A /* Segment-Adobe-Analytics_Tests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
+		EAEE788D2426BC7A0071E702 /* Segment-Adobe-Analytics_tvOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = EAEE78B72426BC7B0071E702 /* Build configuration list for PBXNativeTarget "Segment-Adobe-Analytics_tvOS" */;
+			buildPhases = (
+				994A975566E2F047078BE1C9 /* [CP] Check Pods Manifest.lock */,
+				EAEE788A2426BC7A0071E702 /* Sources */,
+				EAEE788B2426BC7A0071E702 /* Frameworks */,
+				EAEE788C2426BC7A0071E702 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Segment-Adobe-Analytics_tvOS";
+			productName = "Segment-Adobe-Analytics_tvOS";
+			productReference = EAEE788E2426BC7A0071E702 /* Segment-Adobe-Analytics_tvOS.app */;
+			productType = "com.apple.product-type.application";
+		};
+		EAEE78A42426BC7B0071E702 /* Segment-Adobe-Analytics_tvOSTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = EAEE78BA2426BC7B0071E702 /* Build configuration list for PBXNativeTarget "Segment-Adobe-Analytics_tvOSTests" */;
+			buildPhases = (
+				EAEE78A12426BC7B0071E702 /* Sources */,
+				EAEE78A22426BC7B0071E702 /* Frameworks */,
+				EAEE78A32426BC7B0071E702 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				EAEE78A72426BC7B0071E702 /* PBXTargetDependency */,
+			);
+			name = "Segment-Adobe-Analytics_tvOSTests";
+			productName = "Segment-Adobe-Analytics_tvOSTests";
+			productReference = EAEE78A52426BC7B0071E702 /* Segment-Adobe-Analytics_tvOSTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		EAEE78AF2426BC7B0071E702 /* Segment-Adobe-Analytics_tvOSUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = EAEE78BD2426BC7B0071E702 /* Build configuration list for PBXNativeTarget "Segment-Adobe-Analytics_tvOSUITests" */;
+			buildPhases = (
+				EAEE78AC2426BC7B0071E702 /* Sources */,
+				EAEE78AD2426BC7B0071E702 /* Frameworks */,
+				EAEE78AE2426BC7B0071E702 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				EAEE78B22426BC7B0071E702 /* PBXTargetDependency */,
+			);
+			name = "Segment-Adobe-Analytics_tvOSUITests";
+			productName = "Segment-Adobe-Analytics_tvOSUITests";
+			productReference = EAEE78B02426BC7B0071E702 /* Segment-Adobe-Analytics_tvOSUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -279,6 +440,20 @@
 					6003F5AD195388D20070C39A = {
 						TestTargetID = 6003F589195388D20070C39A;
 					};
+					EAEE788D2426BC7A0071E702 = {
+						CreatedOnToolsVersion = 11.3.1;
+						ProvisioningStyle = Automatic;
+					};
+					EAEE78A42426BC7B0071E702 = {
+						CreatedOnToolsVersion = 11.3.1;
+						ProvisioningStyle = Automatic;
+						TestTargetID = EAEE788D2426BC7A0071E702;
+					};
+					EAEE78AF2426BC7B0071E702 = {
+						CreatedOnToolsVersion = 11.3.1;
+						ProvisioningStyle = Automatic;
+						TestTargetID = EAEE788D2426BC7A0071E702;
+					};
 				};
 			};
 			buildConfigurationList = 6003F585195388D10070C39A /* Build configuration list for PBXProject "Segment-Adobe-Analytics" */;
@@ -286,6 +461,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 				Base,
 			);
@@ -296,6 +472,9 @@
 			targets = (
 				6003F589195388D20070C39A /* Segment-Adobe-Analytics_Example */,
 				6003F5AD195388D20070C39A /* Segment-Adobe-Analytics_Tests */,
+				EAEE788D2426BC7A0071E702 /* Segment-Adobe-Analytics_tvOS */,
+				EAEE78A42426BC7B0071E702 /* Segment-Adobe-Analytics_tvOSTests */,
+				EAEE78AF2426BC7B0071E702 /* Segment-Adobe-Analytics_tvOSUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -320,19 +499,69 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		EAEE788C2426BC7A0071E702 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EAEE789D2426BC7B0071E702 /* LaunchScreen.storyboard in Resources */,
+				EAEE789A2426BC7B0071E702 /* Assets.xcassets in Resources */,
+				EAEE78982426BC7A0071E702 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EAEE78A32426BC7B0071E702 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EAEE78AE2426BC7B0071E702 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		71B778036DFD9D9FF5E73827 /* [CP] Check Pods Manifest.lock */ = {
+		2D8AD6CCD4F88408A7652FA7 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+			);
+			inputFileListPaths = (
 			);
 			inputPaths = (
 				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
 				"${PODS_ROOT}/Manifest.lock",
 			);
 			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Segment-Adobe-Analytics_Example-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		6B2AC0D8A215BA7BF8E18024 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
 			outputPaths = (
 				"$(DERIVED_FILE_DIR)/Pods-Segment-Adobe-Analytics_Tests-checkManifestLockResult.txt",
 			);
@@ -341,18 +570,22 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		CEFCC812E14BB1B7BF6045F4 /* [CP] Check Pods Manifest.lock */ = {
+		994A975566E2F047078BE1C9 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+			);
+			inputFileListPaths = (
 			);
 			inputPaths = (
 				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
 				"${PODS_ROOT}/Manifest.lock",
 			);
 			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-Segment-Adobe-Analytics_Example-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-Segment-Adobe-Analytics_tvOS-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -380,6 +613,32 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		EAEE788A2426BC7A0071E702 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EAEE78952426BC7A0071E702 /* ViewController.m in Sources */,
+				EAEE78A02426BC7B0071E702 /* main.m in Sources */,
+				EAEE78922426BC7A0071E702 /* AppDelegate.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EAEE78A12426BC7B0071E702 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EAEE78AA2426BC7B0071E702 /* Segment_Adobe_Analytics_tvOSTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EAEE78AC2426BC7B0071E702 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EAEE78B52426BC7B0071E702 /* Segment_Adobe_Analytics_tvOSUITests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -387,6 +646,16 @@
 			isa = PBXTargetDependency;
 			target = 6003F589195388D20070C39A /* Segment-Adobe-Analytics_Example */;
 			targetProxy = 6003F5B3195388D20070C39A /* PBXContainerItemProxy */;
+		};
+		EAEE78A72426BC7B0071E702 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = EAEE788D2426BC7A0071E702 /* Segment-Adobe-Analytics_tvOS */;
+			targetProxy = EAEE78A62426BC7B0071E702 /* PBXContainerItemProxy */;
+		};
+		EAEE78B22426BC7B0071E702 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = EAEE788D2426BC7A0071E702 /* Segment-Adobe-Analytics_tvOS */;
+			targetProxy = EAEE78B12426BC7B0071E702 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -411,6 +680,22 @@
 			isa = PBXVariantGroup;
 			children = (
 				71719F9E1E33DC2100824A3D /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+		EAEE78962426BC7A0071E702 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				EAEE78972426BC7A0071E702 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		EAEE789B2426BC7B0071E702 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				EAEE789C2426BC7B0071E702 /* Base */,
 			);
 			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
@@ -495,7 +780,7 @@
 		};
 		6003F5C0195388D20070C39A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = EBD044B3E28D5A164459D703 /* Pods-Segment-Adobe-Analytics_Example.debug.xcconfig */;
+			baseConfigurationReference = 05BB6C28666A3EF02996814F /* Pods-Segment-Adobe-Analytics_Example.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
@@ -516,7 +801,7 @@
 		};
 		6003F5C1195388D20070C39A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = F5AEDAB8513E5B93AFA4DBBB /* Pods-Segment-Adobe-Analytics_Example.release.xcconfig */;
+			baseConfigurationReference = 2ADE1871A491EA81C4693697 /* Pods-Segment-Adobe-Analytics_Example.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
@@ -536,7 +821,7 @@
 		};
 		6003F5C3195388D20070C39A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5E5F710DF340B64E7CB3BB5D /* Pods-Segment-Adobe-Analytics_Tests.debug.xcconfig */;
+			baseConfigurationReference = 384B0461D98CEBD21E7837FA /* Pods-Segment-Adobe-Analytics_Tests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
@@ -561,7 +846,7 @@
 		};
 		6003F5C4195388D20070C39A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D7A0A51A9D07415B1B95EB09 /* Pods-Segment-Adobe-Analytics_Tests.release.xcconfig */;
+			baseConfigurationReference = C912FA7F5F0523EBB5DB4C35 /* Pods-Segment-Adobe-Analytics_Tests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
@@ -577,6 +862,241 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Segment-Adobe-Analytics_Example.app/Segment-Adobe-Analytics_Example";
 				WRAPPER_EXTENSION = xctest;
+			};
+			name = Release;
+		};
+		EAEE78B82426BC7B0071E702 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = F80EFC3352F993F517255B3E /* Pods-Segment-Adobe-Analytics_tvOS.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = "Segment-Adobe-Analytics_tvOS/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "Segment.Segment-Adobe-Analytics-tvOS";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = appletvos;
+				TARGETED_DEVICE_FAMILY = 3;
+				TVOS_DEPLOYMENT_TARGET = 13.2;
+			};
+			name = Debug;
+		};
+		EAEE78B92426BC7B0071E702 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = E9392166BD101641632B33A4 /* Pods-Segment-Adobe-Analytics_tvOS.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = "Segment-Adobe-Analytics_tvOS/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "Segment.Segment-Adobe-Analytics-tvOS";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = appletvos;
+				TARGETED_DEVICE_FAMILY = 3;
+				TVOS_DEPLOYMENT_TARGET = 13.2;
+			};
+			name = Release;
+		};
+		EAEE78BB2426BC7B0071E702 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = "Segment-Adobe-Analytics_tvOSTests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "Segment.Segment-Adobe-Analytics-tvOSTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = appletvos;
+				TARGETED_DEVICE_FAMILY = 3;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Segment-Adobe-Analytics_tvOS.app/Segment-Adobe-Analytics_tvOS";
+				TVOS_DEPLOYMENT_TARGET = 13.2;
+			};
+			name = Debug;
+		};
+		EAEE78BC2426BC7B0071E702 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = "Segment-Adobe-Analytics_tvOSTests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "Segment.Segment-Adobe-Analytics-tvOSTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = appletvos;
+				TARGETED_DEVICE_FAMILY = 3;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Segment-Adobe-Analytics_tvOS.app/Segment-Adobe-Analytics_tvOS";
+				TVOS_DEPLOYMENT_TARGET = 13.2;
+			};
+			name = Release;
+		};
+		EAEE78BE2426BC7B0071E702 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = "Segment-Adobe-Analytics_tvOSUITests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "Segment.Segment-Adobe-Analytics-tvOSUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = appletvos;
+				TARGETED_DEVICE_FAMILY = 3;
+				TEST_TARGET_NAME = "Segment-Adobe-Analytics_tvOS";
+				TVOS_DEPLOYMENT_TARGET = 13.2;
+			};
+			name = Debug;
+		};
+		EAEE78BF2426BC7B0071E702 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = "Segment-Adobe-Analytics_tvOSUITests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "Segment.Segment-Adobe-Analytics-tvOSUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = appletvos;
+				TARGETED_DEVICE_FAMILY = 3;
+				TEST_TARGET_NAME = "Segment-Adobe-Analytics_tvOS";
+				TVOS_DEPLOYMENT_TARGET = 13.2;
 			};
 			name = Release;
 		};
@@ -606,6 +1126,33 @@
 			buildConfigurations = (
 				6003F5C3195388D20070C39A /* Debug */,
 				6003F5C4195388D20070C39A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		EAEE78B72426BC7B0071E702 /* Build configuration list for PBXNativeTarget "Segment-Adobe-Analytics_tvOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				EAEE78B82426BC7B0071E702 /* Debug */,
+				EAEE78B92426BC7B0071E702 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		EAEE78BA2426BC7B0071E702 /* Build configuration list for PBXNativeTarget "Segment-Adobe-Analytics_tvOSTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				EAEE78BB2426BC7B0071E702 /* Debug */,
+				EAEE78BC2426BC7B0071E702 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		EAEE78BD2426BC7B0071E702 /* Build configuration list for PBXNativeTarget "Segment-Adobe-Analytics_tvOSUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				EAEE78BE2426BC7B0071E702 /* Debug */,
+				EAEE78BF2426BC7B0071E702 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

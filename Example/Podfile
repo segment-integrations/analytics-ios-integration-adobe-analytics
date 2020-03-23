@@ -3,9 +3,13 @@ target 'Segment-Adobe-Analytics_Example' do
 
   target 'Segment-Adobe-Analytics_Tests' do
     inherit! :search_paths
-
     pod 'Specta'
     pod 'Expecta'
     pod 'OCMockito'
   end
+end
+
+target 'Segment-Adobe-Analytics_tvOS' do
+   inherit! :search_paths
+   pod 'Segment-Adobe-Analytics', :path => '../'
 end
