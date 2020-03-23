@@ -15,12 +15,22 @@ Pod::Spec.new do |s|
   s.source           = { :git => 'https://github.com/segment-integrations/analytics-ios-integration-Adobe-Analytics.git', :tag => s.version.to_s }
   s.social_media_url = 'https://twitter.com/segment'
 
+  s.platform = :ios
+  s.platform = :tvos
+
   s.ios.deployment_target = '8.0'
+  s.tvos.deployment_target = '9.0'
+
   s.source_files = 'Pod/Classes/**/*'
 
   s.dependency 'Analytics', '~> 3.5'
-  s.dependency 'AdobeMobileSDK'
-  s.dependency 'AdobeVideoHeartbeatSDK'
+
+  s.ios.dependency 'AdobeMobileSDK'
+  s.ios.dependency 'AdobeVideoHeartbeatSDK'
+
+  s.tvos.dependency 'AdobeMobileSDK/TVOS'
+  s.tvos.dependency 'AdobeVideoHeartbeatSDK/TVOS'
+
 
   s.static_framework = true
   s.module_name      = 'Segment_Adobe_Analytics'
