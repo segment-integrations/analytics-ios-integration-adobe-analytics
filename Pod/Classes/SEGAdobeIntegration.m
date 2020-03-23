@@ -222,8 +222,10 @@
 
 - (void)reset
 {
-    [self.adobeMobile trackingClearCurrentBeacon];
-    SEGLog(@"[ADBMobile trackingClearCurrentBeacon];");
+   #if !TARGET_OS_TV
+        [self.adobeMobile trackingClearCurrentBeacon];
+        SEGLog(@"[ADBMobile trackingClearCurrentBeacon];");
+    #endif
 }
 
 - (void)flush
