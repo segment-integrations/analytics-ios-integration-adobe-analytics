@@ -6,7 +6,7 @@ XC_ARGS := -scheme $(PROJECT)_Example -workspace Example/$(PROJECT).xcworkspace 
 
 install: Example/Podfile $(PROJECT).podspec
 	pod repo update
-	pod install --project-directory=Example
+	pod install
 
 lint:
 	pod lib lint --allow-warnings --use-libraries
