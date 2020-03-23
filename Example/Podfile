@@ -10,6 +10,5 @@ target 'Segment-Adobe-Analytics_Example' do
 end
 
 target 'Segment-Adobe-Analytics_tvOS' do
-   inherit! :search_paths
    pod 'Segment-Adobe-Analytics', :path => '../'
 end
