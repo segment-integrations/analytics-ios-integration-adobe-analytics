@@ -166,10 +166,30 @@ describe(@"SEGAdobeIntegration", ^{
             [integration track:trackPayload];
             [verify(mockADBMobile) trackAction:@"myapp.testing" data:@{ @"myapp.plan" : @"self-service" }];
         });
+
+        it(@"tracks an action with context fields configured in settings.contextValues", ^{
+            integration = [[SEGAdobeIntegration alloc] initWithSettings:@{ @"contextValues" : @{
+                @"plan" : @"myapp.plan",
+                @"subscribed" : @"myapp.subscribed"
+            },
+                                                                           @"eventsV2" : @{
+                                                                               @"Testing" : @"myapp.testing"
+                                                                           }
+            } adobe:mockADBMobile
+                                               andMediaHeartbeatFactory:nil
+                                                andMediaHeartbeatConfig:nil
+                                                  andMediaObjectFactory:nil
+                                             andPlaybackDelegateFactory:nil];
+            SEGTrackPayload *trackPayload = [[SEGTrackPayload alloc] initWithEvent:@"Testing" properties:@{}
+                context:@{@"plan" : @"self-service"}
+                integrations:@{}];
+            [integration track:trackPayload];
+            [verify(mockADBMobile) trackAction:@"myapp.testing" data:@{ @"myapp.plan" : @"self-service" }];
+        });
     });
 
     describe(@"screen", ^{
-        it(@"tracks a screen state without propertiesbut with settings.contextValues", ^{
+        it(@"tracks a screen state without properties but with settings.contextValues", ^{
             integration = [[SEGAdobeIntegration alloc] initWithSettings:@{ @"contextValues" : @{
                 @"plan" : @"myapp.plan",
                 @"subscribed" : @"myapp.subscribed"
@@ -200,6 +220,22 @@ describe(@"SEGAdobeIntegration", ^{
 
             SEGScreenPayload *screenPayload = [[SEGScreenPayload alloc] initWithName:@"Sign Up" properties:@{ @"new_user" : @YES }
                 context:@{}
+                integrations:@{}];
+            [integration screen:screenPayload];
+            [verify(mockADBMobile) trackState:@"Sign Up" data:@{ @"myapp.new_user" : @YES }];
+        });
+
+        it(@"tracks a screen state with context fields configured in settings.contextValues", ^{
+            integration = [[SEGAdobeIntegration alloc] initWithSettings:@{ @"contextValues" : @{@"title" : @"myapp.title",
+                                                                                                @"new_user" : @"myapp.new_user"} }
+                                                                  adobe:mockADBMobile
+                                               andMediaHeartbeatFactory:nil
+                                                andMediaHeartbeatConfig:nil
+                                                  andMediaObjectFactory:nil
+                                             andPlaybackDelegateFactory:nil];
+
+            SEGScreenPayload *screenPayload = [[SEGScreenPayload alloc] initWithName:@"Sign Up" properties:@{}
+                context:@{ @"new_user" : @YES }
                 integrations:@{}];
             [integration screen:screenPayload];
             [verify(mockADBMobile) trackState:@"Sign Up" data:@{ @"myapp.new_user" : @YES }];
