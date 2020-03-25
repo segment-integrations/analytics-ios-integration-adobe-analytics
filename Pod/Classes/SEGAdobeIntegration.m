@@ -10,8 +10,8 @@
 #import <Analytics/SEGIntegration.h>
 #import <Analytics/SEGAnalyticsUtils.h>
 #import <Analytics/SEGAnalytics.h>
-#import "ADBMediaHeartbeat.h"
-#import "ADBMediaHeartbeatConfig.h"
+#import <AdobeVideoHeartbeatSDK/ADBMediaHeartbeat.h>
+#import <AdobeVideoHeartbeatSDK/ADBMediaHeartbeatConfig.h>
 
 @interface SEGPlaybackDelegate(Private)<ADBMediaHeartbeatDelegate>
 @end
