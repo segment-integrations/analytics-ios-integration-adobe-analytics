@@ -1,6 +1,11 @@
 Change Log
 ==========
 
+Version 1.4.1 *(25th March, 2020)*
+-------------------------------------------
+Remove #import quote syntax to fix build errors with multiple `.xcodeproj`.
+Fixes but where Segment was only looking in `payload.properties` for Context Data Variables assigned in destination settings. The the fix will now also check in `payload.context`.
+
 Version 1.4.0 *(23th March, 2020)*
 -------------------------------------------
 *(Supports AdobeMobileSDK/TVOS & AdobeVideoHeartbeatSDK/TVOS)*
