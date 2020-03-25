@@ -10,8 +10,8 @@
 #import <Analytics/SEGIntegration.h>
 #import <Analytics/SEGAnalyticsUtils.h>
 #import <Analytics/SEGAnalytics.h>
-#import "ADBMediaHeartbeat.h"
-#import "ADBMediaHeartbeatConfig.h"
+#import <AdobeVideoHeartbeatSDK/ADBMediaHeartbeat.h>
+#import <AdobeVideoHeartbeatSDK/ADBMediaHeartbeatConfig.h>
 
 @interface SEGPlaybackDelegate(Private)<ADBMediaHeartbeatDelegate>
 @end
@@ -260,7 +260,7 @@
 
     NSString *event = payload.event;
     if (adobeEcommerceEvents[event]) {
-        NSDictionary *contextData = [self mapProducts:adobeEcommerceEvents[event] andProperties:payload.properties];
+        NSDictionary *contextData = [self mapProducts:adobeEcommerceEvents[event] andProperties:payload.properties andContext:payload.context];
         [self.adobeMobile trackAction:adobeEcommerceEvents[event] data:contextData];
         SEGLog(@"[ADBMobile trackAction:%@ data:%@];", event, contextData);
         return;
@@ -296,14 +296,14 @@
         SEGLog(@"Event must be configured in Adobe and in the EventsV2 setting in Segment before sending.");
         return;
     }
-    NSDictionary *contextData = [self mapContextValues:payload.properties];
+    NSDictionary *contextData = [self mapContextValues:payload.properties context:payload.context];
     [self.adobeMobile trackAction:event data:contextData];
     SEGLog(@"[ADBMobile trackAction:%@ data:%@];", event, contextData);
 }
 
 - (void)screen:(SEGScreenPayload *)payload
 {
-    NSMutableDictionary *data = [self mapContextValues:payload.properties];
+    NSMutableDictionary *data = [self mapContextValues:payload.properties context:payload.context];
     [self.adobeMobile trackState:payload.name data:data];
     SEGLog(@"[ADBMobile trackState:%@ data:%@];", payload.name, data);
 }
@@ -315,21 +315,26 @@
 /**
  All context data variables must be mapped by using processing rules,
  meaning they must be configured as a context variable in Adobe's UI
- and mapped from a Segment Property to the configured variable in Adobe
+ and mapped from a Segment Property or from within Payload.Context
+ to the configured variable in Adobe.
 
- @param properties Segment `track` or `screen` properties
+ @param properties Segment  payload.properties
+ @param  context  Segment payload.context
  @return data Dictionary of context data with Adobe key
 **/
 
-- (NSMutableDictionary *)mapContextValues:(NSDictionary *)properties
+- (NSMutableDictionary *)mapContextValues:(NSDictionary *)properties context:(NSDictionary *)context
 {
     NSInteger contextValuesSize = [self.settings[@"contextValues"] count];
-    if ([properties count] > 0 && contextValuesSize > 0) {
+    if (([properties count] > 0 || [context count] > 0) && contextValuesSize > 0) {
         NSMutableDictionary *data = [[NSMutableDictionary alloc] initWithCapacity:contextValuesSize];
         NSDictionary *contextValues = self.settings[@"contextValues"];
         for (NSString *key in contextValues) {
             if (properties[key]) {
                 [data setObject:properties[key] forKey:contextValues[key]];
+            }
+            if (context[key]) {
+              [data setObject:context[key] forKey:contextValues[key]];
             }
         }
         return data;
@@ -379,16 +384,17 @@
 
      @param event Event name sent via track
      @param properties Properties sent via track
+     @param context Context sent via track
      @return contextData object with &&events and formatted product String in &&products
  **/
 
-- (NSMutableDictionary *)mapProducts:(NSString *)event andProperties:(NSDictionary *)properties
+- (NSMutableDictionary *)mapProducts:(NSString *)event andProperties:(NSDictionary *)properties andContext:(NSDictionary *)context
 {
     if ([properties count] == 0) {
         return nil;
     }
 
-    NSMutableDictionary *data = [self mapContextValues:properties];
+    NSMutableDictionary *data = [self mapContextValues:properties context:context];
     NSMutableDictionary *contextData = [[NSMutableDictionary alloc] initWithDictionary:data];
 
     // If you trigger a product-specific event by using the &&products variable,
@@ -525,7 +531,7 @@
         self.playbackDelegate = [self.delegateFactory createPlaybackDelegateWithPosition:playheadPosition];
         self.mediaHeartbeat = [self.heartbeatFactory createWithDelegate:self.playbackDelegate andConfig:self.config];
         self.mediaObject = [self createMediaObject:payload.properties andEventType:@"Playback"];
-        NSDictionary *contextData = [self mapContextValues:payload.properties];
+        NSDictionary *contextData = [self mapContextValues:payload.properties context:payload.context];
         [self.mediaHeartbeat trackSessionStart:self.mediaObject data:contextData];
         SEGLog(@"[ADBMediaHeartbeat trackSessionStart:%@ data:%@]", self.mediaObject, contextData);
         return;
@@ -556,7 +562,7 @@
         [self.mediaHeartbeat trackPlay];
         SEGLog(@"[ADBMediaHeartbeat trackPlay]");
         self.mediaObject = [self createMediaObject:payload.properties andEventType:@"Content"];
-        NSDictionary *contextData = [self mapContextValues:payload.properties];
+        NSDictionary *contextData = [self mapContextValues:payload.properties context:payload.context];
         [self.mediaHeartbeat trackEvent:ADBMediaHeartbeatEventChapterStart mediaObject:self.mediaObject data:contextData];
         SEGLog(@"[ADBMediaHeartbeat trackEvent:ADBMediaHeartbeatEventChapterStart mediaObject:%@ data:%@]", self.mediaObject, contextData);
         return;
@@ -601,7 +607,7 @@
 
     if (videoEvent) {
         self.mediaObject = [self createMediaObject:payload.properties andEventType:@"Video"];
-        NSDictionary *contextData = [self mapContextValues:payload.properties];
+        NSDictionary *contextData = [self mapContextValues:payload.properties context:payload.context];
         [self.mediaHeartbeat trackEvent:videoEvent mediaObject:self.mediaObject data:contextData];
         SEGLog(@"[ADBMediaHeartbeat trackEvent:ADBMediaHeartbeatEventBufferStart mediaObject:%@ data:%@]", self.mediaObject, contextData);
         return;
@@ -629,7 +635,7 @@
 
     if ([payload.event isEqualToString:@"Video Ad Started"]) {
         self.mediaObject = [self createMediaObject:payload.properties andEventType:@"Ad"];
-        NSDictionary *contextData = [self mapContextValues:payload.properties];
+        NSDictionary *contextData = [self mapContextValues:payload.properties context:payload.context];
         [self.mediaHeartbeat trackEvent:ADBMediaHeartbeatEventAdStart mediaObject:self.mediaObject data:contextData];
         SEGLog(@"[ADBMediaHeartbeat trackEvent:ADBMediaHeartbeatEventAdStart mediaObject:%@ data:%@]", self.mediaObject, contextData);
         return;
@@ -649,7 +655,7 @@
     }
 
     if ([payload.event isEqualToString:@"Video Quality Updated"]) {
-        NSDictionary *contextData = [self mapContextValues:payload.properties];
+        NSDictionary *contextData = [self mapContextValues:payload.properties context:payload.context];
         [self.playbackDelegate createAndUpdateQOSObject:contextData];
         return;
     }
@@ -726,7 +732,7 @@
         }
     }
 
-    // Segment's paublisher property exists on the content and ad level. Adobe
+    // Segment's publisher property exists on the content and ad level. Adobe
     // needs to interpret this either as and Advertiser (ad events) or Originator (content events)
     NSString *publisher = [properties valueForKey:@"publisher"];
     if (([eventType isEqualToString:@"Ad"] || [eventType isEqualToString:@"Ad Break"]) && [publisher length]) {
