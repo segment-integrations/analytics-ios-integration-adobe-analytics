@@ -1,5 +1,8 @@
 Change Log
 ==========
+Version 1.4.2 *(1st April, 2020)*
+-------------------------------------------
+Fixes bug with Context Data Variables checking `payload.context` specifically in traits object.
 
 Version 1.4.1 *(25th March, 2020)*
 -------------------------------------------
