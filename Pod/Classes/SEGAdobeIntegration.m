@@ -330,6 +330,12 @@
         NSMutableDictionary *data = [[NSMutableDictionary alloc] initWithCapacity:contextValuesSize];
         NSDictionary *contextValues = self.settings[@"contextValues"];
         for (NSString *key in contextValues) {
+            if ([key hasPrefix:@"traits."]){
+                NSDictionary *contextTraits = [context valueForKey:@"traits"];
+                NSArray *arrayOfKeyComponents = [key componentsSeparatedByString:@"."];
+                NSString *parsedKey = arrayOfKeyComponents[1];
+                [data setObject:contextTraits[parsedKey] forKey:contextValues[key]];
+            }
             if (properties[key]) {
                 [data setObject:properties[key] forKey:contextValues[key]];
             }
