@@ -1,5 +1,9 @@
 Change Log
 ==========
+Version 1.4.3 *(3rd April, 2020)*
+-------------------------------------------
+Fixes app crash with null pointer assignment in `mapContextValues` function.
+
 Version 1.4.2 *(1st April, 2020)*
 -------------------------------------------
 Fixes bug with Context Data Variables checking `payload.context` specifically in traits object.
