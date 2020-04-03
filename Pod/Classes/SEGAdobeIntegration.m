@@ -334,7 +334,9 @@
                 NSDictionary *contextTraits = [context valueForKey:@"traits"];
                 NSArray *arrayOfKeyComponents = [key componentsSeparatedByString:@"."];
                 NSString *parsedKey = arrayOfKeyComponents[1];
-                [data setObject:contextTraits[parsedKey] forKey:contextValues[key]];
+                if([contextTraits count] && contextTraits[parsedKey]) {
+                    [data setObject:contextTraits[parsedKey] forKey:contextValues[key]];
+                }
             }
             if (properties[key]) {
                 [data setObject:properties[key] forKey:contextValues[key]];
