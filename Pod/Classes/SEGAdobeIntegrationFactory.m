@@ -1,6 +1,6 @@
 #import "SEGAdobeIntegrationFactory.h"
 #import "SEGAdobeIntegration.h"
-#import <AdobeVideoHeartbeatSDK/ADBMediaHeartbeatConfig.h>
+#import <AdobeMediaSDK/ADBMediaHeartbeatConfig.h>
 
 
 @implementation SEGAdobeIntegrationFactory
