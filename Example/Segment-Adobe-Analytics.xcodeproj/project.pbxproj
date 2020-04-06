@@ -27,10 +27,6 @@
 		873B8AEB1B1F5CCA007FD442 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 873B8AEA1B1F5CCA007FD442 /* Main.storyboard */; };
 		956FC58E1FB4D502003028A2 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 956FC58D1FB4D502003028A2 /* SystemConfiguration.framework */; };
 		956FC5901FB4D50B003028A2 /* libsqlite3.0.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 956FC58F1FB4D50B003028A2 /* libsqlite3.0.tbd */; };
-		EA67397D243BB20300F6AA49 /* ADBMobileConfig.json in Resources */ = {isa = PBXBuildFile; fileRef = EA67397C243BB20300F6AA49 /* ADBMobileConfig.json */; };
-		EA67397E243BB20300F6AA49 /* ADBMobileConfig.json in Resources */ = {isa = PBXBuildFile; fileRef = EA67397C243BB20300F6AA49 /* ADBMobileConfig.json */; };
-		EA673980243BB29D00F6AA49 /* ADBMobileConfig.json in Resources */ = {isa = PBXBuildFile; fileRef = EA67397F243BB29D00F6AA49 /* ADBMobileConfig.json */; };
-		EA673981243BB29D00F6AA49 /* ADBMobileConfig.json in Resources */ = {isa = PBXBuildFile; fileRef = EA67397F243BB29D00F6AA49 /* ADBMobileConfig.json */; };
 		EAEE78C8242934740071E702 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = EAEE78C7242934740071E702 /* AppDelegate.m */; };
 		EAEE78CB242934740071E702 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EAEE78CA242934740071E702 /* ViewController.m */; };
 		EAEE78CE242934740071E702 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EAEE78CC242934740071E702 /* Main.storyboard */; };
@@ -101,8 +97,6 @@
 		956FC58F1FB4D50B003028A2 /* libsqlite3.0.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.0.tbd; path = usr/lib/libsqlite3.0.tbd; sourceTree = SDKROOT; };
 		A7CE40B348129B35230E6116 /* libPods-Segment-Adobe-Analytics_TVOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Segment-Adobe-Analytics_TVOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D7A0A51A9D07415B1B95EB09 /* Pods-Segment-Adobe-Analytics_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Segment-Adobe-Analytics_Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-Segment-Adobe-Analytics_Tests/Pods-Segment-Adobe-Analytics_Tests.release.xcconfig"; sourceTree = "<group>"; };
-		EA67397C243BB20300F6AA49 /* ADBMobileConfig.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = ADBMobileConfig.json; path = ../../../../../../../Downloads/ADBMobileConfig.json; sourceTree = "<group>"; };
-		EA67397F243BB29D00F6AA49 /* ADBMobileConfig.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = ADBMobileConfig.json; path = ../../../../../../../Downloads/ADBMobileConfig.json; sourceTree = "<group>"; };
 		EAEE78C4242934740071E702 /* Segment-Adobe-Analytics_TVOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Segment-Adobe-Analytics_TVOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		EAEE78C6242934740071E702 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		EAEE78C7242934740071E702 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -235,7 +229,6 @@
 		6003F593195388D20070C39A /* Example for Segment-Adobe-Analytics */ = {
 			isa = PBXGroup;
 			children = (
-				EA67397C243BB20300F6AA49 /* ADBMobileConfig.json */,
 				6003F59C195388D20070C39A /* SEGAdobeAppDelegate.h */,
 				6003F59D195388D20070C39A /* SEGAdobeAppDelegate.m */,
 				873B8AEA1B1F5CCA007FD442 /* Main.storyboard */,
@@ -310,7 +303,6 @@
 			isa = PBXGroup;
 			children = (
 				EAEE78C6242934740071E702 /* AppDelegate.h */,
-				EA67397F243BB29D00F6AA49 /* ADBMobileConfig.json */,
 				EAEE78C7242934740071E702 /* AppDelegate.m */,
 				EAEE78C9242934740071E702 /* ViewController.h */,
 				EAEE78CA242934740071E702 /* ViewController.m */,
@@ -493,11 +485,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				873B8AEB1B1F5CCA007FD442 /* Main.storyboard in Resources */,
-				EA673980243BB29D00F6AA49 /* ADBMobileConfig.json in Resources */,
 				71719F9F1E33DC2100824A3D /* LaunchScreen.storyboard in Resources */,
 				6003F5A9195388D20070C39A /* Images.xcassets in Resources */,
 				6003F598195388D20070C39A /* InfoPlist.strings in Resources */,
-				EA67397D243BB20300F6AA49 /* ADBMobileConfig.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -514,10 +504,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				EAEE78D3242934750071E702 /* LaunchScreen.storyboard in Resources */,
-				EA67397E243BB20300F6AA49 /* ADBMobileConfig.json in Resources */,
 				EAEE78D0242934750071E702 /* Assets.xcassets in Resources */,
 				EAEE78CE242934740071E702 /* Main.storyboard in Resources */,
-				EA673981243BB29D00F6AA49 /* ADBMobileConfig.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
