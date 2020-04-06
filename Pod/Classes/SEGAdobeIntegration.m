@@ -10,8 +10,8 @@
 #import <Analytics/SEGIntegration.h>
 #import <Analytics/SEGAnalyticsUtils.h>
 #import <Analytics/SEGAnalytics.h>
-#import <AdobeVideoHeartbeatSDK/ADBMediaHeartbeat.h>
-#import <AdobeVideoHeartbeatSDK/ADBMediaHeartbeatConfig.h>
+#import <AdobeMediaSDK/ADBMediaHeartbeatConfig.h>
+#import <AdobeMediaSDK/ADBMediaHeartbeat.h>
 
 @interface SEGPlaybackDelegate(Private)<ADBMediaHeartbeatDelegate>
 @end
@@ -222,9 +222,9 @@
 
 - (void)reset
 {
-   #if !TARGET_OS_TV
-        [self.adobeMobile trackingClearCurrentBeacon];
-        SEGLog(@"[ADBMobile trackingClearCurrentBeacon];");
+    #if !TARGET_OS_WATCH && !TARGET_OS_TV
+    [self.adobeMobile trackingClearCurrentBeacon];
+    SEGLog(@"[ADBMobile trackingClearCurrentBeacon];");
     #endif
 }
 
