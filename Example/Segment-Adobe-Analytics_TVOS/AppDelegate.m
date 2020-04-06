@@ -24,12 +24,23 @@
 
     [config use:[SEGAdobeIntegrationFactory instance]];
     [SEGAnalytics setupWithConfiguration:config];
-    [[SEGAnalytics sharedAnalytics] track:@"Video Playback Started"];
+    [[SEGAnalytics sharedAnalytics] track:@"Video Playback Started"
+                              properties:@{
+                                  @"channel": @"SegTest",
+                                  @"video_player": @"Segment",
+                                  @"title": @"Test Show",
+                                  @"content_asset_id": @"132421",
+                                  @"total_length": @"300",
+                                  @"livestream": @false,
+                              }
+                               options:@{
+                                  @"context":@{}}
+    ];
     [[SEGAnalytics sharedAnalytics] track:@"Video Content Started"
-                               properties: @{ @"full_episode": @true }
-                                  options: @{
-                                      @"integrations": @{}
-                                  }];
+                           properties: @{ @"full_episode": @true }
+                              options: @{
+                                @"integrations": @{}
+                            }];
 
     [[SEGAnalytics sharedAnalytics] flush];
     [SEGAnalytics debug:YES];
