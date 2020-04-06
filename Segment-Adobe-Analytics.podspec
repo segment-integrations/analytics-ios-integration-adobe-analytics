@@ -22,9 +22,8 @@ Pod::Spec.new do |s|
 
   s.dependency 'Analytics', '~> 3.5'
   s.ios.dependency 'AdobeMobileSDK'
-  s.ios.dependency 'AdobeVideoHeartbeatSDK'
   s.tvos.dependency 'AdobeMobileSDK/TVOS'
-  s.tvos.dependency 'AdobeVideoHeartbeatSDK/TVOS'
+  s.dependency 'AdobeMediaSDK'
 
   s.static_framework = true
   s.module_name      = 'Segment_Adobe_Analytics'
