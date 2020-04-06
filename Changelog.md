@@ -1,5 +1,10 @@
 Change Log
 ==========
+Version 1.5.0 *(6th April, 2020)*
+-------------------------------------------
+Upgrades to use AdobeMediaSDK since AdobeVideoHeartbeatSDK is deprecated.
+Fixes a bug where only `Video Playback Started` events were logged with no `ping` events  fired. 
+
 Version 1.4.3 *(3rd April, 2020)*
 -------------------------------------------
 Fixes app crash with null pointer assignment in `mapContextValues` function.
