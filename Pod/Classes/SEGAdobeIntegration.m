@@ -269,6 +269,7 @@
     NSArray *adobeVideoEvents = @[
         @"Video Playback Started",
         @"Video Playback Paused",
+        @"Video Playback Interrupted",
         @"Video Playback Buffer Started",
         @"Video Playback Buffer Completed",
         @"Video Playback Seek Started",
