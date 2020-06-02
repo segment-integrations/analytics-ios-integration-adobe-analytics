@@ -269,6 +269,7 @@
     NSArray *adobeVideoEvents = @[
         @"Video Playback Started",
         @"Video Playback Paused",
+        @"Video Playback Interrupted",
         @"Video Playback Buffer Started",
         @"Video Playback Buffer Completed",
         @"Video Playback Seek Started",
@@ -546,6 +547,13 @@
     }
 
     if ([payload.event isEqualToString:@"Video Playback Paused"]) {
+        [self.playbackDelegate pausePlayhead];
+        [self.mediaHeartbeat trackPause];
+        SEGLog(@"[ADBMediaHeartbeat trackPause]");
+        return;
+    }
+
+    if ([payload.event isEqualToString:@"Video Playback Interrupted"]) {
         [self.playbackDelegate pausePlayhead];
         [self.mediaHeartbeat trackPause];
         SEGLog(@"[ADBMediaHeartbeat trackPause]");
