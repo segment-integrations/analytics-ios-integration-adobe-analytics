@@ -640,7 +640,6 @@ describe(@"SEGAdobeIntegration", ^{
 
                 [integration track:payload];
                 [verify(mockPlaybackDelegate) pausePlayhead];
-                [verify(mockADBMediaHeartbeat) trackPause];
             });
 
             it(@"track Video Playback Buffer Started", ^{

@@ -553,12 +553,6 @@
         return;
     }
 
-    if ([payload.event isEqualToString:@"Video Playback Interrupted"]) {
-        [self.playbackDelegate pausePlayhead];
-        [self.mediaHeartbeat trackPause];
-        SEGLog(@"[ADBMediaHeartbeat trackPause]");
-        return;
-    }
 
     if ([payload.event isEqualToString:@"Video Playback Resumed"]) {
         [self.playbackDelegate unPausePlayhead];
