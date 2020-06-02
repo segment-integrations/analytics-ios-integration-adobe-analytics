@@ -620,6 +620,28 @@ describe(@"SEGAdobeIntegration", ^{
                 [verify(mockADBMediaHeartbeat) trackPause];
             });
 
+            it(@"track Video Playback Interrupted", ^{
+                SEGMockADBMediaHeartbeatFactory *mockADBMediaHeartbeatFactory = [[SEGMockADBMediaHeartbeatFactory alloc] init];
+                mockADBMediaHeartbeatFactory.mediaHeartbeat = mockADBMediaHeartbeat;
+
+                SEGMockADBMediaObjectFactory *mockADBMediaObjectFactory = [[SEGMockADBMediaObjectFactory alloc] init];
+                mockADBMediaObjectFactory.mediaObject = mockADBMediaObject;
+
+                SEGTrackPayload *payload = [[SEGTrackPayload alloc] initWithEvent:@"Video Playback Interrupted" properties:@{
+                    @"content_asset_id" : @"7890",
+                    @"ad_type" : @"mid-roll",
+                    @"video_player" : @"vimeo",
+                    @"position" : @30,
+                    @"sound" : @100,
+                    @"full_screen" : @YES,
+                    @"bitrate" : @50
+                } context:@{}
+                    integrations:@{}];
+
+                [integration track:payload];
+                [verify(mockPlaybackDelegate) pausePlayhead];
+            });
+
             it(@"track Video Playback Buffer Started", ^{
                 SEGMockADBMediaHeartbeatFactory *mockADBMediaHeartbeatFactory = [[SEGMockADBMediaHeartbeatFactory alloc] init];
                 mockADBMediaHeartbeatFactory.mediaHeartbeat = mockADBMediaHeartbeat;
