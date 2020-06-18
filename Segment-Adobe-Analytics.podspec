@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = 'Segment-Adobe-Analytics'
-  s.version          = '1.5.1'
+  s.version          = '1.5.2'
   s.summary          = 'Adobe-Analytics Integration for Segment\'s analytics-ios library.'
   s.description      = <<-DESC
 
@@ -20,7 +20,7 @@ Pod::Spec.new do |s|
 
   s.source_files = 'Pod/Classes/**/*'
 
-  s.dependency 'Analytics', '~> 3.5'
+  s.dependency 'Analytics'
   s.ios.dependency 'AdobeMobileSDK'
   s.tvos.dependency 'AdobeMobileSDK/TVOS'
   s.dependency 'AdobeMediaSDK'
