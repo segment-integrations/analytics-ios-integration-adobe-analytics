@@ -571,6 +571,8 @@
 
     if ([payload.event isEqualToString:@"Video Playback Completed"]) {
         [self.playbackDelegate pausePlayhead];
+        [self.mediaHeartbeat trackComplete];
+        SEGLog(@"[ADBMediaHeartbeat trackComplete]");
         [self.mediaHeartbeat trackSessionEnd];
         SEGLog(@"[ADBMediaHeartbeat trackSessionEnd]");
         return;
@@ -587,9 +589,6 @@
     }
 
     if ([payload.event isEqualToString:@"Video Content Completed"]) {
-        [self.mediaHeartbeat trackComplete];
-        SEGLog(@"[ADBMediaHeartbeat trackComplete]");
-
         self.mediaObject = [self createMediaObject:payload.properties andEventType:@"Content"];
 
         // Adobe examples show that the mediaObject and data should be nil on Chapter Complete events
