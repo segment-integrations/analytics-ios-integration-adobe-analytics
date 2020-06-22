@@ -323,7 +323,6 @@
  @param  context  Segment payload.context
  @return data Dictionary of context data with Adobe key
 **/
-
 - (NSMutableDictionary *)mapContextValues:(NSDictionary *)properties context:(NSDictionary *)context
 {
     NSInteger contextValuesSize = [self.settings[@"contextValues"] count];
@@ -339,11 +338,20 @@
                     [data setObject:contextTraits[parsedKey] forKey:contextValues[key]];
                 }
             }
+            NSDictionary *payloadLocation;
             if (properties[key]) {
-                [data setObject:properties[key] forKey:contextValues[key]];
+                payloadLocation = [NSDictionary dictionaryWithDictionary:properties];
+            } if (context[key]) {
+                payloadLocation = [NSDictionary dictionaryWithDictionary:context];
             }
-            if (context[key]) {
-              [data setObject:context[key] forKey:contextValues[key]];
+            if (payloadLocation) {
+                if ([payloadLocation[key] isEqual:@YES]) {
+                    [data setObject:@"true" forKey:contextValues[key]];
+                } else if ([payloadLocation[key] isEqual:@NO]){
+                    [data setObject:@"false" forKey:contextValues[key]];
+                } else {
+                    [data setObject:payloadLocation[key] forKey:contextValues[key]];
+                }
             }
         }
         return data;
