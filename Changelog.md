@@ -1,5 +1,9 @@
 Change Log
 ==========
+Version 1.5.2 *(18th June, 2020)*
+-------------------------------------------
+Relaxes Segment Analytics library dependency.
+
 Version 1.5.1 *(2nd June, 2020)*
 -------------------------------------------
 Adds support for `Video Playback Interrupted`.
