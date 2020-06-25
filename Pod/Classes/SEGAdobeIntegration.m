@@ -260,7 +260,7 @@
 
     NSString *event = payload.event;
     if (adobeEcommerceEvents[event]) {
-        NSDictionary *contextData = [self mapProducts:adobeEcommerceEvents[event] andProperties:payload.properties andContext:payload.context];
+        NSDictionary *contextData = [self mapProducts:adobeEcommerceEvents[event] andProperties:payload.properties andContext:payload.context payload:payload];
         [self.adobeMobile trackAction:adobeEcommerceEvents[event] data:contextData];
         SEGLog(@"[ADBMobile trackAction:%@ data:%@];", event, contextData);
         return;
@@ -297,14 +297,16 @@
         SEGLog(@"Event must be configured in Adobe and in the EventsV2 setting in Segment before sending.");
         return;
     }
-    NSDictionary *contextData = [self mapContextValues:payload.properties context:payload.context];
+    NSMutableDictionary *topLevelProperties = [self extractSEGTrackTopLevelProps:payload];
+    NSDictionary *contextData = [self mapContextValues:payload.properties andContext:payload.context withTopLevelProps:topLevelProperties];
     [self.adobeMobile trackAction:event data:contextData];
     SEGLog(@"[ADBMobile trackAction:%@ data:%@];", event, contextData);
 }
 
 - (void)screen:(SEGScreenPayload *)payload
 {
-    NSMutableDictionary *data = [self mapContextValues:payload.properties context:payload.context];
+    NSMutableDictionary *topLevelProperties = [self extractSEGScreenTopLevelProps:payload];
+    NSMutableDictionary *data = [self mapContextValues:payload.properties andContext:payload.context withTopLevelProps:topLevelProperties];
     [self.adobeMobile trackState:payload.name data:data];
     SEGLog(@"[ADBMobile trackState:%@ data:%@];", payload.name, data);
 }
@@ -320,30 +322,43 @@
  to the configured variable in Adobe.
 
  @param properties Segment  payload.properties
- @param  context  Segment payload.context
+ @param context Segment  payload.context
+ @param topLevelProps NSMutableDictionary of extracted top level payload properties
  @return data Dictionary of context data with Adobe key
 **/
-- (NSMutableDictionary *)mapContextValues:(NSDictionary *)properties context:(NSDictionary *)context
+- (NSMutableDictionary *)mapContextValues:(NSDictionary *)properties andContext:(NSDictionary *)context withTopLevelProps:(NSMutableDictionary *)topLevelProps
 {
+ 
     NSInteger contextValuesSize = [self.settings[@"contextValues"] count];
     if (([properties count] > 0 || [context count] > 0) && contextValuesSize > 0) {
         NSMutableDictionary *data = [[NSMutableDictionary alloc] initWithCapacity:contextValuesSize];
         NSDictionary *contextValues = self.settings[@"contextValues"];
         for (NSString *key in contextValues) {
-            if ([key hasPrefix:@"traits."]){
-                NSDictionary *contextTraits = [context valueForKey:@"traits"];
-                NSArray *arrayOfKeyComponents = [key componentsSeparatedByString:@"."];
-                NSString *parsedKey = arrayOfKeyComponents[1];
-                if([contextTraits count] && contextTraits[parsedKey]) {
-                    [data setObject:contextTraits[parsedKey] forKey:contextValues[key]];
+            if ([key containsString:@"."]) {
+                // Obj-c doesn't allow chaining so to support nested context object we parse the key if it contains a `.`
+                // We only support the list of predefined nested context keys per our event spec
+                NSArray *arrayofKeyComponents = [key componentsSeparatedByString:@"."];
+                NSArray *predefinedContextKeys = @[ @"traits", @"app", @"device", @"library", @"os", @"network", @"screen"];
+                if ([predefinedContextKeys containsObject:arrayofKeyComponents[0]]) {
+                    NSDictionary *contextTraits = [context valueForKey:arrayofKeyComponents[0]];
+                    NSString *parsedKey = arrayofKeyComponents[1];
+                    if([contextTraits count] && contextTraits[parsedKey]) {
+                        [data setObject:contextTraits[parsedKey] forKey:contextValues[key]];
+                    }
                 }
             }
+
             NSDictionary *payloadLocation;
+            // Determine whether to check the properties or context object based on the key location
             if (properties[key]) {
                 payloadLocation = [NSDictionary dictionaryWithDictionary:properties];
-            } if (context[key]) {
+            }
+            if (context[key]) {
                 payloadLocation = [NSDictionary dictionaryWithDictionary:context];
             }
+        
+            // If the value of the key is a boolean we convert to string "true"/"false" rather than 0/1 values Obj-C will convert it to
+            // All non-boolean data types we simply assign to the data object
             if (payloadLocation) {
                 if ([payloadLocation[key] isEqual:@YES]) {
                     [data setObject:@"true" forKey:contextValues[key]];
@@ -353,11 +368,39 @@
                     [data setObject:payloadLocation[key] forKey:contextValues[key]];
                 }
             }
+            
+            // For screen and track calls our core analytics-ios lib exposes these top level properties
+            // These properties are extractetd from the  payload using helper methods (extractSEGTrackTopLevelProps & extractSEGScreenTopLevelProps)
+            NSArray *topLevelProperties = @[@"event", @"messageId", @"anonymousId", @"name"];
+            if ([topLevelProperties containsObject:key] && topLevelProps[key]) {
+                [data setObject:topLevelProps[key] forKey:contextValues[key]];
+            }
         }
-        return data;
+        if ([data count] > 0) return data;
     }
     return nil;
 }
+
+- (NSMutableDictionary *)extractSEGTrackTopLevelProps:(SEGTrackPayload *) payload
+{
+    NSMutableDictionary *topLevelProperties = [[NSMutableDictionary alloc] initWithCapacity:10];
+    [topLevelProperties setValue:payload.messageId forKey:@"messageId"];
+    [topLevelProperties setValue:payload.event forKey:@"event"];
+    // TODO: implement post bump of iOS-anaytics core SDK
+//    [topLevelProperties setValue:payload.event forKey:@"anonymousId"];
+    return topLevelProperties;
+}
+
+- (NSMutableDictionary *)extractSEGScreenTopLevelProps:(SEGScreenPayload *) payload
+{
+    NSMutableDictionary *topLevelProperties = [[NSMutableDictionary alloc] initWithCapacity:10];
+    [topLevelProperties setValue:payload.messageId forKey:@"messageId"];
+    [topLevelProperties setValue:payload.name forKey:@"name"];
+    // TODO: implement post bump of iOS-anaytics core SDK
+//    [topLevelProperties setValue:payload.event forKey:@"anonymousId"];
+    return topLevelProperties;
+}
+
 
 /**
     In order to respect Adobe's event naming convention, Segment
@@ -405,13 +448,14 @@
      @return contextData object with &&events and formatted product String in &&products
  **/
 
-- (NSMutableDictionary *)mapProducts:(NSString *)event andProperties:(NSDictionary *)properties andContext:(NSDictionary *)context
+- (NSMutableDictionary *)mapProducts:(NSString *)event andProperties:(NSDictionary *)properties andContext:(NSDictionary *)context payload:(SEGTrackPayload *)payload
 {
     if ([properties count] == 0) {
         return nil;
     }
 
-    NSMutableDictionary *data = [self mapContextValues:properties context:context];
+    NSMutableDictionary *topLevelProperties = [self extractSEGTrackTopLevelProps:payload];
+    NSMutableDictionary *data = [self mapContextValues:properties andContext:context withTopLevelProps:topLevelProperties];
     NSMutableDictionary *contextData = [[NSMutableDictionary alloc] initWithDictionary:data];
 
     // If you trigger a product-specific event by using the &&products variable,
@@ -548,7 +592,8 @@
         self.playbackDelegate = [self.delegateFactory createPlaybackDelegateWithPosition:playheadPosition];
         self.mediaHeartbeat = [self.heartbeatFactory createWithDelegate:self.playbackDelegate andConfig:self.config];
         self.mediaObject = [self createMediaObject:payload.properties andEventType:@"Playback"];
-        NSDictionary *contextData = [self mapContextValues:payload.properties context:payload.context];
+        NSMutableDictionary *topLevelProperties = [self extractSEGTrackTopLevelProps:payload];
+        NSDictionary *contextData = [self mapContextValues:payload.properties andContext:payload.context withTopLevelProps:topLevelProperties];
         [self.mediaHeartbeat trackSessionStart:self.mediaObject data:contextData];
         SEGLog(@"[ADBMediaHeartbeat trackSessionStart:%@ data:%@]", self.mediaObject, contextData);
         return;
@@ -582,7 +627,8 @@
         [self.mediaHeartbeat trackPlay];
         SEGLog(@"[ADBMediaHeartbeat trackPlay]");
         self.mediaObject = [self createMediaObject:payload.properties andEventType:@"Content"];
-        NSDictionary *contextData = [self mapContextValues:payload.properties context:payload.context];
+        NSMutableDictionary *topLevelProperties = [self extractSEGTrackTopLevelProps:payload];
+        NSDictionary *contextData = [self mapContextValues:payload.properties andContext:payload.context withTopLevelProps:topLevelProperties];
         [self.mediaHeartbeat trackEvent:ADBMediaHeartbeatEventChapterStart mediaObject:self.mediaObject data:contextData];
         SEGLog(@"[ADBMediaHeartbeat trackEvent:ADBMediaHeartbeatEventChapterStart mediaObject:%@ data:%@]", self.mediaObject, contextData);
         return;
@@ -624,7 +670,8 @@
 
     if (videoEvent) {
         self.mediaObject = [self createMediaObject:payload.properties andEventType:@"Video"];
-        NSDictionary *contextData = [self mapContextValues:payload.properties context:payload.context];
+        NSMutableDictionary *topLevelProperties = [self extractSEGTrackTopLevelProps:payload];
+        NSDictionary *contextData = [self mapContextValues:payload.properties andContext:payload.context withTopLevelProps:topLevelProperties];
         [self.mediaHeartbeat trackEvent:videoEvent mediaObject:self.mediaObject data:contextData];
         SEGLog(@"[ADBMediaHeartbeat trackEvent:ADBMediaHeartbeatEventBufferStart mediaObject:%@ data:%@]", self.mediaObject, contextData);
         return;
@@ -652,7 +699,8 @@
 
     if ([payload.event isEqualToString:@"Video Ad Started"]) {
         self.mediaObject = [self createMediaObject:payload.properties andEventType:@"Ad"];
-        NSDictionary *contextData = [self mapContextValues:payload.properties context:payload.context];
+        NSMutableDictionary *topLevelProperties = [self extractSEGTrackTopLevelProps:payload];
+        NSDictionary *contextData = [self mapContextValues:payload.properties andContext:payload.context withTopLevelProps:topLevelProperties];
         [self.mediaHeartbeat trackEvent:ADBMediaHeartbeatEventAdStart mediaObject:self.mediaObject data:contextData];
         SEGLog(@"[ADBMediaHeartbeat trackEvent:ADBMediaHeartbeatEventAdStart mediaObject:%@ data:%@]", self.mediaObject, contextData);
         return;
@@ -672,7 +720,8 @@
     }
 
     if ([payload.event isEqualToString:@"Video Quality Updated"]) {
-        NSDictionary *contextData = [self mapContextValues:payload.properties context:payload.context];
+        NSMutableDictionary *topLevelProperties = [self extractSEGTrackTopLevelProps:payload];
+        NSDictionary *contextData = [self mapContextValues:payload.properties andContext:payload.context withTopLevelProps:topLevelProperties];
         [self.playbackDelegate createAndUpdateQOSObject:contextData];
         return;
     }
