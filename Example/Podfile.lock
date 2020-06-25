@@ -6,7 +6,7 @@ PODS:
     - AdobeMobileSDK/iOS (= 4.19.2)
   - AdobeMobileSDK/iOS (4.19.2)
   - AdobeMobileSDK/TVOS (4.19.2)
-  - Analytics (4.0.1)
+  - Analytics (4.0.2)
   - Expecta (1.0.6)
   - OCHamcrest (7.1.2)
   - OCMockito (5.1.3):
@@ -41,7 +41,7 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   AdobeMediaSDK: 7ee90061503e56f794808e80d4b1ba7e8a0bf4e1
   AdobeMobileSDK: 94f32d06c18ff363eee1c5486e73c741c4cd3865
-  Analytics: ebdc0c3ed93684d10c898f57886e0ce7fbecc240
+  Analytics: 8eb3f744811eabd5eb94d50de1bd33c0369f10ab
   Expecta: 3b6bd90a64b9a1dcb0b70aa0e10a7f8f631667d5
   OCHamcrest: b284c9592c28c1e4025a8542e67ea41a635d0d73
   OCMockito: 677cbb4a18fd492b5a4fb10144dada4de5ddb877
