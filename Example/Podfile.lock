@@ -2,20 +2,20 @@ PODS:
   - AdobeMediaSDK (2.2.7):
     - AdobeMobileSDK
     - AdobeMobileSDK/TVOS
-  - AdobeMobileSDK (4.18.7):
-    - AdobeMobileSDK/iOS (= 4.18.7)
-  - AdobeMobileSDK/iOS (4.18.7)
-  - AdobeMobileSDK/TVOS (4.19.1)
-  - Analytics (3.6.7)
+  - AdobeMobileSDK (4.19.2):
+    - AdobeMobileSDK/iOS (= 4.19.2)
+  - AdobeMobileSDK/iOS (4.19.2)
+  - AdobeMobileSDK/TVOS (4.19.2)
+  - Analytics (4.0.1)
   - Expecta (1.0.6)
-  - OCHamcrest (7.0.2)
-  - OCMockito (5.0.1):
+  - OCHamcrest (7.1.2)
+  - OCMockito (5.1.3):
     - OCHamcrest (~> 7.0)
-  - Segment-Adobe-Analytics (1.4.3):
+  - Segment-Adobe-Analytics (1.5.2):
     - AdobeMediaSDK
     - AdobeMobileSDK
     - AdobeMobileSDK/TVOS
-    - Analytics (~> 3.5)
+    - Analytics
   - Specta (1.0.7)
 
 DEPENDENCIES:
@@ -25,15 +25,14 @@ DEPENDENCIES:
   - Specta
 
 SPEC REPOS:
-  https://github.com/CocoaPods/Specs.git:
+  trunk:
+    - AdobeMediaSDK
     - AdobeMobileSDK
     - Analytics
     - Expecta
     - OCHamcrest
     - OCMockito
     - Specta
-  trunk:
-    - AdobeMediaSDK
 
 EXTERNAL SOURCES:
   Segment-Adobe-Analytics:
@@ -41,12 +40,12 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   AdobeMediaSDK: 7ee90061503e56f794808e80d4b1ba7e8a0bf4e1
-  AdobeMobileSDK: 1d79bf4237c304cab5b7ac8b885146f7abd65261
-  Analytics: 2c09a50e3478a3a7ced08a22d00c43ba6f7011e6
+  AdobeMobileSDK: 94f32d06c18ff363eee1c5486e73c741c4cd3865
+  Analytics: ebdc0c3ed93684d10c898f57886e0ce7fbecc240
   Expecta: 3b6bd90a64b9a1dcb0b70aa0e10a7f8f631667d5
-  OCHamcrest: 706bfbf69a3df55a873bad096014e80e2e8ca93c
-  OCMockito: 063837a086c058e764fcd23e771089c1759e7197
-  Segment-Adobe-Analytics: e21bc3e9463285cc382dc17f406df2620738321b
+  OCHamcrest: b284c9592c28c1e4025a8542e67ea41a635d0d73
+  OCMockito: 677cbb4a18fd492b5a4fb10144dada4de5ddb877
+  Segment-Adobe-Analytics: ba8df8bd3729935b4ce1472181f2e35dc4253069
   Specta: 3e1bd89c3517421982dc4d1c992503e48bd5fe66
 
 PODFILE CHECKSUM: 599db44d427d9aeea39e5c49c1b55ab56fb6a882
