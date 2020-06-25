@@ -386,8 +386,7 @@
     NSMutableDictionary *topLevelProperties = [[NSMutableDictionary alloc] initWithCapacity:10];
     [topLevelProperties setValue:payload.messageId forKey:@"messageId"];
     [topLevelProperties setValue:payload.event forKey:@"event"];
-    // TODO: implement post bump of iOS-anaytics core SDK
-//    [topLevelProperties setValue:payload.event forKey:@"anonymousId"];
+    [topLevelProperties setValue:payload.anonymousId forKey:@"anonymousId"];
     return topLevelProperties;
 }
 
@@ -396,8 +395,7 @@
     NSMutableDictionary *topLevelProperties = [[NSMutableDictionary alloc] initWithCapacity:10];
     [topLevelProperties setValue:payload.messageId forKey:@"messageId"];
     [topLevelProperties setValue:payload.name forKey:@"name"];
-    // TODO: implement post bump of iOS-anaytics core SDK
-//    [topLevelProperties setValue:payload.event forKey:@"anonymousId"];
+    [topLevelProperties setValue:payload.anonymousId forKey:@"anonymousId"];
     return topLevelProperties;
 }
 
