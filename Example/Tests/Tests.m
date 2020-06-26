@@ -218,11 +218,11 @@ describe(@"SEGAdobeIntegration", ^{
                                                   andMediaObjectFactory:nil
                                              andPlaybackDelegateFactory:nil];
 
-            SEGScreenPayload *screenPayload = [[SEGScreenPayload alloc] initWithName:@"Sign Up" properties:@{ @"new_user" : @YES }
+            SEGScreenPayload *screenPayload = [[SEGScreenPayload alloc] initWithName:@"Sign Up" properties:@{ @"new_user" : @true }
                 context:@{}
                 integrations:@{}];
             [integration screen:screenPayload];
-            [verify(mockADBMobile) trackState:@"Sign Up" data:@{ @"myapp.new_user" : @YES }];
+            [verify(mockADBMobile) trackState:@"Sign Up" data:@{ @"myapp.new_user" : @"true" }];
         });
 
         it(@"tracks a screen state with context fields configured in settings.contextValues", ^{
@@ -235,10 +235,10 @@ describe(@"SEGAdobeIntegration", ^{
                                              andPlaybackDelegateFactory:nil];
 
             SEGScreenPayload *screenPayload = [[SEGScreenPayload alloc] initWithName:@"Sign Up" properties:@{}
-                context:@{ @"new_user" : @YES }
+                context:@{ @"new_user" : @false }
                 integrations:@{}];
             [integration screen:screenPayload];
-            [verify(mockADBMobile) trackState:@"Sign Up" data:@{ @"myapp.new_user" : @YES }];
+            [verify(mockADBMobile) trackState:@"Sign Up" data:@{ @"myapp.new_user" : @"false" }];
         });
     });
 
@@ -787,6 +787,7 @@ describe(@"SEGAdobeIntegration", ^{
 
                 [integration track:payload];
                 [verify(mockPlaybackDelegate) pausePlayhead];
+                [verify(mockADBMediaHeartbeat) trackComplete];
                 [verify(mockADBMediaHeartbeat) trackSessionEnd];
             });
 
@@ -879,7 +880,6 @@ describe(@"SEGAdobeIntegration", ^{
                     integrations:@{}];
 
                 [integration track:payload];
-                [verify(mockADBMediaHeartbeat) trackComplete];
                 [verify(mockADBMediaHeartbeat) trackEvent:ADBMediaHeartbeatEventChapterComplete mediaObject:nil data:nil];
             });
         });
