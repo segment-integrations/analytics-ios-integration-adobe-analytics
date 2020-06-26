@@ -1,5 +1,14 @@
 Change Log
 ==========
+Version 1.6.0 *(25th June, 2020)*
+-------------------------------------------
+*(Supports analytics-ios 4.0.+)*
+* For context data variable mappings we default to converting booleans to "true" or "false". Previously these were passed as 0/1.
+* Removes trackComplete from Video Content Completed events as it incorrectly ends the session and discards subsequent HB calls.
+* Adds trackComplete to Video Playback Completed events.
+* Adds support to map top level properties on track calls (messageId, anonymousId, event) and on screen (name, messageId and anonymousId)
+* Adds support for nested context data (non-HB) variable and context metadata (HB) mapping in context.app, context.device, context.library, os, network, and screen.  
+
 Version 1.5.2 *(18th June, 2020)*
 -------------------------------------------
 Relaxes Segment Analytics library dependency.
