@@ -218,11 +218,11 @@ describe(@"SEGAdobeIntegration", ^{
                                                   andMediaObjectFactory:nil
                                              andPlaybackDelegateFactory:nil];
 
-            SEGScreenPayload *screenPayload = [[SEGScreenPayload alloc] initWithName:@"Sign Up" properties:@{ @"new_user" : @true }
+            SEGScreenPayload *screenPayload = [[SEGScreenPayload alloc] initWithName:@"Sign Up" properties:@{ @"new_user" : @true, @"title": @1 }
                 context:@{}
                 integrations:@{}];
             [integration screen:screenPayload];
-            [verify(mockADBMobile) trackState:@"Sign Up" data:@{ @"myapp.new_user" : @"true" }];
+            [verify(mockADBMobile) trackState:@"Sign Up" data:@{ @"myapp.new_user" : @true, @"myapp.title": @1 }];
         });
 
         it(@"tracks a screen state with context fields configured in settings.contextValues", ^{
@@ -238,7 +238,7 @@ describe(@"SEGAdobeIntegration", ^{
                 context:@{ @"new_user" : @false }
                 integrations:@{}];
             [integration screen:screenPayload];
-            [verify(mockADBMobile) trackState:@"Sign Up" data:@{ @"myapp.new_user" : @"false" }];
+            [verify(mockADBMobile) trackState:@"Sign Up" data:@{ @"myapp.new_user" : @false }];
         });
     });
 
