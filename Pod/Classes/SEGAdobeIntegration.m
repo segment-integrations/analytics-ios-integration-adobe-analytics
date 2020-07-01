@@ -357,16 +357,8 @@
                 payloadLocation = [NSDictionary dictionaryWithDictionary:context];
             }
         
-            // If the value of the key is a boolean we convert to string "true"/"false" rather than 0/1 values Obj-C will convert it to
-            // All non-boolean data types we simply assign to the data object
             if (payloadLocation) {
-                if ([payloadLocation[key] isEqual:@YES]) {
-                    [data setObject:@"true" forKey:contextValues[key]];
-                } else if ([payloadLocation[key] isEqual:@NO]){
-                    [data setObject:@"false" forKey:contextValues[key]];
-                } else {
-                    [data setObject:payloadLocation[key] forKey:contextValues[key]];
-                }
+                [data setObject:payloadLocation[key] forKey:contextValues[key]];
             }
             
             // For screen and track calls our core analytics-ios lib exposes these top level properties
