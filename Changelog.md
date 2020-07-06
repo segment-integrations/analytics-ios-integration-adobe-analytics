@@ -1,9 +1,13 @@
 Change Log
 ==========
+Version 1.6.2 *(6th July, 2020)*
+-------------------------------------------
+* Adds support for stringified boolean  values for context data variables
+
 Version 1.6.1 *(1st July, 2020)*
 -------------------------------------------
 * Removes support for stringified boolean  values for context data variables
-*  Fixes bug in v1.6.0 where integer 0/1 context data variables weer converted to `@"true"`/`@"false"` 
+*  Fixes bug in v1.6.0 where integer 0/1 context data variables weer converted to `@"true"`/`@"false"`
 
 Version 1.6.0 *(25th June, 2020)*
 -------------------------------------------
