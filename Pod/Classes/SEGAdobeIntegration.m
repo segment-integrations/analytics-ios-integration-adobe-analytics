@@ -311,6 +311,14 @@
     SEGLog(@"[ADBMobile trackState:%@ data:%@];", payload.name, data);
 }
 
+BOOL isBoolean(NSObject* object)
+{
+    CFTypeID boolTypeID = CFBooleanGetTypeID();
+    //the type ID of CFBoolean
+    CFTypeID objectTypeID = CFGetTypeID((__bridge CFTypeRef)(object));
+    //the type ID of num
+    return objectTypeID == boolTypeID;
+}
 ///-------------------------
 /// @name Mapping
 ///-------------------------
@@ -328,7 +336,6 @@
 **/
 - (NSMutableDictionary *)mapContextValues:(NSDictionary *)properties andContext:(NSDictionary *)context withTopLevelProps:(NSMutableDictionary *)topLevelProps
 {
- 
     NSInteger contextValuesSize = [self.settings[@"contextValues"] count];
     if (([properties count] > 0 || [context count] > 0) && contextValuesSize > 0) {
         NSMutableDictionary *data = [[NSMutableDictionary alloc] initWithCapacity:contextValuesSize];
@@ -356,11 +363,17 @@
             if (context[key]) {
                 payloadLocation = [NSDictionary dictionaryWithDictionary:context];
             }
-        
+
             if (payloadLocation) {
-                [data setObject:payloadLocation[key] forKey:contextValues[key]];
+                if (isBoolean(payloadLocation[key])  &&  [payloadLocation[key] isEqual:@YES]){
+                   [data setObject:@"true" forKey:contextValues[key]];
+                } else if (isBoolean(payloadLocation[key])  &&  [payloadLocation[key] isEqual:@NO]){
+                     [data setObject:@"false" forKey:contextValues[key]];
+                } else {
+                    [data setObject:payloadLocation[key] forKey:contextValues[key]];
+                }
             }
-            
+
             // For screen and track calls our core analytics-ios lib exposes these top level properties
             // These properties are extractetd from the  payload using helper methods (extractSEGTrackTopLevelProps & extractSEGScreenTopLevelProps)
             NSArray *topLevelProperties = @[@"event", @"messageId", @"anonymousId", @"name"];
