@@ -11,7 +11,7 @@ PODS:
   - OCHamcrest (7.1.2)
   - OCMockito (5.1.3):
     - OCHamcrest (~> 7.0)
-  - Segment-Adobe-Analytics (1.6.1):
+  - Segment-Adobe-Analytics (1.6.3):
     - AdobeMediaSDK
     - AdobeMobileSDK
     - AdobeMobileSDK/TVOS
@@ -45,7 +45,7 @@ SPEC CHECKSUMS:
   Expecta: 3b6bd90a64b9a1dcb0b70aa0e10a7f8f631667d5
   OCHamcrest: b284c9592c28c1e4025a8542e67ea41a635d0d73
   OCMockito: 677cbb4a18fd492b5a4fb10144dada4de5ddb877
-  Segment-Adobe-Analytics: 86abb3557e0a2df7a143abfad5d1915cfcf5f312
+  Segment-Adobe-Analytics: 93b0c385ec5094d1a885226013de60f9ae09336b
   Specta: 3e1bd89c3517421982dc4d1c992503e48bd5fe66
 
 PODFILE CHECKSUM: 599db44d427d9aeea39e5c49c1b55ab56fb6a882
