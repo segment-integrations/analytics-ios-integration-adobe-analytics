@@ -168,7 +168,7 @@
 
     // Adobe also has a third type: linear, which we have chosen
     // to omit as it does not conform to Segment's Video spec
-    bool isLivestream = properties[@"livestream"];
+    bool isLivestream = [properties[@"livestream"] boolValue];
     NSString *streamType = ADBMediaHeartbeatStreamTypeVOD;
     if (isLivestream) {
         streamType = ADBMediaHeartbeatStreamTypeLIVE;
