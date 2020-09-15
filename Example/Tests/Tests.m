@@ -611,7 +611,8 @@ describe(@"SEGAdobeIntegration", ^{
                     @"position" : @30,
                     @"sound" : @100,
                     @"full_screen" : @YES,
-                    @"bitrate" : @50
+                    @"bitrate" : @50,
+                    @"livestream" : @NO
                 } context:@{}
                     integrations:@{}];
 
@@ -634,7 +635,8 @@ describe(@"SEGAdobeIntegration", ^{
                     @"position" : @30,
                     @"sound" : @100,
                     @"full_screen" : @YES,
-                    @"bitrate" : @50
+                    @"bitrate" : @50,
+                    @"livestream" : @NO
                 } context:@{}
                     integrations:@{}];
 
@@ -657,8 +659,8 @@ describe(@"SEGAdobeIntegration", ^{
                     @"position" : @190,
                     @"sound" : @100,
                     @"full_screen" : @NO,
-                    @"bitrate" : @50
-
+                    @"bitrate" : @50,
+                    @"livestream" : @NO
                 } context:@{}
                     integrations:@{}];
 
@@ -681,7 +683,8 @@ describe(@"SEGAdobeIntegration", ^{
                     @"position" : @90,
                     @"sound" : @100,
                     @"full_screen" : @NO,
-                    @"bitrate" : @50
+                    @"bitrate" : @50,
+                    @"livestream" : @YES
 
                 } context:@{}
                     integrations:@{}];
@@ -706,7 +709,8 @@ describe(@"SEGAdobeIntegration", ^{
                     @"seek_position" : @20,
                     @"sound" : @100,
                     @"full_screen" : @YES,
-                    @"bitrate" : @50
+                    @"bitrate" : @50,
+                    @"livestream" : @YES
 
                 } context:@{}
                     integrations:@{}];
@@ -731,7 +735,8 @@ describe(@"SEGAdobeIntegration", ^{
                     @"position" : @20,
                     @"sound" : @100,
                     @"full_screen" : @YES,
-                    @"bitrate" : @50
+                    @"bitrate" : @50,
+                    @"livestream" : @YES
 
                 } context:@{}
                     integrations:@{}];
@@ -756,7 +761,8 @@ describe(@"SEGAdobeIntegration", ^{
                     @"position" : @34,
                     @"sound" : @100,
                     @"full_screen" : @YES,
-                    @"bitrate" : @50
+                    @"bitrate" : @50,
+                    @"livestream" : @YES
 
                 } context:@{}
                     integrations:@{}];
@@ -780,7 +786,8 @@ describe(@"SEGAdobeIntegration", ^{
                     @"position" : @30,
                     @"sound" : @100,
                     @"full_screen" : @YES,
-                    @"bitrate" : @50
+                    @"bitrate" : @50,
+                    @"livestream" : @NO
                 }
                     context:@{}
                     integrations:@{}];
@@ -821,7 +828,8 @@ describe(@"SEGAdobeIntegration", ^{
                     @"position" : @22,
                     @"channel" : @"Cartoon Network",
                     @"start_time" : @140,
-                    @"position" : @5
+                    @"position" : @5,
+                    @"livestream" : @NO
                 } context:@{}
                     integrations:@{}];
                 [integration track:payload];
@@ -849,7 +857,8 @@ describe(@"SEGAdobeIntegration", ^{
                     @"position" : @22,
                     @"channel" : @"Cartoon Network",
                     @"start_time" : @140,
-                    @"position" : @5
+                    @"position" : @5,
+                    @"livestream" : @NO
                 } context:@{}
                     integrations:@{}];
                 [integration track:payload];
@@ -873,9 +882,10 @@ describe(@"SEGAdobeIntegration", ^{
                     @"genre" : @"cartoon",
                     @"program" : @"Rick and Morty",
                     @"total_length" : @400,
-                    @"full_episode" : @"true",
+                    @"full_episode" : @YES,
                     @"publisher" : @"Turner Broadcasting Network",
-                    @"channel" : @"Cartoon Network"
+                    @"channel" : @"Cartoon Network",
+                    @"livestream" : @YES
                 } context:@{}
                     integrations:@{}];
 
