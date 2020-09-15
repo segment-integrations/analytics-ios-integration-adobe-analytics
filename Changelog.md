@@ -1,5 +1,9 @@
 Change Log
 ==========
+Version 1.6.3 *(15th September, 2020)*
+-------------------------------------------
+* Fix support for the stringified boolean `livestream` property.
+
 Version 1.6.2 *(6th July, 2020)*
 -------------------------------------------
 * Adds support for stringified boolean  values for context data variables
