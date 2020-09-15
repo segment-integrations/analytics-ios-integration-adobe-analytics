@@ -1,8 +1,9 @@
 Change Log
 ==========
-Version 1.6.3 *(15th September, 2020)*
+Version 1.6.4 *(15th September, 2020)*
 -------------------------------------------
 * Fix support for the stringified boolean `livestream` property.
+* NOTE Release 1.6.3 was not published due to an issue with our release tooling.
 
 Version 1.6.2 *(6th July, 2020)*
 -------------------------------------------
