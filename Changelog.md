@@ -1,5 +1,9 @@
 Change Log
 ==========
+Version 1.6.5 *(7th October, 2020)*
+-------------------------------------------
+* Update SEGAnalytics imports to support new namespacing introduced in v4.x
+
 Version 1.6.4 *(15th September, 2020)*
 -------------------------------------------
 * Fix support for the stringified boolean `livestream` property.
