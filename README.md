@@ -24,7 +24,7 @@ Segment-Adobe-Analytics is available through [CocoaPods](http://cocoapods.org). 
 it, simply add the following line to your Podfile:
 
 ```ruby
-pod 'Segment-Adobe-Analytics'
+pod 'Segment-Adobe-Analytics', '1.1.0-beta'
 ```
 ## License
 
